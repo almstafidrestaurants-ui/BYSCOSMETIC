@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f9d5e5">
+    <meta name="description" content="BYS Cosmetics - Discover your beauty essentials.">
+    <title>BYS Cosmetics | Beauty, Elevated</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- شاشة اختيار الدولة عند أول زيارة -->
+    <section class="country-screen" id="countryScreen">
+        <div class="country-panel">
+            <div class="country-brand" id="countryBrand">BYS<span>COSMETICS</span></div>
+            <div class="country-intro">
+                <p class="eyebrow">YOUR BEAUTY DESTINATION</p>
+                <h1>Choose Your Country</h1>
+                <p>Select your country to shop with the right prices and delivery options.</p>
+            </div>
+            <div class="country-options" id="countryOptions"></div>
+            <p class="country-note">A little beauty, wherever you are.</p>
+        </div>
+    </section>
+
+    <!-- واجهة المتجر الأساسية -->
+    <div class="app hidden" id="app">
+        <!-- رأس المتجر: شعار على اليسار وأزرار على اليمين مثل التطبيق المرجعي -->
+        <header class="header">
+            <div class="header-top">
+                <!-- شعار BYS Cosmetics على اليسار -->
+<button
+    class="brand"
+    data-view="home"
+    aria-label="BYS Home"
+>
+    <!-- صورة الشعار الأصلية -->
+    <img
+        id="logoImage"
+        src="images/LOGO.png"
+        alt="BYS Cosmetics"
+    >
+</button>
+
+                <div class="header-actions">
+                    <!-- كل أيقونة عبارة عن صورة مستقلة في مجلد images/ui -->
+                    <button class="icon-button" data-view="favorites" aria-label="Favorites">
+                        <img class="header-icon" src="images/ui/heart.svg" alt="">
+                    </button>
+
+                    <button class="icon-button cart-head" data-view="cart" aria-label="Shopping cart">
+                        <img class="header-icon" src="images/ui/cart.svg" alt="">
+                        <span class="count" id="cartBadge">0</span>
+                    </button>
+
+                    <button class="icon-button" data-action="menu" aria-label="More options">
+                        <img class="header-icon dots-icon" src="images/ui/more.svg" alt="">
+                    </button>
+                </div>
+            </div>
+
+            <!-- مربع البحث تحت الشعار والأزرار -->
+            <div class="search-wrap">
+                <img class="search-icon" src="images/ui/search.svg" alt="">
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search products, brands, or beauty goals..."
+                    autocomplete="off"
+                    aria-label="Search products"
+                >
+                <button id="clearSearch" aria-label="Clear search" hidden>×</button>
+            </div>
+
+            <div class="location-line">
+                <span>  Curated beauty for you</span>
+                <button id="changeCountry">🇱🇧 Lebanon ▾</button>
+            </div>
+        </header>
+        <main>
+            <section class="view" id="homeView">
+                <!-- سلايدر الواجهة: الصور والعناوين يتم التحكم فيها من script.js -->
+                <section class="hero hero-slider" id="heroSlider" aria-label="Featured beauty collections" aria-roledescription="carousel">
+                    <div class="hero-slides" id="heroSlides"></div>
+                    <div class="hero-controls" id="heroControls" aria-label="Choose a slide"></div>
+                    <button class="hero-arrow hero-prev" type="button" id="heroPrev" aria-label="Previous slide">‹</button>
+                    <button class="hero-arrow hero-next" type="button" id="heroNext" aria-label="Next slide">›</button>
+                </section>
+                <div class="section-heading"><h2>Categories</h2><button data-view="categories">View All <span>›</span></button></div>
+                <div class="category-grid" id="homeCategories"></div>
+                <section class="needs-banner">
+                    <div class="needs-title"><h2>Shop by Your Needs</h2><p>Find the perfect care for your beauty goals</p></div>
+                    <div class="needs-grid" id="needsGrid"></div>
+                </section>
+                <div class="section-heading"><h2>Bestsellers</h2><button data-view="products">View All <span>›</span></button></div>
+                <div class="product-grid home-products" id="bestProducts"></div>
+                <div class="section-heading"><h2>Shop by Brands</h2><button data-view="brands">View All <span>›</span></button></div>
+                <div class="brand-row" id="homeBrands"></div>
+                <div class="section-heading"><h2>New Arrivals</h2><button data-view="products">View All <span>›</span></button></div>
+                <div class="product-grid home-products" id="newProducts"></div>
+            </section>
+
+            <section class="view hidden" id="categoriesView"><div class="page-heading"><button data-view="home">‹</button><h1>Categories</h1></div><div class="category-grid category-page" id="allCategories"></div></section>
+            <section class="view hidden" id="productsView"><div class="page-heading"><button data-view="home">‹</button><h1 id="productsTitle">Shop All</h1></div><div class="filter-bar" id="filterBar"></div><div class="results-line"><span id="resultCount"></span><select id="sortSelect" aria-label="Sort products"><option value="featured">Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="az">Name: A to Z</option></select></div><div class="product-grid" id="allProducts"></div></section>
+            <section class="view hidden" id="brandsView"><div class="page-heading"><button data-view="home">‹</button><h1>Our Brands</h1></div><div class="brands-page" id="allBrands"></div></section>
+            <section class="view hidden" id="favoritesView"><div class="page-heading"><button data-view="home">‹</button><h1>My Favorites</h1></div><div class="product-grid" id="favoriteProducts"></div></section>
+            <section class="view hidden" id="cartView"><div class="page-heading"><button data-view="home">‹</button><h1>Shopping Bag</h1></div><div id="cartItems"></div><div class="cart-summary" id="cartSummary"></div></section>
+            <section class="view hidden" id="accountView"><div class="page-heading"><button data-view="home">‹</button><h1>My Account</h1></div><div class="account-panel"><div class="account-symbol">BYS</div><h2>Welcome to BYS</h2><p>Your beauty journey starts here.</p><button id="accountCountry">Change Shopping Country</button><p class="small-note">Account registration and consultant referral codes will be enabled with Firebase in the next phase.</p></div></section>
+            <section class="view hidden" id="productView"><div class="page-heading"><button data-view="products">‹</button><h1>Product Details</h1></div><div id="productDetail"></div></section>
+        </main>
+
+       
+<!-- شريط التنقل السفلي بأيقونات مشابهة للصورة الأولى -->
+<nav class="bottom-nav" aria-label="Main navigation">
+
+    <button class="active" data-view="home">
+        <span class="nav-icon">
+            <!-- بيت مع مدخنة، أقرب لشكل الصورة المرجعية -->
+            <svg class="home-house" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.5 10.2 12 3l8.5 7.2v9.1c0 1-.8 1.7-1.7 1.7H5.2c-.9 0-1.7-.7-1.7-1.7z" fill="currentColor"/>
+                <path d="M9.5 21v-7.2h5V21" fill="#fce3ec"/>
+                <path d="M17.1 5.7V3.5h2.2v4.1" fill="currentColor"/>
+            </svg>
+        </span>
+        <small>Home</small>
+    </button>
+
+    <button data-view="categories">
+        <span class="nav-icon">
+            <i data-lucide="layout-grid"></i>
+        </span>
+        <small>Categories</small>
+    </button>
+
+    <button data-view="brands">
+        <span class="nav-icon">
+            <i data-lucide="tag"></i>
+        </span>
+        <small>Brands</small>
+    </button>
+
+    <button data-view="favorites">
+        <span class="nav-icon">
+            <i data-lucide="heart"></i>
+        </span>
+        <small>Favorites</small>
+    </button>
+
+    <button data-view="account">
+        <span class="nav-icon">
+            <i data-lucide="user-round"></i>
+        </span>
+        <small>Account</small>
+    </button>
+
+</nav>
+
+        <div id="toast" role="status" aria-live="polite"></div>
+    </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="catalog.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

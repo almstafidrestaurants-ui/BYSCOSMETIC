@@ -1,0 +1,21 @@
+{
+  "name": "BYS Cosmetics",
+  "short_name": "BYS",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff4f8",
+  "theme_color": "#f9d5e5",
+  "icons": [
+    {
+      "src": "images/LOGO.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/LOGO.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
