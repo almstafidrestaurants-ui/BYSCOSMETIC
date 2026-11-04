@@ -1211,3 +1211,11 @@ main { padding: 17px 22px 35px; }
 .country-screen .welcome-track:last-child {
     margin-bottom: 0;
 }
+
+/* رفع الشعار والعنوان والوصف فقط */
+.country-screen .welcome-logo,
+.country-screen .welcome-form-area h1,
+.country-screen .welcome-subtitle {
+    position: relative;
+    top: -12px;
+}
