@@ -789,3 +789,359 @@ main { padding: 17px 22px 35px; }
 #filterBar {
     display: none !important;
 }
+
+
+/* شاشة ترحيب BYS الجديدة - صفّان متحركان وخلفية بيضاء نظيفة */
+.country-screen {
+    display: block;
+    min-height: 100dvh;
+    padding: 0;
+    background: #fff;
+    overflow: hidden;
+}
+.welcome-showcase {
+    width: 100%;
+    padding: 22px 0 8px;
+    overflow: hidden;
+    background: #fff;
+}
+.welcome-track {
+    display: flex;
+    width: max-content;
+    margin-bottom: 13px;
+    animation: bys-marquee 35s linear infinite;
+    will-change: transform;
+}
+.welcome-track-second { animation-direction: reverse; animation-duration: 40s; }
+.welcome-marquee-set { display: flex; flex: 0 0 auto; gap: 13px; padding-right: 13px; }
+.welcome-product-tile {
+    flex: 0 0 auto;
+    width: clamp(118px, 28vw, 185px);
+    height: clamp(118px, 28vw, 185px);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 27px;
+    background: #e6f2fb;
+}
+.welcome-product-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 9px;
+}
+@keyframes bys-marquee { to { transform: translateX(-50%); } }
+.welcome-form-area {
+    width: min(100% - 42px, 460px);
+    margin: 18px auto 30px;
+    text-align: center;
+}
+.welcome-logo {
+    width: 88px;
+    height: 88px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 16px;
+    border-radius: 23px;
+    background: #e85d99;
+    box-shadow: 0 8px 24px rgba(204, 49, 104, .14);
+    overflow: hidden;
+}
+.welcome-logo img { width: 100%; height: 100%; object-fit: contain; }
+.welcome-logo span { color: white; font: bold 30px Georgia, serif; }
+.welcome-form-area h1 { margin: 0 0 6px; font-size: clamp(21px, 5.2vw, 27px); color: #262026; }
+.welcome-subtitle { margin: 0 0 24px; font-size: 13px; color: #8b7380; }
+.welcome-form { display: grid; gap: 10px; text-align: left; }
+.welcome-form label { margin-top: 4px; font-size: 12px; font-weight: 700; color: #6b4558; }
+.welcome-select-wrap, .welcome-phone-wrap {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px solid #ead9e1;
+    border-radius: 15px;
+    padding: 0 17px;
+    background: #fff;
+}
+#welcomeFlag { font-size: 23px; }
+#welcomeCountry { flex: 1; min-width: 0; appearance: none; border: 0; outline: 0; background: transparent; font-size: 16px; color: #29232a; }
+.welcome-chevron { font-size: 24px; color: #8e6379; pointer-events: none; }
+#welcomeDial { font-size: 16px; font-weight: 700; color: #c83d75; white-space: nowrap; border-right: 1px solid #eddde5; padding-right: 14px; }
+#welcomePhone { flex: 1; width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; }
+#welcomeAddress { width: 100%; min-height: 77px; resize: vertical; border: 1.5px solid #ead9e1; border-radius: 15px; padding: 14px 17px; outline: 0; font-size: 15px; }
+.welcome-select-wrap:focus-within, .welcome-phone-wrap:focus-within, #welcomeAddress:focus { border-color: #d93675; }
+.welcome-continue { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 12px; width: 100%; min-height: 56px; border: 0; border-radius: 15px; background: #d93675; color: white; font-weight: 750; font-size: 16px; }
+.welcome-continue span { font-size: 25px; }
+.welcome-disclaimer { margin: 6px 0 0; text-align: center; font-size: 11px; line-height: 1.5; color: #97838d; }
+@media (max-width: 390px) {
+    .welcome-showcase { padding-top: 12px; }
+    .welcome-track { margin-bottom: 9px; }
+    .welcome-marquee-set { gap: 9px; padding-right: 9px; }
+    .welcome-product-tile { border-radius: 21px; }
+    .welcome-form-area { margin-top: 12px; }
+    .welcome-logo { width: 76px; height: 76px; margin-bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .welcome-track { animation: none; }
+}
+
+/* تحديث شاشة الترحيب: ثلاثة صفوف أصغر بدون خانة العنوان */
+.welcome-showcase { padding: 12px 0 3px; }
+.welcome-track { margin-bottom: 8px; animation-duration: 31s; }
+.welcome-track-second { animation-direction: reverse; animation-duration: 37s; }
+.welcome-track-third { animation-direction: normal; animation-duration: 34s; }
+.welcome-marquee-set { gap: 9px; padding-right: 9px; }
+.welcome-product-tile {
+    width: clamp(82px, 23vw, 124px);
+    height: clamp(82px, 23vw, 124px);
+    border-radius: 20px;
+    background: #e8f3fc;
+}
+.welcome-product-tile img { padding: 6px; }
+.welcome-form-area { margin-top: 12px; }
+@media (max-width: 390px) {
+    .welcome-product-tile { width: 22vw; height: 22vw; border-radius: 17px; }
+    .welcome-track { margin-bottom: 7px; }
+    .welcome-marquee-set { gap: 7px; padding-right: 7px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .welcome-track { animation: none; }
+}
+
+
+/* شاشة البداية: كل المحتوى ضمن ارتفاع شاشة الموبايل */
+.country-screen:not(.hidden) {
+    min-height: 100svh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: max(5px, env(safe-area-inset-top)) 0 max(5px, env(safe-area-inset-bottom));
+}
+/* ثلاث صفوف متحركة أصغر حتى يبقى النموذج ظاهراً */
+.country-screen .welcome-showcase {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 0 0 3px;
+}
+.country-screen .welcome-track { margin-bottom: clamp(3px, .65dvh, 7px); }
+.country-screen .welcome-marquee-set { gap: 7px; padding-right: 7px; }
+.country-screen .welcome-product-tile {
+    width: clamp(58px, min(19vw, 10.8dvh), 94px);
+    height: clamp(58px, min(19vw, 10.8dvh), 94px);
+    border-radius: 16px;
+}
+.country-screen .welcome-product-tile img { padding: 4px; }
+/* ضغط المسافات دون إخفاء أي حقل */
+.country-screen .welcome-form-area {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: min(calc(100% - 38px), 440px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4px 0;
+}
+.country-screen .welcome-logo {
+    flex: 0 0 auto;
+    width: clamp(52px, 9dvh, 72px);
+    height: clamp(52px, 9dvh, 72px);
+    margin: 0 auto clamp(5px, 1.1dvh, 11px);
+    border-radius: 17px;
+}
+.country-screen .welcome-form-area h1 {
+    font-size: clamp(18px, 4.7vw, 23px);
+    line-height: 1.2;
+    margin: 0 0 3px;
+}
+.country-screen .welcome-subtitle {
+    font-size: 11px;
+    line-height: 1.35;
+    margin: 0 0 clamp(8px, 1.8dvh, 17px);
+}
+.country-screen .welcome-form { gap: clamp(4px, .9dvh, 8px); }
+.country-screen .welcome-form label { margin-top: 1px; font-size: 11px; }
+.country-screen .welcome-select-wrap,
+.country-screen .welcome-phone-wrap {
+    min-height: clamp(40px, 6.3dvh, 52px);
+    padding: 0 13px;
+    border-radius: 13px;
+}
+.country-screen #welcomeCountry,
+.country-screen #welcomePhone,
+.country-screen #welcomeDial { font-size: 14px; }
+.country-screen #welcomeFlag { font-size: 20px; }
+.country-screen .welcome-continue {
+    min-height: clamp(41px, 6.3dvh, 52px);
+    margin-top: clamp(5px, 1dvh, 9px);
+    border-radius: 12px;
+    font-size: 14px;
+}
+.country-screen .welcome-disclaimer {
+    margin: 2px 0 0;
+    font-size: 10px;
+    line-height: 1.3;
+}
+/* الشاشات القصيرة جداً: تصغير إضافي */
+@media (max-height: 650px) {
+    .country-screen .welcome-product-tile {
+        width: clamp(48px, 9dvh, 66px);
+        height: clamp(48px, 9dvh, 66px);
+    }
+    .country-screen .welcome-logo { width: 48px; height: 48px; }
+    .country-screen .welcome-subtitle { margin-bottom: 5px; }
+    .country-screen .welcome-form { gap: 3px; }
+    .country-screen .welcome-disclaimer { font-size: 9px; }
+}
+/* عند تكبير الخط أو ظهور لوحة المفاتيح يمكن التمرير بدلاً من قص المحتوى */
+@media (max-height: 480px) {
+    .country-screen:not(.hidden) { overflow-y: auto; height: auto; min-height: 100dvh; }
+}
+
+
+/* شاشة البداية: قياسات أقرب للصورة المرجعية، مع خانة المدينة */
+.country-screen:not(.hidden) {
+    height: auto;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 12px 0 max(16px, env(safe-area-inset-bottom));
+}
+.country-screen .welcome-showcase {
+    flex: none;
+    padding: 8px 0 0;
+}
+.country-screen .welcome-track {
+    margin-bottom: 12px;
+}
+.country-screen .welcome-marquee-set {
+    gap: 12px;
+    padding-right: 12px;
+}
+.country-screen .welcome-product-tile {
+    width: clamp(104px, 29vw, 175px);
+    height: clamp(104px, 29vw, 175px);
+    border-radius: 24px;
+    background: #e5f2fc;
+}
+.country-screen .welcome-product-tile img { padding: 9px; }
+.country-screen .welcome-form-area {
+    flex: none;
+    width: min(calc(100% - 48px), 460px);
+    margin: clamp(20px, 4dvh, 40px) auto 20px;
+    display: block;
+    padding: 0;
+}
+.country-screen .welcome-logo {
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 18px;
+    border-radius: 22px;
+}
+.country-screen .welcome-form-area h1 {
+    font-size: clamp(21px, 5.6vw, 27px);
+    margin: 0 0 7px;
+}
+.country-screen .welcome-subtitle {
+    font-size: 12px;
+    margin: 0 0 27px;
+}
+.country-screen .welcome-form { gap: 10px; }
+.country-screen .welcome-form label { font-size: 12px; margin-top: 5px; }
+.country-screen .welcome-select-wrap,
+.country-screen .welcome-phone-wrap {
+    min-height: 56px;
+    padding: 0 16px;
+    border-radius: 16px;
+}
+.country-screen #welcomeCountry,
+.country-screen #welcomePhone,
+.country-screen #welcomeDial { font-size: 15px; }
+.country-screen .welcome-continue {
+    min-height: 55px;
+    margin-top: 16px;
+    border-radius: 15px;
+    font-size: 16px;
+}
+.country-screen .welcome-disclaimer { font-size: 10px; line-height: 1.5; margin-top: 10px; }
+@media (max-width: 380px) {
+    .country-screen .welcome-product-tile { width: 29vw; height: 29vw; }
+    .country-screen .welcome-form-area { width: calc(100% - 38px); margin-top: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .country-screen .welcome-track { animation: none; }
+}
+
+/* إخفاء عناوين حقول شاشة الترحيب */
+.country-screen label {
+    display: none;
+}
+
+
+
+/* شاشة الترحيب: كل العناصر ضمن ارتفاع شاشة الهاتف */
+@media (max-width: 600px) {
+  .country-screen:not(.hidden) {
+    height: 100dvh;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto; /* احتياط للشاشات القصيرة جداً أو تكبير الخط */
+    padding: max(5px, env(safe-area-inset-top)) 0 max(7px, env(safe-area-inset-bottom));
+    justify-content: flex-start;
+  }
+  .country-screen .welcome-showcase { padding: 0; flex: 0 0 auto; }
+  .country-screen .welcome-track { margin-bottom: 5px; }
+  .country-screen .welcome-marquee-set { gap: 7px; padding-right: 7px; }
+  .country-screen .welcome-product-tile {
+    width: clamp(65px, min(26vw, 12.3dvh), 112px);
+    height: clamp(65px, min(26vw, 12.3dvh), 112px);
+    border-radius: 18px;
+  }
+  .country-screen .welcome-product-tile img { padding: 5px; }
+  .country-screen .welcome-form-area {
+    width: min(calc(100% - 42px), 460px);
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0 auto;
+    padding: clamp(8px, 1.5dvh, 16px) 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .country-screen .welcome-logo {
+    width: clamp(52px, 9dvh, 76px);
+    height: clamp(52px, 9dvh, 76px);
+    margin: 0 auto clamp(7px, 1.3dvh, 12px);
+    border-radius: 17px;
+  }
+  .country-screen .welcome-form-area h1 {
+    font-size: clamp(19px, 5.2vw, 24px);
+    margin: 0 0 4px;
+  }
+  .country-screen .welcome-subtitle {
+    font-size: 11px;
+    margin: 0 0 clamp(10px, 2dvh, 20px);
+  }
+  .country-screen .welcome-form { gap: clamp(8px, 1.2dvh, 12px); }
+  .country-screen .welcome-select-wrap,
+  .country-screen .welcome-phone-wrap {
+    min-height: clamp(43px, 6.8dvh, 53px);
+    padding: 0 14px;
+    border-radius: 15px;
+  }
+  .country-screen .welcome-continue {
+    min-height: clamp(43px, 6.8dvh, 53px);
+    margin-top: 4px;
+    border-radius: 14px;
+  }
+  .country-screen .welcome-disclaimer {
+    margin: 4px 0 0;
+    font-size: 9px;
+    line-height: 1.35;
+  }
+}

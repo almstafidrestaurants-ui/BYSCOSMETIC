@@ -1,10 +1,10 @@
 // بيانات الدول - كل دولة سعرها مستقل من catalog.js
 const COUNTRIES = [
-    { code: "LB", name: "Lebanon", flag: "🇱🇧", currency: "USD" },
-    { code: "SY", name: "Syria", flag: "🇸🇾", currency: "SYP" },
-    { code: "JO", name: "Jordan", flag: "🇯🇴", currency: "JOD" },
-    { code: "KW", name: "Kuwait", flag: "🇰🇼", currency: "KWD" },
-    { code: "EG", name: "Egypt", flag: "🇪🇬", currency: "EGP" }
+    { code: "LB", name: "Lebanon", flag: "🇱🇧", currency: "USD", dial: "+961" },
+    { code: "SY", name: "Syria", flag: "🇸🇾", currency: "SYP", dial: "+963" },
+    { code: "JO", name: "Jordan", flag: "🇯🇴", currency: "JOD", dial: "+962" },
+    { code: "KW", name: "Kuwait", flag: "🇰🇼", currency: "KWD", dial: "+965" },
+    { code: "EG", name: "Egypt", flag: "🇪🇬", currency: "EGP", dial: "+20" }
 ];
 
 // التصنيفات - يمكنك تغيير صورة كل تصنيف من المجلد images/categories
@@ -104,17 +104,40 @@ function showToast(message) {
     toastTimeout = setTimeout(() => toast.classList.remove("visible"), 2300);
 }
 
-// شاشة اختيار البلد، وتظهر أول مرة أو عند تغيير البلد
+// صور المنتجات تتحرك بصفّين بشكل مستمر بشاشة الترحيب
+function renderWelcomeShowcase() {
+    const source = PRODUCTS.filter((product) => product.image);
+    const chosen = source.length ? source : PRODUCTS;
+    // تقسيم صور المنتجات على ثلاثة صفوف متحركة
+    const tiles = chosen.slice(0, 36);
+    const renderTile = (product) => `
+        <div class="welcome-product-tile">
+            <img src="${escapeHtml(imageOf(product))}"
+                 data-fallback="${escapeHtml(sampleOf(product))}"
+                 alt="${escapeHtml(product.name)}" loading="eager">
+        </div>`;
+    const rows = [[], [], []];
+    tiles.forEach((product, index) => rows[index % 3].push(product));
+    ["#welcomeTrackOne", "#welcomeTrackTwo", "#welcomeTrackThree"].forEach((selector, index) => {
+        const items = rows[index].map(renderTile).join("");
+        // تكرار المجموعة يضمن حركة متواصلة بدون فراغات
+        $(selector).innerHTML = `<div class="welcome-marquee-set">${items}</div><div class="welcome-marquee-set" aria-hidden="true">${items}</div>`;
+    });
+}
+
+// تحديث علم البلد ورمز الاتصال فور تغيير القائمة
+function updateWelcomeCountry(code) {
+    const selected = COUNTRIES.find((country) => country.code === code) || COUNTRIES[0];
+    $("#welcomeFlag").textContent = selected.flag;
+    $("#welcomeDial").textContent = selected.dial;
+    $("#welcomeCountry").value = selected.code;
+}
+
+// شاشة الدخول تظهر أول زيارة، أو عند طلب تغيير البلد من المتجر
 function showCountryScreen() {
     $("#app").classList.add("hidden");
     $("#countryScreen").classList.remove("hidden");
-    $("#countryOptions").innerHTML = COUNTRIES.map((country) => `
-        <button class="country-choice" data-country="${country.code}">
-            <span class="flag">${country.flag}</span>
-            <span>${country.name}</span>
-            <span class="arrow">›</span>
-        </button>
-    `).join("");
+    updateWelcomeCountry(countryCode || "LB");
 }
 
 function selectCountry(code) {
@@ -122,7 +145,7 @@ function selectCountry(code) {
     const changed = countryCode && countryCode !== code;
     countryCode = code;
     save("bys-country", code);
-    // تفريغ السلة عند تغيير البلد حتى لا تبقى أسعار البلد السابق
+    // تفريغ السلة عند تغيير البلد لأن الأسعار تختلف
     if (changed) {
         cart = {};
         save("bys-cart", cart);
@@ -134,6 +157,24 @@ function selectCountry(code) {
     renderAll();
     showView("home");
 }
+
+// حفظ رقم الهاتف محلياً فقط؛ لا يوجد إرسال SMS أو إنشاء حساب
+$("#welcomeCountry").innerHTML = COUNTRIES.map((country) =>
+    `<option value="${country.code}">${country.name}</option>`
+).join("");
+$("#welcomeCountry").addEventListener("change", (event) => updateWelcomeCountry(event.target.value));
+$("#welcomePhone").value = loadSaved("bys-phone-local", "");
+$("#welcomeForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const code = $("#welcomeCountry").value;
+    const phone = $("#welcomePhone").value.trim();
+    if (!phone) return;
+    // نخزّن رمز النداء منفصلاً عن الرقم كي لا يتكرر عند تغيير البلد
+    save("bys-phone-local", phone);
+    save("bys-phone-dial", COUNTRIES.find((country) => country.code === code).dial);
+    selectCountry(code);
+});
+renderWelcomeShowcase();
 
 // رسم صورة تصنيف قابلة للضغط
 function categoryCard(category) {
@@ -482,7 +523,7 @@ heroSlider.addEventListener("touchend", (event) => {
 createHeroSlider();
 
 // بدء التطبيق
-if (countryCode && COUNTRIES.some((country) => country.code === countryCode)) {
+if (countryCode && loadSaved("bys-phone-local", "")) {
     selectCountry(countryCode);
 } else {
     showCountryScreen();
