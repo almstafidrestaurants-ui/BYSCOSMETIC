@@ -1,5 +1,5 @@
 // تخزين ملفات الواجهة الأساسية فقط - بدون حفظ بيانات الطلبات الحساسة
-const CACHE_NAME = "bys-welcome-v5-no-city";
+const CACHE_NAME = "bys-welcome-v6-compact";
 const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./catalog.js", "./manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
