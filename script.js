@@ -345,20 +345,59 @@ renderWelcomeShowcase();
 
 // رسم صورة تصنيف قابلة للضغط
 function categoryCard(category) {
-    return `<button class="category-item" data-category="${escapeHtml(category.name)}">
-        <img src="${category.image}" alt="${escapeHtml(category.name)}" loading="lazy">
-        <span>${escapeHtml(category.name)}</span>
+    const count = PRODUCTS.filter(product => categoryOf(product) === category.name).length;
+    return `<button class="category-item" data-category="${escapeHtml(category.name)}" aria-label="Shop ${escapeHtml(category.name)}">
+        <span class="category-art"><img src="${escapeHtml(category.image)}" alt="" loading="lazy"></span>
+        <span class="category-name">${escapeHtml(category.name)}</span>
+        <small>${count} ${count === 1 ? "product" : "products"}</small>
     </button>`;
 }
 
-// رسم بطاقة المنتج مع المفضلة وزر إضافة السلة
-function productCard(product) {
+// مجموعات ديناميكية من المنتجات الموجودة، بلا اختراع منتجات جديدة
+const HOME_COLLECTIONS = [
+    { title: "Skincare Essentials", subtitle: "Your daily glow ritual", category: "Skincare", accent: "rose" },
+    { title: "Body Care Favorites", subtitle: "A little luxury, every day", category: "Body Care", accent: "peach" },
+    { title: "Hair Care Rituals", subtitle: "Nourish every strand", category: "Hair Care", accent: "lavender" },
+    { title: "Fragrance & Perfumes", subtitle: "Find your signature scent", category: "Perfumes", accent: "rose" },
+    { title: "Bath & Body Moments", subtitle: "Make self-care special", category: "Bath & Body", accent: "peach" },
+    { title: "Sun Care Essentials", subtitle: "Care for brighter days", category: "Sun Care", accent: "lavender" },
+    { title: "Feminine Care", subtitle: "Gentle everyday essentials", category: "Feminine Care", accent: "rose" },
+    { title: "Beauty Accessories", subtitle: "The finishing touches", category: "Accessories", accent: "peach" }
+];
+// كل مجموعة بالصفحة الرئيسية إلها تركيبة عرض مختلفة
+function collectionMarkup(collection, index = 0) {
+    const items = PRODUCTS.filter(product => categoryOf(product) === collection.category);
+    if (!items.length) return "";
+    const image = CATEGORIES.find(item => item.name === collection.category)?.image || "";
+    const layout = ["story", "spotlight", "runway", "mosaic"][index % 4];
+    const title = escapeHtml(collection.title);
+    const category = escapeHtml(collection.category);
+    const photo = escapeHtml(image);
+    const cards = items.slice(0, 8).map(productCard).join("");
+    const action = `<button class="lux-view-all" data-category="${category}">View All <span aria-hidden="true">↗</span></button>`;
+    const heading = `<div class="lux-collection-head"><div><span class="lux-eyebrow">THE BYS EDIT · ${category}</span><h2>${title}</h2><p>${escapeHtml(collection.subtitle)}</p></div>${action}</div>`;
+    const poster = `<button class="boutique-editorial" data-category="${category}" aria-label="Explore ${category}"><img src="${photo}" alt="" loading="lazy"><span class="boutique-editorial-copy"><small>THE BEAUTY EDIT</small><strong>${category}</strong><span>Discover collection ↗</span></span></button>`;
+    const rail = `<div class="lux-rail product-grid" tabindex="0" aria-label="Swipe to explore ${title}">${cards}</div>`;
+    let content;
+    if (layout === "story") content = `<div class="boutique-feature">${poster}${rail}</div>`;
+    else if (layout === "spotlight") content = `<div class="boutique-spotlight">${poster}<div class="spotlight-products">${items.slice(0, 4).map(productCard).join("")}</div></div>`;
+    else if (layout === "runway") content = `<div class="boutique-runway"><div class="runway-intro">${poster}<span>YOUR DAILY RITUAL <b>✦</b></span></div>${rail}</div>`;
+    else content = `<div class="boutique-mosaic"><div class="mosaic-products">${items.slice(0, 4).map(productCard).join("")}</div>${poster}</div>`;
+    return `<section class="lux-collection lux-${collection.accent} layout-${layout}" aria-label="${title}">${heading}${content}</section>`;
+}
+
+// بطاقة بوتيك: الصورة والاسم والسعر بأماكن ثابتة
+function productCard(product, index = 0) {
+    // أربعة تصاميم متناوبة للمنتجات، مع نفس الأسعار والوظائف
+    const cardStyle = "gallery";
     const available = priceOf(product) !== null;
     const liked = favorites.includes(product.id);
-    return `<article class="product-card">
+    return `<article class="product-card card-${cardStyle}">
         <div class="product-photo">
-            <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}" loading="lazy">
-            <button class="favorite ${liked ? "saved" : ""}" data-favorite="${escapeHtml(product.id)}" aria-label="Toggle favorite">${liked ? "♥" : "♡"}</button>
+            <button class="product-image-link" data-product="${escapeHtml(product.id)}" aria-label="View ${escapeHtml(product.name)}">
+                <img src="${escapeHtml(imageOf(product))}" data-fallback="${escapeHtml(sampleOf(product))}" alt="${escapeHtml(product.name)}" loading="lazy">
+            </button>
+            <button class="favorite ${liked ? "saved" : ""}" data-favorite="${escapeHtml(product.id)}" aria-label="${liked ? "Remove from favorites" : "Add to favorites"}">${liked ? "♥" : "♡"}</button>
         </div>
         <div class="product-body">
             <span class="product-brand">${escapeHtml(product.brand)}</span>
@@ -366,14 +405,14 @@ function productCard(product) {
             <p class="product-unit">${escapeHtml(product.unit)}</p>
             <div class="product-bottom">
                 <span class="${available ? "price" : "unavailable"}">${formatPrice(product)}</span>
-                <button class="add-cart" data-add="${escapeHtml(product.id)}" aria-label="Add to cart" ${available ? "" : "disabled"}>+</button>
+                <button class="add-cart" data-add="${escapeHtml(product.id)}" aria-label="Add ${escapeHtml(product.name)} to cart" ${available ? "" : "disabled"}><span aria-hidden="true">+</span></button>
             </div>
         </div>
     </article>`;
 }
 
 function renderHome() {
-    $("#homeCategories").innerHTML = CATEGORIES.map(categoryCard).join("");
+    $("#homeCategories").innerHTML = CATEGORIES.slice(0, 8).map(categoryCard).join("");
     $("#allCategories").innerHTML = CATEGORIES.map(categoryCard).join("");
    
 $("#needsGrid").innerHTML = NEEDS.map((need) => `
@@ -387,9 +426,11 @@ if (window.lucide) {
     lucide.createIcons();
 }
 
-    // قوائم العرض مؤقتة حتى يحدد المدير الأكثر مبيعاً والجديد فعلاً
-    $("#bestProducts").innerHTML = PRODUCTS.slice(0, 4).map(productCard).join("");
-    $("#newProducts").innerHTML = PRODUCTS.slice(-4).map(productCard).join("");
+    // مجموعات منزلقة؛ Bestsellers و New Arrivals مختارات عرض وليست إحصاءات مبيعات حقيقية
+    $("#bestProducts").innerHTML = PRODUCTS.slice(0, 10).map(productCard).join("");
+    $("#newProducts").innerHTML = PRODUCTS.slice(-10).reverse().map(productCard).join("");
+    const collections = $("#luxuryCollections");
+    if (collections) collections.innerHTML = HOME_COLLECTIONS.map(collectionMarkup).join("");
     const brands = [...new Set(PRODUCTS.map((product) => product.brand))];
     $("#homeBrands").innerHTML = brands.map((brand) => `<button class="brand-tile" data-brand="${escapeHtml(brand)}">${escapeHtml(brand)}</button>`).join("");
     $("#allBrands").innerHTML = brands.map((brand) => `<button data-brand="${escapeHtml(brand)}">${escapeHtml(brand)}</button>`).join("");
@@ -439,11 +480,32 @@ function renderCart() {
         <button class="checkout" id="checkoutButton">Checkout — Coming Soon</button>` : "";
 }
 
+// حركة ظهور خفيفة للمنتجات والأقسام عند النزول
+const bysRevealObserver = ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+    ? new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: 0.07, rootMargin: "0px 0px 35px 0px" }) : null;
+
+function animateStoreCards() {
+    if (!bysRevealObserver) return;
+    document.querySelectorAll(".view:not(.hidden) .product-card, .view:not(.hidden) .category-item, .view:not(.hidden) .brand-tile").forEach((card, index) => {
+        if (card.classList.contains("bys-reveal")) return;
+        card.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 55}ms`);
+        card.classList.add("bys-reveal");
+        bysRevealObserver.observe(card);
+    });
+}
+
 function renderAll() {
     renderHome();
     renderProducts();
     renderFavorites();
     renderCart();
+    requestAnimationFrame(animateStoreCards);
 }
 
 function showView(name) {
@@ -452,6 +514,7 @@ function showView(name) {
     const target = $("#" + name + "View");
     if (!target) return;
     target.classList.remove("hidden");
+    requestAnimationFrame(animateStoreCards);
     document.querySelectorAll(".bottom-nav button").forEach((button) => {
         button.classList.toggle("active", button.dataset.view === name);
     });

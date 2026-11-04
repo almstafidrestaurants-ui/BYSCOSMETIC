@@ -1,5 +1,5 @@
 // تخزين ملفات الواجهة الأساسية فقط - بدون حفظ بيانات الطلبات الحساسة
-const CACHE_NAME = "bys-role-v1";
+const CACHE_NAME = "bys-boutique-editorial-v4";
 const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./catalog.js", "./manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {

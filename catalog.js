@@ -531,10 +531,10 @@ const PRODUCTS = [
     {
         "id": "MA-Body Serum-White",
         "brand": "Magic Aura",
-        "name": "Magic Aura Body Serum White 50 ml",
+        "name": "Magic Aura Body Serum White ",
         "category": "Body Care",
-        "unit": "قطعة 50 ml",
-        "image": "images/MA-Body Serum-White.png",
+        "unit": " 50 ml",
+        "image": "images/Magic Aura Body Serum White.png",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -681,10 +681,10 @@ const PRODUCTS = [
     {
         "id": "LU-Aker-Mask-100",
         "brand": "Luméra",
-        "name": "Luméra Aker Fassi & Argan Mask 100 ml",
+        "name": "Luméra Aker Fassi & Argan Mask ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/LU-Aker-Mask-100.png",
+        "unit": " 100 ml",
+        "image": "images/AKER FASSI & ARGAN MASK.png",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -711,10 +711,10 @@ const PRODUCTS = [
     {
         "id": "LU-Aker-Scrub-100",
         "brand": "Luméra",
-        "name": "Luméra Aker Fassi & Argan Scrub 100 ml",
+        "name": "Luméra Aker Fassi & Argan Scrub  ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/LU-Aker-Scrub-100.png",
+        "unit": " 100 ml",
+        "image": "images/AKER FASSI & ARGAN SCRUB.png",
         "prices": {
             "LB": 21.0,
             "SY": null,
@@ -741,10 +741,10 @@ const PRODUCTS = [
     {
         "id": "LU-Aker-Soap-100",
         "brand": "Luméra",
-        "name": "Luméra Aker Fassi Soap 100 ml",
+        "name": "Luméra Aker Fassi Soap  ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/LU-Aker-Soap-100.png",
+        "unit": " 100 ml",
+        "image": "images/AKER FASSI SOAP.png",
         "prices": {
             "LB": 20.0,
             "SY": null,
