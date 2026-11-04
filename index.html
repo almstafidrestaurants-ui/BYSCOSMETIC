@@ -42,6 +42,29 @@
         </div>
     </section>
 
+    <!-- شاشة اختيار نوع المستخدم: تظهر مرة واحدة -->
+    <section class="role-screen hidden" id="roleScreen" aria-labelledby="roleTitle">
+        <div class="role-panel">
+            <img class="role-logo" src="images/LOGO.png" alt="BYS Cosmetics">
+            <h1 id="roleTitle">How will you shop with us?</h1>
+            <p>Choose your account type to continue</p>
+            <div class="role-options">
+                <button type="button" class="role-option" data-select-role="customer">
+                    <span class="role-icon"><i data-lucide="shopping-bag"></i></span>
+                    <strong>Customer</strong>
+                    <small>Shop your favorite beauty products</small>
+                </button>
+                <button type="button" class="role-option" data-select-role="consultant">
+                    <span class="role-icon"><i data-lucide="badge-check"></i></span>
+                    <strong>Consultant</strong>
+                    <small>Explore products as a beauty consultant</small>
+                </button>
+            </div>
+            <button type="button" class="role-continue" id="roleContinue" disabled>Continue ›</button>
+            <p class="role-note">You only need to choose once.</p>
+        </div>
+    </section>
+
     <!-- واجهة المتجر الأساسية -->
     <div class="app hidden" id="app">
         <!-- رأس المتجر: شعار على اليسار وأزرار على اليمين مثل التطبيق المرجعي -->

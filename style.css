@@ -1200,22 +1200,20 @@ main { padding: 17px 22px 35px; }
   .country-screen .welcome-form { gap: 6px; }
 }
 
-
-
-/* المسافة العمودية بين سطور المنتجات الثلاثة */
-.country-screen .welcome-track {
-    margin-bottom: 12px;
-}
-
-/* إزالة المسافة الزائدة بعد آخر سطر */
-.country-screen .welcome-track:last-child {
-    margin-bottom: 0;
-}
-
-/* رفع الشعار والعنوان والوصف فقط */
-.country-screen .welcome-logo,
-.country-screen .welcome-form-area h1,
-.country-screen .welcome-subtitle {
-    position: relative;
-    top: -12px;
-}
+/* شاشة اختيار Customer أو Consultant */
+.role-screen { min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px 18px; background: linear-gradient(160deg,#fff5f9,#fff 65%); }
+.role-screen.hidden { display: none !important; }
+.role-panel { width: min(100%, 440px); text-align: center; }
+.role-logo { display: block; width: 76px; height: 76px; object-fit: contain; margin: 0 auto 22px; border-radius: 20px; }
+.role-panel h1 { color: #732b49; font-size: clamp(21px,5.5vw,26px); margin: 0 0 8px; }
+.role-panel > p { color: #98667d; font-size: 13px; margin: 0 0 26px; }
+.role-options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.role-option { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 11px; min-height: 190px; padding: 17px 9px; border: 1.5px solid #efd1dd; border-radius: 20px; background: white; color: #752c4a; cursor: pointer; }
+.role-option.selected { border-color: #d83178; background: #fff0f6; box-shadow: 0 0 0 2px #f9dce9; }
+.role-icon { width: 55px; height: 55px; border-radius: 50%; display: grid; place-items: center; background: #fce5ee; color: #d83178; }
+.role-icon svg { width: 27px; height: 27px; }
+.role-option strong { font-size: 15px; }
+.role-option small { font-size: 11px; line-height: 1.45; color: #9c6b80; }
+.role-continue { width: 100%; min-height: 52px; margin-top: 25px; border: 0; border-radius: 15px; background: #df347b; color: white; font-weight: 700; font-size: 16px; cursor: pointer; }
+.role-continue:disabled { opacity: .45; cursor: not-allowed; }
+.role-panel .role-note { margin: 17px 0 0; font-size: 11px; }

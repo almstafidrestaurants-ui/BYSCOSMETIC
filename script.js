@@ -96,6 +96,44 @@ function sampleOf(product) {
     return "images/products/sample-" + number + ".webp";
 }
 
+function isValidPhone(phone, country) {
+
+    // تنظيف الرقم من الفراغات
+    const number = String(phone).replace(/\D/g, "");
+
+    // عدد الخانات المطلوب لكل بلد
+    const lengths = {
+        LB: 8,
+        SY: 9,
+        JO: 9,
+        KW: 8,
+        EG: 10
+    };
+
+    // رفض الرقم الناقص أو الزائد
+    if (number.length !== lengths[country]) {
+        return false;
+    }
+
+    // رفض الأرقام المتكررة مثل 11111111
+    if (/^(\d)\1+$/.test(number)) {
+        return false;
+    }
+
+    // رفض الأرقام المتسلسلة مثل 12345678
+    const ascending = "01234567890123456789";
+    const descending = "98765432109876543210";
+
+    if (
+        ascending.includes(number) ||
+        descending.includes(number)
+    ) {
+        return false;
+    }
+
+    return true;
+}
+
 function showToast(message) {
     const toast = $("#toast");
     toast.textContent = message;
@@ -137,8 +175,44 @@ function updateWelcomeCountry(code) {
 function showCountryScreen() {
     $("#app").classList.add("hidden");
     $("#countryScreen").classList.remove("hidden");
+    $("#roleScreen").classList.add("hidden");
     updateWelcomeCountry(countryCode || "LB");
 }
+
+// حفظ اختيار المستخدم محلياً على نفس الجهاز
+const ROLE_KEY = "bys-user-role";
+let selectedRole = null;
+let userRole = loadSaved(ROLE_KEY, null);
+
+function showRoleScreen() {
+    $("#countryScreen").classList.add("hidden");
+    $("#app").classList.add("hidden");
+    $("#roleScreen").classList.remove("hidden");
+    selectedRole = null;
+    document.querySelectorAll("[data-select-role]").forEach(button => button.classList.remove("selected"));
+    $("#roleContinue").disabled = true;
+    if (window.lucide) lucide.createIcons();
+}
+
+document.querySelectorAll("[data-select-role]").forEach(button => {
+    button.addEventListener("click", () => {
+        selectedRole = button.dataset.selectRole;
+        document.querySelectorAll("[data-select-role]").forEach(item => {
+            item.classList.toggle("selected", item === button);
+            item.setAttribute("aria-pressed", String(item === button));
+        });
+        $("#roleContinue").disabled = false;
+    });
+});
+
+$("#roleContinue").addEventListener("click", () => {
+    if (!selectedRole) return;
+    userRole = selectedRole;
+    save(ROLE_KEY, userRole);
+    $("#roleScreen").classList.add("hidden");
+    $("#app").classList.remove("hidden");
+    showView("home");
+});
 
 function selectCountry(code) {
     if (!COUNTRIES.some((country) => country.code === code)) return;
@@ -151,30 +225,123 @@ function selectCountry(code) {
         save("bys-cart", cart);
     }
     $("#countryScreen").classList.add("hidden");
+    $("#roleScreen").classList.add("hidden");
     $("#app").classList.remove("hidden");
     const selected = COUNTRIES.find((country) => country.code === code);
     $("#changeCountry").textContent = `${selected.flag} ${selected.name} ▾`;
     renderAll();
-    showView("home");
+    if (userRole === "customer" || userRole === "consultant") {
+        showView("home");
+    } else {
+        showRoleScreen();
+    }
 }
 
-// حفظ رقم الهاتف محلياً فقط؛ لا يوجد إرسال SMS أو إنشاء حساب
+/* التحقق من رقم الهاتف حسب البلد */
+function isValidPhone(phone, country) {
+
+    // إزالة الفراغات والرموز
+    const number = String(phone).replace(/\D/g, "");
+
+    // عدد الخانات حسب البلد
+    const lengths = {
+        LB: 8,
+        SY: 9,
+        JO: 9,
+        KW: 8,
+        EG: 10
+    };
+
+    // منع الأرقام الناقصة أو الزائدة
+    if (number.length !== lengths[country]) {
+        return false;
+    }
+
+    // منع الأرقام المكررة مثل 11111111
+    if (/^(\d)\1+$/.test(number)) {
+        return false;
+    }
+
+    // منع الأرقام المتسلسلة مثل 12345678
+    const ascending = "01234567890123456789";
+    const descending = "98765432109876543210";
+
+    if (
+        ascending.includes(number) ||
+        descending.includes(number)
+    ) {
+        return false;
+    }
+
+    return true;
+}
+
+
+// تعبئة قائمة البلدان
 $("#welcomeCountry").innerHTML = COUNTRIES.map((country) =>
     `<option value="${country.code}">${country.name}</option>`
 ).join("");
-$("#welcomeCountry").addEventListener("change", (event) => updateWelcomeCountry(event.target.value));
+
+// تحديث البلد ورمز الاتصال
+$("#welcomeCountry").addEventListener("change", (event) => {
+    updateWelcomeCountry(event.target.value);
+});
+
+// استرجاع رقم الهاتف المحفوظ
 $("#welcomePhone").value = loadSaved("bys-phone-local", "");
+
+$("#welcomePhone").addEventListener("input", () => {
+    const error = document.querySelector("#phoneError");
+    if (error) error.remove();
+});
+
+// عند الضغط على Continue
 $("#welcomeForm").addEventListener("submit", (event) => {
+
     event.preventDefault();
+
     const code = $("#welcomeCountry").value;
     const phone = $("#welcomePhone").value.trim();
-    if (!phone) return;
-    // نخزّن رمز النداء منفصلاً عن الرقم كي لا يتكرر عند تغيير البلد
+
+    // التحقق من الرقم قبل المتابعة
+ 
+if (!isValidPhone(phone, code)) {
+    let error = document.querySelector("#phoneError");
+
+    // إنشاء رسالة الخطأ تحت رقم الهاتف
+    if (!error) {
+        error = document.createElement("p");
+        error.id = "phoneError";
+        $("#welcomePhone").insertAdjacentElement("afterend", error);
+    }
+
+    error.textContent = "Please enter a valid phone number.";
+    error.style.color = "#e53935";
+    error.style.fontSize = "12px";
+    error.style.marginTop = "6px";
+
+    return;
+}
+
+// إخفاء الخطأ لما يكون الرقم صحيح
+const error = document.querySelector("#phoneError");
+if (error) error.remove();
+
+
+    // حفظ الرقم ورمز الاتصال
     save("bys-phone-local", phone);
-    save("bys-phone-dial", COUNTRIES.find((country) => country.code === code).dial);
+    save(
+        "bys-phone-dial",
+        COUNTRIES.find((country) => country.code === code).dial
+    );
+
+    // الانتقال للمرحلة التالية
     selectCountry(code);
 });
+
+// تشغيل صور المنتجات المتحركة
 renderWelcomeShowcase();
+
 
 // رسم صورة تصنيف قابلة للضغط
 function categoryCard(category) {
