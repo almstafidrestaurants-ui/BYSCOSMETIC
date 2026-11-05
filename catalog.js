@@ -38,7 +38,7 @@ const PRODUCTS = [
         "name": "Jomeer Anti Strech mark cream",
         "category": "Body Care",
         "unit": "  200 ml",
-        "image": "images/Jomeer Anti Strech mark cream.png",
+        "image": "images/products/Jomeer Anti Strech mark cream.png",
         "prices": {
             "LB": 41.0,
             "SY": null,
@@ -68,7 +68,7 @@ const PRODUCTS = [
         "name": " Jomeer Facial mud mask ",
         "category": "Skincare",
         "unit": "  100 ml",
-        "image": "images/products/Jomeer Facial mud mask .png",
+        "image": "images/products/Jomeer Facial mud mask.png",
         "prices": {
             "LB": 24.0,
             "SY": null,
@@ -95,10 +95,10 @@ const PRODUCTS = [
     {
         "id": "JO-Facial-moisturizing",
         "brand": "Jomeer",
-        "name": "Jomeer Facial moisturizing cream 50 ml",
+        "name": "Jomeer Facial moisturizing cream  ",
         "category": "Skincare",
-        "unit": "قطعة 50 ml",
-        "image": "images/JO-Facial-moisturizing.png",
+        "unit": " 50 ml",
+        "image": "images/products/Jomeer Facial moisturizing cream.png",
         "prices": {
             "LB": 35.0,
             "SY": null,
@@ -113,7 +113,7 @@ const PRODUCTS = [
         "name": "Jomeer Facial wash",
         "category": "Skincare",
         "unit": " 100 ml",
-        "image": "images/products/Jomeer Facial wash",
+        "image": "images/products/Jomeer Facial wash.png",
         "prices": {
             "LB": 24.0,
             "SY": null,
@@ -128,7 +128,7 @@ const PRODUCTS = [
         "name": " Jomeer Facial Tonic",
         "category": "Skincare",
         "unit": "  160 ml",
-        "image": "images/ Jomeer Facial Tonic.png",
+        "image": "images/products/Jomeer Facial Tonic.png",
         "prices": {
             "LB": 29.0,
             "SY": null,
@@ -158,7 +158,7 @@ const PRODUCTS = [
         "name": "Jomeer Intensive Day Cream",
         "category": "Skincare",
         "unit": "  50 ml",
-        "image": "images/Jomeer Intensive Day Cream.png",
+        "image": "images/products/Jomeer Intensive Day Cream.png",
         "prices": {
             "LB": 35.0,
             "SY": null,
@@ -324,7 +324,7 @@ const PRODUCTS = [
         "name": "Mega Mineral Beauty Serum ",
         "category": "Skincare",
         "unit": " 50 ml",
-        "image": "images/Mega Mineral Beauty Serum.png",
+        "image": "images/products/Mega Mineral Beauty Serum.png",
         "prices": {
             "LB": 65.0,
             "SY": null,
@@ -618,13 +618,14 @@ const PRODUCTS = [
             "EG": null
         }
     },
+
     {
         "id": "LU-Nila-Scrub-100",
         "brand": "Luméra",
-        "name": "Luméra Blue Nila & Argan Scrub 100 ml",
+        "name": "Luméra Blue Nila & Argan Scrub  ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/LU-Nila-Scrub-100.png",
+        "unit": " 100 ml",
+        "image": "images/products/Luméra Blue Nila & Argan Scrub 100.png",
         "prices": {
             "LB": 21.0,
             "SY": null,
@@ -651,10 +652,10 @@ const PRODUCTS = [
     {
         "id": "LU-Nila-Soap-100",
         "brand": "Luméra",
-        "name": "Luméra Blue Nila Soap 100 ml",
+        "name": "Luméra Blue Nila Soap  ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/LU-Nila-Soap-100.png",
+        "unit": " 100 ml",
+        "image": "images/products/Luméra Blue Nila Soap 100 ml.png",
         "prices": {
             "LB": 20.0,
             "SY": null,
@@ -681,10 +682,10 @@ const PRODUCTS = [
     {
         "id": "LU-Aker-Mask-100",
         "brand": "Luméra",
-        "name": "Luméra Aker Fassi & Argan Mask 100 ml",
+        "name": "Luméra Aker Fassi & Argan Mask ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/LU-Aker-Mask-100.png",
+        "unit": " 100 ml",
+        "image": "images/products/AKER FASSI & ARGAN MASK.png",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -711,10 +712,10 @@ const PRODUCTS = [
     {
         "id": "LU-Aker-Scrub-100",
         "brand": "Luméra",
-        "name": "Luméra Aker Fassi & Argan Scrub 100 ml",
+        "name": "Luméra Aker Fassi & Argan Scrub    ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/LU-Aker-Scrub-100.png",
+        "unit": " 100 ml",
+        "image": "images/products/AKER FASSI & ARGAN SCRUB.png",
         "prices": {
             "LB": 21.0,
             "SY": null,
@@ -741,10 +742,10 @@ const PRODUCTS = [
     {
         "id": "LU-Aker-Soap-100",
         "brand": "Luméra",
-        "name": "Luméra Aker Fassi Soap 100 ml",
+        "name": "Luméra Aker Fassi Soap   ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/LU-Aker-Soap-100.png",
+        "unit": " 100 ml",
+        "image": "images/products/AKER FASSI SOAP.png",
         "prices": {
             "LB": 20.0,
             "SY": null,
@@ -771,10 +772,10 @@ const PRODUCTS = [
     {
         "id": "LU-Shampoo-paraban",
         "brand": "Luméra",
-        "name": "Luméra Shampoo (paraban free ) 250 ml",
+        "name": "Luméra Shampoo (paraban free )    ",
         "category": "Hair Care",
-        "unit": "قطعة 250 ml",
-        "image": "images/LU-Shampoo-paraban.png",
+        "unit": " 250 ml",
+        "image": "images/products/Luméra Shampoo (paraban free ).png",
         "prices": {
             "LB": 15.0,
             "SY": null,
@@ -801,10 +802,10 @@ const PRODUCTS = [
     {
         "id": "LU-Conditione",
         "brand": "Luméra",
-        "name": "Luméra Conditioner (paraban free ) 250 ml",
+        "name": "Luméra Conditioner (paraban free )    ",
         "category": "Hair Care",
-        "unit": "قطعة 250 ml",
-        "image": "images/LU-Conditione.png",
+        "unit": " 250 ml",
+        "image": "images/products/Luméra Conditioner (paraban free ).png",
         "prices": {
             "LB": 13.0,
             "SY": null,
@@ -831,10 +832,10 @@ const PRODUCTS = [
     {
         "id": "LU-Intimate-Wash Foam",
         "brand": "Luméra",
-        "name": "Luméra Intimate Wash Foam 130 ml",
+        "name": "Luméra Intimate Wash Foam ",
         "category": "Feminine Care",
-        "unit": "قطعة 130 ml",
-        "image": "images/LU-Intimate-Wash Foam.png",
+        "unit": " 130 ml",
+        "image": "images/products/Luméra Intimate Wash Foam 130 ml.png",
         "prices": {
             "LB": 14.0,
             "SY": null,
@@ -846,10 +847,10 @@ const PRODUCTS = [
     {
         "id": "LU-Intimate-Wash Gel",
         "brand": "Luméra",
-        "name": "Luméra Intimate Hydrating Wash Gel  250 ml",
+        "name": "Luméra Intimate Hydrating Wash Gel  ",
         "category": "Feminine Care",
-        "unit": "قطعة 250 ml",
-        "image": "images/LU-Intimate-Wash Gel.png",
+        "unit": " 250 ml",
+        "image": "images/products/Luméra Intimate Hydrating Wash Gel.png",
         "prices": {
             "LB": 15.0,
             "SY": null,
@@ -863,8 +864,8 @@ const PRODUCTS = [
         "brand": "Loofah",
         "name": "Loofah - 1",
         "category": "Accessories",
-        "unit": "قطعة",
-        "image": "images/LO-LF-1.png",
+        "unit": "piece",
+        "image": "images/products/Loofah - 1.png",
         "prices": {
             "LB": 11.0,
             "SY": null,
@@ -878,8 +879,8 @@ const PRODUCTS = [
         "brand": "Loofah",
         "name": "Loofah - 2",
         "category": "Accessories",
-        "unit": "قطعة",
-        "image": "images/LO-LF-2.png",
+        "unit": "piece",
+        "image": "images/products/Loofah - 2.png",
         "prices": {
             "LB": 7.0,
             "SY": null,
@@ -891,10 +892,10 @@ const PRODUCTS = [
     {
         "id": "TS-Luméra",
         "brand": "Samples",
-        "name": "Morroco Samples Lumera",
+        "name": "Morroco Samples Lumera mask",
         "category": "Bath & Body",
-        "unit": "قطعة 10 ml",
-        "image": "images/TS-Luméra.png",
+        "unit": " 10 ml",
+        "image": "images/products/Morroco Samples Lumera mask.png",
         "prices": {
             "LB": 2.0,
             "SY": null,
@@ -906,10 +907,55 @@ const PRODUCTS = [
     {
         "id": "TS-Jomeer",
         "brand": "Samples",
-        "name": "Morroco Samples Jomeer 10 ml",
+        "name": "Morroco Samples Jomeer moisturizer ",
         "category": "Bath & Body",
-        "unit": "قطعة 10 ml",
-        "image": "images/TS-Jomeer.png",
+        "unit": " 10 ml",
+        "image": "images/products/Morroco Samples Jomeer 10 ml.png",
+        "prices": {
+            "LB": 2.0,
+            "SY": null,
+            "KW": null,
+            "JO": null,
+            "EG": null
+        }
+    },
+     {
+        "id": "TS-Jomeer",
+        "brand": "Samples",
+        "name": "Morroco Samples Jomeer Hand cream  ",
+        "category": "Bath & Body",
+        "unit": " 10 ml",
+        "image": "images/products/Morroco Samples Jomeer Hand cream.png",
+        "prices": {
+            "LB": 2.0,
+            "SY": null,
+            "KW": null,
+            "JO": null,
+            "EG": null
+        }
+    },
+     {
+        "id": "TS-Jomeer",
+        "brand": "Samples",
+        "name": "Morroco Samples Jomeer night cream  ",
+        "category": "Bath & Body",
+        "unit": " 10 ml",
+        "image": "images/products/Morroco Samples Jomeer night cream.png",
+        "prices": {
+            "LB": 2.0,
+            "SY": null,
+            "KW": null,
+            "JO": null,
+            "EG": null
+        }
+    },
+    {
+        "id": "TS-Jomeer",
+        "brand": "Samples",
+        "name": "Morroco Samples Jomeer Sunscreen  ",
+        "category": "Bath & Body",
+        "unit": " 10 ml",
+        "image": "images/products/Morroco Samples Jomeer Sunscreen.png",
         "prices": {
             "LB": 2.0,
             "SY": null,
@@ -921,10 +967,10 @@ const PRODUCTS = [
     {
         "id": "LR-Male-with sticker",
         "brand": "Loréve",
-        "name": "Loréve Male (with sticker) (kung of seduccion ) 60 ml",
+        "name": "Loréve Male (with sticker) (kung of seduccion )  ",
         "category": "Perfumes",
-        "unit": "قطعة 60 ml",
-        "image": "images/LR-Male-with sticker.png",
+        "unit": " 60 ml",
+        "image": "images/products/Loréve Male (with sticker) (kung of seduccion).png",
         "prices": {
             "LB": 9.99,
             "SY": null,
@@ -951,10 +997,10 @@ const PRODUCTS = [
     {
         "id": "LR-Unisex-with sticker",
         "brand": "Loréve",
-        "name": "Loréve Unisex (with sticker) (Thursday valentine ) 60 ml",
+        "name": "Loreve Unisex (with sticker)(Thursday valentine) ",
         "category": "Perfumes",
-        "unit": "قطعة 60 ml",
-        "image": "images/LR-Unisex-with sticker.png",
+        "unit": " 60 ml",
+        "image": "images/products/Loreve Unisex (with sticker)(Thursday valentine) 60 ml.png",
         "prices": {
             "LB": 9.99,
             "SY": null,
@@ -981,10 +1027,10 @@ const PRODUCTS = [
     {
         "id": "LR-Femme-with sticke",
         "brand": "Loréve",
-        "name": "Loréve Femme (with sticker) ( killer queen ) 60 ml",
+        "name": "Loréve Femme (with sticker) ( killer queen )  ",
         "category": "Perfumes",
-        "unit": "قطعة 60 ml",
-        "image": "images/LR-Femme-with sticke.png",
+        "unit": " 60 ml",
+        "image": "images/products/Loréve Femme (with sticker) (killerqueen ).png",
         "prices": {
             "LB": 9.99,
             "SY": null,
