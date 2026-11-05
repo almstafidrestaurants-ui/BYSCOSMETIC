@@ -147,12 +147,12 @@ function renderWelcomeShowcase() {
     const source = PRODUCTS.filter((product) => product.image);
     const chosen = source.length ? source : PRODUCTS;
     // تقسيم صور المنتجات على ثلاثة صفوف متحركة
-    const tiles = chosen.slice(0, 36);
+    const tiles = chosen.slice(0, 12);
     const renderTile = (product) => `
         <div class="welcome-product-tile">
             <img src="${escapeHtml(imageOf(product))}"
                  data-fallback="${escapeHtml(sampleOf(product))}"
-                 alt="${escapeHtml(product.name)}" loading="eager">
+                 alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" fetchpriority="low">
         </div>`;
     const rows = [[], [], []];
     tiles.forEach((product, index) => rows[index % 3].push(product));
@@ -346,7 +346,7 @@ renderWelcomeShowcase();
 // رسم صورة تصنيف قابلة للضغط
 function categoryCard(category) {
     return `<button class="category-item" data-category="${escapeHtml(category.name)}">
-        <img src="${category.image}" alt="${escapeHtml(category.name)}" loading="lazy">
+        <img src="${category.image}" alt="${escapeHtml(category.name)}" loading="lazy" decoding="async">
         <span>${escapeHtml(category.name)}</span>
     </button>`;
 }
@@ -357,7 +357,7 @@ function productCard(product) {
     const liked = favorites.includes(product.id);
     return `<article class="product-card">
         <div class="product-photo">
-            <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}" loading="lazy">
+            <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" fetchpriority="low">
             <button class="favorite ${liked ? "saved" : ""}" data-favorite="${escapeHtml(product.id)}" aria-label="Toggle favorite">${liked ? "♥" : "♡"}</button>
         </div>
         <div class="product-body">
@@ -465,7 +465,7 @@ function showProduct(id) {
     const product = PRODUCTS.find((item) => item.id === id);
     if (!product) return;
     $("#productDetail").innerHTML = `<div class="product-detail">
-        <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}">
+        <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}" decoding="async" fetchpriority="high">
         <div><p>${escapeHtml(product.brand)}</p><h2>${escapeHtml(product.name)}</h2>
         <p>${escapeHtml(product.unit)}</p><h2 class="price">${formatPrice(product)}</h2>
         <button class="checkout" data-add="${escapeHtml(product.id)}" ${priceOf(product) === null ? "disabled" : ""}>Add to Bag</button></div>
@@ -603,7 +603,7 @@ const heroSlider = $("#heroSlider");
 function createHeroSlider() {
     $("#heroSlides").innerHTML = HERO_BANNERS.map((banner, index) => `
         <article class="hero-slide ${index === 0 ? "is-active" : ""}" aria-hidden="${index !== 0}">
-            <img src="${banner.image}" alt="${escapeHtml(banner.category)} collection" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
+            <img src="${banner.image}" alt="${escapeHtml(banner.category)} collection" ${index === 0 ? 'fetchpriority="high" decoding="async"' : 'loading="lazy" decoding="async"'}>
             <div class="hero-shade"></div>
             <div class="hero-copy">
                 <p>${escapeHtml(banner.label)}</p>
