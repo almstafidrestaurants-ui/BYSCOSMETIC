@@ -1,5 +1,5 @@
 // Cache static files and images to make repeat visits faster.
-const CACHE_NAME = "bys-global-fast-v3";
+const CACHE_NAME = "bys-webp-v3";
 const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./catalog.js", "./manifest.webmanifest"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_FILES)));

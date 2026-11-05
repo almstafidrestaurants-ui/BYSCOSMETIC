@@ -93,7 +93,7 @@ function imageOf(product) {
 function sampleOf(product) {
     const category = categoryOf(product);
     const number = { Skincare: 1, "Body Care": 3, "Hair Care": 2, Perfumes: 2, "Feminine Care": 4, "Bath & Body": 3, "Sun Care": 4, Accessories: 2 }[category] || 1;
-    return "images/products/sample-" + number + ".webp";
+    return "images/products/placeholder.webp";
 }
 
 function isValidPhone(phone, country) {
