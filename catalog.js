@@ -905,7 +905,7 @@ const PRODUCTS = [
         }
     },
     {
-        "id": "TS-Jomeer",
+        "id": "TS-Jomeer11",
         "brand": "Samples",
         "name": "Morroco Samples Jomeer moisturizer ",
         "category": "Bath & Body",
@@ -920,7 +920,7 @@ const PRODUCTS = [
         }
     },
      {
-        "id": "TS-Jomeer",
+        "id": "TS-Jomeer12",
         "brand": "Samples",
         "name": "Morroco Samples Jomeer Hand cream  ",
         "category": "Bath & Body",
@@ -935,7 +935,7 @@ const PRODUCTS = [
         }
     },
      {
-        "id": "TS-Jomeer",
+        "id": "TS-Jomeer13",
         "brand": "Samples",
         "name": "Morroco Samples Jomeer night cream  ",
         "category": "Bath & Body",
@@ -950,7 +950,7 @@ const PRODUCTS = [
         }
     },
     {
-        "id": "TS-Jomeer",
+        "id": "TS-Jomeer14",
         "brand": "Samples",
         "name": "Morroco Samples Jomeer Sunscreen  ",
         "category": "Bath & Body",

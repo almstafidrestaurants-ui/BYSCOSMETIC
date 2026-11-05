@@ -43,6 +43,7 @@ let currentView = "home";
 let activeFilter = "All";
 let searchTerm = "";
 let toastTimeout;
+let cartFeedbackTimeout;
 
 const $ = (selector) => document.querySelector(selector);
 const save = (key, value) => localStorage.setItem(key, JSON.stringify(value));
@@ -352,10 +353,10 @@ function categoryCard(category) {
 }
 
 // رسم بطاقة المنتج مع المفضلة وزر إضافة السلة
-function productCard(product) {
+function productCard(product, showcase = false) {
     const available = priceOf(product) !== null;
     const liked = favorites.includes(product.id);
-    return `<article class="product-card">
+    return `<article class="product-card ${showcase ? "showcase-card" : ""}">
         <div class="product-photo">
             <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" fetchpriority="low">
             <button class="favorite ${liked ? "saved" : ""}" data-favorite="${escapeHtml(product.id)}" aria-label="Toggle favorite">${liked ? "♥" : "♡"}</button>
@@ -366,7 +367,7 @@ function productCard(product) {
             <p class="product-unit">${escapeHtml(product.unit)}</p>
             <div class="product-bottom">
                 <span class="${available ? "price" : "unavailable"}">${formatPrice(product)}</span>
-                <button class="add-cart" data-add="${escapeHtml(product.id)}" aria-label="Add to cart" ${available ? "" : "disabled"}>+</button>
+                <button class="add-cart" data-add="${escapeHtml(product.id)}" aria-label="Add to cart" ${available ? "" : "disabled"}>${showcase ? '<span class="cart-mini-icon" aria-hidden="true">🛒</span><span>Add to cart</span>' : "+"}</button>
             </div>
         </div>
     </article>`;
@@ -388,10 +389,15 @@ if (window.lucide) {
 }
 
     // قوائم العرض مؤقتة حتى يحدد المدير الأكثر مبيعاً والجديد فعلاً
-    $("#bestProducts").innerHTML = PRODUCTS.slice(0, 4).map(productCard).join("");
-    $("#newProducts").innerHTML = PRODUCTS.slice(-4).map(productCard).join("");
+    $("#bestProducts").innerHTML = PRODUCTS.slice(0, 8).map((product) => productCard(product, true)).join("");
+    $("#newProducts").innerHTML = PRODUCTS.slice(-8).map((product) => productCard(product, true)).join("");
     const brands = [...new Set(PRODUCTS.map((product) => product.brand))];
-    $("#homeBrands").innerHTML = brands.map((brand) => `<button class="brand-tile" data-brand="${escapeHtml(brand)}">${escapeHtml(brand)}</button>`).join("");
+    $("#homeBrands").innerHTML = brands.map((brand) => {
+        // Show a clean typographic brand mark until the verified official logo is supplied.
+        return `<button class="brand-tile" data-brand="${escapeHtml(brand)}" aria-label="Shop ${escapeHtml(brand)}">
+            <span class="brand-wordmark">${escapeHtml(brand)}</span>
+        </button>`;
+    }).join("");
     $("#allBrands").innerHTML = brands.map((brand) => `<button data-brand="${escapeHtml(brand)}">${escapeHtml(brand)}</button>`).join("");
 }
 
@@ -413,7 +419,16 @@ function renderProducts() {
     $("#allProducts").innerHTML = list.length ? list.map(productCard).join("") : `<p class="empty">No products found.</p>`;
 }
 
+function updateFavoritesBadge() {
+    const badge = $("#favoritesBadge");
+    if (!badge) return;
+    const count = new Set(favorites).size;
+    badge.textContent = count > 99 ? "99+" : String(count);
+    badge.hidden = count === 0;
+}
+
 function renderFavorites() {
+    updateFavoritesBadge();
     const list = PRODUCTS.filter((product) => favorites.includes(product.id));
     $("#favoriteProducts").innerHTML = list.length ? list.map(productCard).join("") : `<p class="empty">Your favorites will appear here ♡</p>`;
 }
@@ -423,6 +438,7 @@ function renderCart() {
     const count = items.reduce((sum, product) => sum + cart[product.id], 0);
     $("#cartBadge").textContent = count;
     $("#cartBadge").hidden = count === 0;
+    updateCartFeedbackBar();
     $("#cartItems").innerHTML = items.length ? items.map((product) => `
         <div class="cart-row">
             <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}">
@@ -479,7 +495,34 @@ function addToCart(id) {
     cart[id] = (cart[id] || 0) + 1;
     save("bys-cart", cart);
     renderCart();
-    showToast("Added to your shopping bag");
+    showCartFeedback();
+}
+
+// شريط السلة ثابت ما دامت السلة فيها منتجات؛ رسالة النجاح مؤقتة فقط.
+function updateCartFeedbackBar() {
+    const feedback = document.getElementById("cartFeedback");
+    if (!feedback) return;
+    const items = PRODUCTS.filter(product => cart[product.id] > 0);
+    const count = items.reduce((total, product) => total + cart[product.id], 0);
+    feedback.classList.toggle("visible", count > 0);
+    document.getElementById("cartFeedbackCount").textContent = `${count} ${count === 1 ? "item" : "items"}`;
+    document.getElementById("cartFeedbackImages").innerHTML = items.slice(-2).map(product =>
+        `<img src="${escapeHtml(imageOf(product))}" alt="" loading="lazy" onerror="this.onerror=null;this.src='images/products/placeholder.webp'">`
+    ).join("");
+    if (!count) {
+        clearTimeout(cartFeedbackTimeout);
+        feedback.classList.remove("show-success");
+    }
+}
+function showCartFeedback() {
+    const feedback = document.getElementById("cartFeedback");
+    if (!feedback) return;
+    updateCartFeedbackBar();
+    feedback.classList.remove("show-success");
+    void feedback.offsetWidth;
+    feedback.classList.add("show-success");
+    clearTimeout(cartFeedbackTimeout);
+    cartFeedbackTimeout = setTimeout(() => feedback.classList.remove("show-success"), 2300);
 }
 
 // إدارة النقرات بمستمع واحد، حتى العناصر المضافة ديناميكياً تشتغل
@@ -487,7 +530,9 @@ function addToCart(id) {
     const button = event.target.closest("button");
     if (!button) return;
     if (button.dataset.country) return selectCountry(button.dataset.country);
-    if (button.dataset.view) return showView(button.dataset.view);
+    if (button.dataset.view) {
+        return showView(button.dataset.view);
+    }
     if (button.dataset.add) return addToCart(button.dataset.add);
     if (button.dataset.product) return showProduct(button.dataset.product);
     if (button.dataset.favorite) {

@@ -89,6 +89,7 @@
                     <!-- كل أيقونة عبارة عن صورة مستقلة في مجلد images/ui -->
                     <button class="icon-button" data-view="favorites" aria-label="Favorites">
                         <img class="header-icon" src="images/ui/heart.svg" alt="">
+                        <span class="count favorites-count" id="favoritesBadge" hidden>0</span>
                     </button>
 
                     <button class="icon-button cart-head" data-view="cart" aria-label="Shopping cart">
@@ -198,6 +199,14 @@
 
 </nav>
 
+        <div id="cartFeedback" class="cart-feedback" aria-live="polite" aria-atomic="true">
+            <button type="button" class="cart-feedback-bar" data-view="cart" aria-label="View shopping cart">
+                <span class="cart-feedback-images" id="cartFeedbackImages"></span>
+                <span class="cart-feedback-copy"><strong>View cart</strong><small id="cartFeedbackCount">1 item</small></span>
+                <span class="cart-feedback-arrow" aria-hidden="true">›</span>
+            </button>
+            <div class="cart-feedback-success" role="status"><span aria-hidden="true">✓</span> Cart updated</div>
+        </div>
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js"></script>
