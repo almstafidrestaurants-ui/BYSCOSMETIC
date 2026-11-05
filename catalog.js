@@ -8,7 +8,7 @@ const PRODUCTS = [
         "name": "Jomeer Anti cellulite body mud ",
         "category": "Body Care",
         "unit": "  200 ml",
-        "image": "images/products/Jomeer Anti-cellulite body mud.png",
+        "image": "images/products/Jomeer Anti-cellulite body mud.webp",
         "prices": {
             "LB": 10.0,
             "SY": null,
@@ -23,7 +23,7 @@ const PRODUCTS = [
         "name": "Jomeer Anti Aging Cream",
         "category": "Skincare",
         "unit": "  30 ml",
-        "image": "images/products/Jomeer Anti Aging Cream.png",
+        "image": "images/products/Jomeer Anti Aging Cream.webp",
         "prices": {
             "LB": 32.0,
             "SY": null,
@@ -38,7 +38,7 @@ const PRODUCTS = [
         "name": "Jomeer Anti Strech mark cream",
         "category": "Body Care",
         "unit": "  200 ml",
-        "image": "images/products/Jomeer Anti Strech mark cream.png",
+        "image": "images/products/Jomeer Anti Strech mark cream.webp",
         "prices": {
             "LB": 41.0,
             "SY": null,
@@ -53,7 +53,7 @@ const PRODUCTS = [
         "name": "Jomeer Anti Celulitte Gel",
         "category": "Body Care",
         "unit": "  200 ml",
-        "image": "images/products/Jomeer Anti Celulitte Gel.png",
+        "image": "images/products/Jomeer Anti Celulitte Gel.webp",
         "prices": {
             "LB": 41.0,
             "SY": null,
@@ -68,7 +68,7 @@ const PRODUCTS = [
         "name": " Jomeer Facial mud mask ",
         "category": "Skincare",
         "unit": "  100 ml",
-        "image": "images/products/Jomeer Facial mud mask.png",
+        "image": "images/products/Jomeer Facial mud mask.webp",
         "prices": {
             "LB": 24.0,
             "SY": null,
@@ -83,7 +83,7 @@ const PRODUCTS = [
         "name": "Jomeer Facial scrub cream ",
         "category": "Skincare",
         "unit": " 50 ml",
-        "image": "images/products/Jomeer Facial scrub cream.png",
+        "image": "images/products/Jomeer Facial scrub cream.webp",
         "prices": {
             "LB": 35.0,
             "SY": null,
@@ -98,7 +98,7 @@ const PRODUCTS = [
         "name": "Jomeer Facial moisturizing cream  ",
         "category": "Skincare",
         "unit": " 50 ml",
-        "image": "images/products/Jomeer Facial moisturizing cream.png",
+        "image": "images/products/Jomeer Facial moisturizing cream.webp",
         "prices": {
             "LB": 35.0,
             "SY": null,
@@ -113,7 +113,7 @@ const PRODUCTS = [
         "name": "Jomeer Facial wash",
         "category": "Skincare",
         "unit": " 100 ml",
-        "image": "images/products/Jomeer Facial wash.png",
+        "image": "images/products/Jomeer Facial wash.webp",
         "prices": {
             "LB": 24.0,
             "SY": null,
@@ -128,7 +128,7 @@ const PRODUCTS = [
         "name": " Jomeer Facial Tonic",
         "category": "Skincare",
         "unit": "  160 ml",
-        "image": "images/products/Jomeer Facial Tonic.png",
+        "image": "images/products/Jomeer Facial Tonic.webp",
         "prices": {
             "LB": 29.0,
             "SY": null,
@@ -143,7 +143,7 @@ const PRODUCTS = [
         "name": " Jomeer Intensive Night Cream",
         "category": "Skincare",
         "unit": " 50 ml",
-        "image": "images/products/Jomeer Intensive Day Cream.png",
+        "image": "images/products/Jomeer Intensive Day Cream.webp",
         "prices": {
             "LB": 41.0,
             "SY": null,
@@ -158,7 +158,7 @@ const PRODUCTS = [
         "name": "Jomeer Intensive Day Cream",
         "category": "Skincare",
         "unit": "  50 ml",
-        "image": "images/products/Jomeer Intensive Day Cream.png",
+        "image": "images/products/Jomeer Intensive Day Cream.webp",
         "prices": {
             "LB": 35.0,
             "SY": null,
@@ -173,7 +173,7 @@ const PRODUCTS = [
         "name": "Jomeer Brightening Cream",
         "category": "Skincare",
         "unit": " 50 ml",
-        "image": "images/products/Jomeer Brightening Cream.png",
+        "image": "images/products/Jomeer Brightening Cream.webp",
         "prices": {
             "LB": 45.0,
             "SY": null,
@@ -188,7 +188,7 @@ const PRODUCTS = [
         "name": "Jomeer Hand care cream",
         "category": "Body Care",
         "unit": "  100 ml",
-        "image": "images/products/Jomeer Hand care cream.png",
+        "image": "images/products/Jomeer Hand care cream.webp",
         "prices": {
             "LB": 19.0,
             "SY": null,
@@ -203,7 +203,7 @@ const PRODUCTS = [
         "name": "Jomeer Sunscreen SPF-50  ",
         "category": "Sun Care",
         "unit": " 50 ml",
-        "image": "images/products/Jomeer Sunscreen.png",
+        "image": "images/products/Jomeer Sunscreen.webp",
         "prices": {
             "LB": 45.0,
             "SY": null,
@@ -218,7 +218,7 @@ const PRODUCTS = [
         "name": " Jomeer Foot Care Cream",
         "category": "Body Care",
         "unit": " 200 ml",
-        "image": "images/products/Jomeer Foot Care Cream.png",
+        "image": "images/products/Jomeer Foot Care Cream.webp",
         "prices": {
             "LB": 29.0,
             "SY": null,
@@ -233,7 +233,7 @@ const PRODUCTS = [
         "name": "Jomeer Cleansing Milk",
         "category": "Skincare",
         "unit": "  160 ml",
-        "image": "images/products/Jomeer Cleansing Milk.png",
+        "image": "images/products/Jomeer Cleansing Milk.webp",
         "prices": {
             "LB": 29.0,
             "SY": null,
@@ -248,7 +248,7 @@ const PRODUCTS = [
         "name": "Jomeer Hair Mask",
         "category": "Hair Care",
         "unit": "  250 ml",
-        "image": "images/products/Jomeer Hair Mask.png",
+        "image": "images/products/Jomeer Hair Mask.webp",
         "prices": {
             "LB": 35.0,
             "SY": null,
@@ -263,7 +263,7 @@ const PRODUCTS = [
         "name": "Jomeer Nail restoring oil ",
         "category": "Body Care",
         "unit": " 20 ml",
-        "image": "images/products/Jomeer Nail restoring oil.png",
+        "image": "images/products/Jomeer Nail restoring oil.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -278,7 +278,7 @@ const PRODUCTS = [
         "name": "Jomeer Body Butter Vanilia",
         "category": "Body Care",
         "unit": "قطعة 200 ml",
-        "image": "images/products/Jomeer Body Butter Vanilia.png",
+        "image": "images/products/Jomeer Body Butter Vanilia.webp",
         "prices": {
             "LB": 29.0,
             "SY": null,
@@ -293,7 +293,7 @@ const PRODUCTS = [
         "name": " Jomeer Body Butter Strawberry",
         "category": "Body Care",
         "unit": "  200 ml",
-           "image": "images/products/Jomeer Body Butter Strawberry.png",
+           "image": "images/products/Jomeer Body Butter Strawberry.webp",
         "prices": {
             "LB": 29.0,
             "SY": null,
@@ -309,7 +309,7 @@ const PRODUCTS = [
         "name": "Jomeer Under Eye Cream",
         "category": "Skincare",
         "unit": " 30 ml",
-        "image": "images/products/Jomeer Under Eye Cream.png",
+        "image": "images/products/Jomeer Under Eye Cream.webp",
         "prices": {
             "LB": 32.0,
             "SY": null,
@@ -324,7 +324,7 @@ const PRODUCTS = [
         "name": "Mega Mineral Beauty Serum ",
         "category": "Skincare",
         "unit": " 50 ml",
-        "image": "images/products/Mega Mineral Beauty Serum.png",
+        "image": "images/products/Mega Mineral Beauty Serum.webp",
         "prices": {
             "LB": 65.0,
             "SY": null,
@@ -339,7 +339,7 @@ const PRODUCTS = [
         "name": "Mega vitamin C  ",
         "category": "Skincare",
         "unit": " 30 ml",
-        "image": "images/products/Mega vitamin C.png",
+        "image": "images/products/Mega vitamin C.webp",
         "prices": {
             "LB": 37.0,
             "SY": null,
@@ -369,7 +369,7 @@ const PRODUCTS = [
         "name": "Magic Aura Body Splash Red  ",
         "category": "Bath & Body",
         "unit": " 250 ml",
-        "image": "images/products/Magic Aura Body Splash Red.png",
+        "image": "images/products/Magic Aura Body Splash Red.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -384,7 +384,7 @@ const PRODUCTS = [
         "name": "Magic Aura Body Splash Green  ",
         "category": "Bath & Body",
         "unit": " 250 ml",
-        "image": "images/products/Magic Aura Body Splash Green.png",
+        "image": "images/products/Magic Aura Body Splash Green.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -399,7 +399,7 @@ const PRODUCTS = [
         "name": "Magic Aura Body Spalsh Yellow",
         "category": "Bath & Body",
         "unit": " 250 ml",
-        "image": "images/products/Magic Aura Body Spalsh Yellow.png",
+        "image": "images/products/Magic Aura Body Spalsh Yellow.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -414,7 +414,7 @@ const PRODUCTS = [
         "name": "Magic Aura Body Splash White  ",
         "category": "Bath & Body",
         "unit": " 250 ml",
-        "image": "images/products/Magic Aura Body Splash White.png",
+        "image": "images/products/Magic Aura Body Splash White.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -429,7 +429,7 @@ const PRODUCTS = [
         "name": "Magic Aura Body Butter Red    ",
         "category": "Body Care",
         "unit": " 200 ml",
-        "image": "images/products/Magic Aura Body Butter Red.png",
+        "image": "images/products/Magic Aura Body Butter Red.webp",
         "prices": {
             "LB": 30.0,
             "SY": null,
@@ -579,7 +579,7 @@ const PRODUCTS = [
         "name": "Luméra Blue Nila & Argan Mask",
         "category": "Bath & Body",
         "unit": "  200 ml",
-        "image": "images/products/Luméra Blue Nila & Argan Mask.png",
+        "image": "images/products/Luméra Blue Nila & Argan Mask.webp",
         "prices": {
             "LB": 39.0,
             "SY": null,
@@ -609,7 +609,7 @@ const PRODUCTS = [
         "name": "Luméra Blue Nila & Argan Scrub 200 ml",
         "category": "Bath & Body",
         "unit": " 200 ml",
-        "image": "images/products/Luméra Blue Nila & Argan Scrub.png",
+        "image": "images/products/Luméra Blue Nila & Argan Scrub.webp",
         "prices": {
             "LB": 35.0,
             "SY": null,
@@ -625,7 +625,7 @@ const PRODUCTS = [
         "name": "Luméra Blue Nila & Argan Scrub  ",
         "category": "Bath & Body",
         "unit": " 100 ml",
-        "image": "images/products/Luméra Blue Nila & Argan Scrub 100.png",
+        "image": "images/products/Luméra Blue Nila & Argan Scrub 100.webp",
         "prices": {
             "LB": 21.0,
             "SY": null,
@@ -640,7 +640,7 @@ const PRODUCTS = [
         "name": "Luméra Blue Nila Soap  ",
         "category": "Bath & Body",
         "unit": " 200 ml",
-        "image": "images/products/Luméra Blue Nila Soap3.png",
+        "image": "images/products/Luméra Blue Nila Soap3.webp",
         "prices": {
             "LB": 33.0,
             "SY": null,
@@ -655,7 +655,7 @@ const PRODUCTS = [
         "name": "Luméra Blue Nila Soap  ",
         "category": "Bath & Body",
         "unit": " 100 ml",
-        "image": "images/products/Luméra Blue Nila Soap 100 ml.png",
+        "image": "images/products/Luméra Blue Nila Soap 100 ml.webp",
         "prices": {
             "LB": 20.0,
             "SY": null,
@@ -670,7 +670,7 @@ const PRODUCTS = [
         "name": "Lumèra Akker Fassi Mask",
         "category": "Bath & Body",
         "unit": " 200 ml",
-        "image": "images/products/Lumèra Akker Fassi Mask.png",
+        "image": "images/products/Lumèra Akker Fassi Mask.webp",
         "prices": {
             "LB": 39.0,
             "SY": null,
@@ -685,7 +685,7 @@ const PRODUCTS = [
         "name": "Luméra Aker Fassi & Argan Mask ",
         "category": "Bath & Body",
         "unit": " 100 ml",
-        "image": "images/products/AKER FASSI & ARGAN MASK.png",
+        "image": "images/products/AKER FASSI & ARGAN MASK.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -700,7 +700,7 @@ const PRODUCTS = [
         "name": "Lumèra Akker Fassi Argan Scrub",
         "category": "Bath & Body",
         "unit": " 200 ml",
-        "image": "images/products/Lumèra Akker Fassi Argan Scrub.png",
+        "image": "images/products/Lumèra Akker Fassi Argan Scrub.webp",
         "prices": {
             "LB": 35.0,
             "SY": null,
@@ -715,7 +715,7 @@ const PRODUCTS = [
         "name": "Luméra Aker Fassi & Argan Scrub    ",
         "category": "Bath & Body",
         "unit": " 100 ml",
-        "image": "images/products/AKER FASSI & ARGAN SCRUB.png",
+        "image": "images/products/AKER FASSI & ARGAN SCRUB.webp",
         "prices": {
             "LB": 21.0,
             "SY": null,
@@ -730,7 +730,7 @@ const PRODUCTS = [
         "name": "Luméra Blue Nila Soap",
         "category": "Bath & Body",
         "unit": " 200 ml",
-        "image": "images/products/Luméra Blue Nila Soap.png",
+        "image": "images/products/Luméra Blue Nila Soap.webp",
         "prices": {
             "LB": 33.0,
             "SY": null,
@@ -745,7 +745,7 @@ const PRODUCTS = [
         "name": "Luméra Aker Fassi Soap   ",
         "category": "Bath & Body",
         "unit": " 100 ml",
-        "image": "images/products/AKER FASSI SOAP.png",
+        "image": "images/products/AKER FASSI SOAP.webp",
         "prices": {
             "LB": 20.0,
             "SY": null,
@@ -760,7 +760,7 @@ const PRODUCTS = [
         "name": "Luméra Shampoo Sulfate Free  ",
         "category": "Hair Care",
         "unit": "  500 ml",
-        "image": "images/products/Luméra Shampoo Sulfate Free.png",
+        "image": "images/products/Luméra Shampoo Sulfate Free.webp",
         "prices": {
             "LB": 41.0,
             "SY": null,
@@ -775,7 +775,7 @@ const PRODUCTS = [
         "name": "Luméra Shampoo (paraban free )    ",
         "category": "Hair Care",
         "unit": " 250 ml",
-        "image": "images/products/Luméra Shampoo (paraban free ).png",
+        "image": "images/products/Luméra Shampoo (paraban free ).webp",
         "prices": {
             "LB": 15.0,
             "SY": null,
@@ -790,7 +790,7 @@ const PRODUCTS = [
         "name": "Luméra Sensitive Area Lightening Cream  ",
         "category": "Feminine Care",
         "unit": " 50 ml",
-        "image": "images/products/Luméra Sensitive Area Lightening Cream.png",
+        "image": "images/products/Luméra Sensitive Area Lightening Cream.webp",
         "prices": {
             "LB": 37.0,
             "SY": null,
@@ -805,7 +805,7 @@ const PRODUCTS = [
         "name": "Luméra Conditioner (paraban free )    ",
         "category": "Hair Care",
         "unit": " 250 ml",
-        "image": "images/products/Luméra Conditioner (paraban free ).png",
+        "image": "images/products/Luméra Conditioner (paraban free ).webp",
         "prices": {
             "LB": 13.0,
             "SY": null,
@@ -835,7 +835,7 @@ const PRODUCTS = [
         "name": "Luméra Intimate Wash Foam ",
         "category": "Feminine Care",
         "unit": " 130 ml",
-        "image": "images/products/Luméra Intimate Wash Foam 130 ml.png",
+        "image": "images/products/Luméra Intimate Wash Foam 130 ml.webp",
         "prices": {
             "LB": 14.0,
             "SY": null,
@@ -850,7 +850,7 @@ const PRODUCTS = [
         "name": "Luméra Intimate Hydrating Wash Gel  ",
         "category": "Feminine Care",
         "unit": " 250 ml",
-        "image": "images/products/Luméra Intimate Hydrating Wash Gel.png",
+        "image": "images/products/Luméra Intimate Hydrating Wash Gel.webp",
         "prices": {
             "LB": 15.0,
             "SY": null,
@@ -865,7 +865,7 @@ const PRODUCTS = [
         "name": "Loofah - 1",
         "category": "Accessories",
         "unit": "piece",
-        "image": "images/products/Loofah - 1.png",
+        "image": "images/products/Loofah - 1.webp",
         "prices": {
             "LB": 11.0,
             "SY": null,
@@ -880,7 +880,7 @@ const PRODUCTS = [
         "name": "Loofah - 2",
         "category": "Accessories",
         "unit": "piece",
-        "image": "images/products/Loofah - 2.png",
+        "image": "images/products/Loofah - 2.webp",
         "prices": {
             "LB": 7.0,
             "SY": null,
@@ -895,7 +895,7 @@ const PRODUCTS = [
         "name": "Morroco Samples Lumera mask",
         "category": "Bath & Body",
         "unit": " 10 ml",
-        "image": "images/products/Morroco Samples Lumera mask.png",
+        "image": "images/products/Morroco Samples Lumera mask.webp",
         "prices": {
             "LB": 2.0,
             "SY": null,
@@ -910,7 +910,7 @@ const PRODUCTS = [
         "name": "Morroco Samples Jomeer moisturizer ",
         "category": "Bath & Body",
         "unit": " 10 ml",
-        "image": "images/products/Morroco Samples Jomeer 10 ml.png",
+        "image": "images/products/Morroco Samples Jomeer 10 ml.webp",
         "prices": {
             "LB": 2.0,
             "SY": null,
@@ -925,7 +925,7 @@ const PRODUCTS = [
         "name": "Morroco Samples Jomeer Hand cream  ",
         "category": "Bath & Body",
         "unit": " 10 ml",
-        "image": "images/products/Morroco Samples Jomeer Hand cream.png",
+        "image": "images/products/Morroco Samples Jomeer Hand cream.webp",
         "prices": {
             "LB": 2.0,
             "SY": null,
@@ -940,7 +940,7 @@ const PRODUCTS = [
         "name": "Morroco Samples Jomeer night cream  ",
         "category": "Bath & Body",
         "unit": " 10 ml",
-        "image": "images/products/Morroco Samples Jomeer night cream.png",
+        "image": "images/products/Morroco Samples Jomeer night cream.webp",
         "prices": {
             "LB": 2.0,
             "SY": null,
@@ -955,7 +955,7 @@ const PRODUCTS = [
         "name": "Morroco Samples Jomeer Sunscreen  ",
         "category": "Bath & Body",
         "unit": " 10 ml",
-        "image": "images/products/Morroco Samples Jomeer Sunscreen.png",
+        "image": "images/products/Morroco Samples Jomeer Sunscreen.webp",
         "prices": {
             "LB": 2.0,
             "SY": null,
@@ -970,7 +970,7 @@ const PRODUCTS = [
         "name": "Loréve Male (with sticker) (kung of seduccion )  ",
         "category": "Perfumes",
         "unit": " 60 ml",
-        "image": "images/products/Loréve Male (with sticker) (kung of seduccion).png",
+        "image": "images/products/Loréve Male (with sticker) (kung of seduccion).webp",
         "prices": {
             "LB": 9.99,
             "SY": null,
@@ -1000,7 +1000,7 @@ const PRODUCTS = [
         "name": "Loreve Unisex (with sticker)(Thursday valentine) ",
         "category": "Perfumes",
         "unit": " 60 ml",
-        "image": "images/products/Loreve Unisex (with sticker)(Thursday valentine) 60 ml.png",
+        "image": "images/products/Loreve Unisex (with sticker)(Thursday valentine) 60 ml.webp",
         "prices": {
             "LB": 9.99,
             "SY": null,
@@ -1030,7 +1030,7 @@ const PRODUCTS = [
         "name": "Loréve Femme (with sticker) ( killer queen )  ",
         "category": "Perfumes",
         "unit": " 60 ml",
-        "image": "images/products/Loréve Femme (with sticker) (killerqueen ).png",
+        "image": "images/products/Loréve Femme (with sticker) (killerqueen ).webp",
         "prices": {
             "LB": 9.99,
             "SY": null,
