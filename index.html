@@ -97,8 +97,8 @@
                         <span class="count" id="cartBadge">0</span>
                     </button>
 
-                    <button class="icon-button" data-action="menu" aria-label="More options">
-                        <img class="header-icon dots-icon" src="images/ui/more.svg" alt="">
+                    <button class="icon-button" data-action="menu" aria-label="Settings">
+                        <i data-lucide="settings" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
@@ -136,6 +136,7 @@
                     <div class="needs-title"><h2>Shop by Your Needs</h2><p>Find the perfect care for your beauty goals</p></div>
                     <div class="needs-grid" id="needsGrid"></div>
                 </section>
+                <div id="categoryShowcases" class="category-showcases"></div>
                 <div class="section-heading"><h2>Bestsellers</h2><button data-view="products">View All <span>›</span></button></div>
                 <div class="product-grid home-products" id="bestProducts"></div>
                 <div class="section-heading"><h2>Shop by Brands</h2><button data-view="brands">View All <span>›</span></button></div>
@@ -149,7 +150,27 @@
             <section class="view hidden" id="brandsView"><div class="page-heading"><button data-view="home">‹</button><h1>Our Brands</h1></div><div class="brands-page" id="allBrands"></div></section>
             <section class="view hidden" id="favoritesView"><div class="page-heading"><button data-view="home">‹</button><h1>My Favorites</h1></div><div class="product-grid" id="favoriteProducts"></div></section>
             <section class="view hidden" id="cartView"><div class="page-heading"><button data-view="home">‹</button><h1>Shopping Bag</h1></div><div id="cartItems"></div><div class="cart-summary" id="cartSummary"></div></section>
-            <section class="view hidden" id="accountView"><div class="page-heading"><button data-view="home">‹</button><h1>My Account</h1></div><div class="account-panel"><div class="account-symbol">BYS</div><h2>Welcome to BYS</h2><p>Your beauty journey starts here.</p><button id="accountCountry">Change Shopping Country</button><p class="small-note">Account registration and consultant referral codes will be enabled with Firebase in the next phase.</p></div></section>
+            <section class="view hidden" id="accountView"><div class="page-heading"><button data-view="home">‹</button><h1>My Account</h1></div>
+                <div class="profile-panel"><h2>Customer information</h2><p class="small-note">Complete all required fields before checkout. Saved on this device only until secure accounts are connected.</p>
+                <form id="customerProfileForm" class="profile-form">
+                <label>Full name *<input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
+                <label>Phone number *<div class="profile-phone"><span id="profileDial">+961</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Enter your phone number" required maxlength="20" aria-label="National phone number"></div></label>
+                <label>Address *<textarea name="address" autocomplete="street-address" required minlength="8" maxlength="300" rows="3"></textarea></label>
+                <label>Location (optional)<input name="location" id="profileLocation" placeholder="City, area, or map link" maxlength="250"></label><button id="useCurrentLocation" class="profile-location-btn" type="button"><span aria-hidden="true">⌖</span> Use my current location</button><p id="locationStatus" class="location-status" role="status" aria-live="polite"></p>
+                <label>Field of work *<input name="occupation" required maxlength="100"></label>
+                <label>Email *<input name="email" type="email" autocomplete="email" required maxlength="160"></label>
+                <p id="profileError" class="profile-error" role="alert" hidden></p>
+                <button class="profile-save" type="submit">Save information</button></form>
+                <button class="profile-country" id="accountCountry" type="button">Change shopping country</button></div></section>
+                <section class="view hidden" id="settingsView"><div class="settings-head"><button data-view="home" aria-label="Back">‹</button><h1>Settings</h1></div><div class="settings-content"><button class="settings-login" data-view="account"><i data-lucide="user-round"></i><span>My account / Login</span><b>›</b></button><div class="settings-links">
+                <button data-settings="Report fraud"><i data-lucide="shield-alert"></i><span>Report fraud</span><b>›</b></button>
+                <button data-settings="Feedbacks"><i data-lucide="message-square-warning"></i><span>Feedbacks</span><b>›</b></button>
+                <button data-settings="Distributors"><i data-lucide="network"></i><span>Distributors</span><b>›</b></button>
+                <button data-settings="About BYS Cosmetics"><i data-lucide="badge-info"></i><span>About BYS Cosmetics</span><b>›</b></button>
+                <button data-settings="Privacy policy"><i data-lucide="shield-check"></i><span>Privacy policy</span><b>›</b></button>
+                <button data-settings="Terms & Conditions"><i data-lucide="scale"></i><span>Terms &amp; Conditions</span><b>›</b></button>
+                <button data-settings="Rate us"><i data-lucide="star"></i><span>Rate us</span><b>›</b></button>
+                </div></div></section>
             <section class="view hidden" id="productView"><div class="page-heading"><button data-view="products">‹</button><h1>Product Details</h1></div><div id="productDetail"></div></section>
         </main>
 
@@ -184,8 +205,9 @@
     </button>
 
     <button data-view="favorites">
-        <span class="nav-icon">
+        <span class="nav-icon favorites-nav-icon">
             <i data-lucide="heart"></i>
+            <span class="favorites-nav-count" id="favoritesNavBadge" hidden>0</span>
         </span>
         <small>Favorites</small>
     </button>

@@ -98,41 +98,16 @@ function sampleOf(product) {
 }
 
 function isValidPhone(phone, country) {
-
-    // تنظيف الرقم من الفراغات
-    const number = String(phone).replace(/\D/g, "");
-
-    // عدد الخانات المطلوب لكل بلد
-    const lengths = {
-        LB: 8,
-        SY: 9,
-        JO: 9,
-        KW: 8,
-        EG: 10
+    const number = String(phone || "").replace(/\D/g, "");
+    // National numbers, without the international dial prefix.
+    const patterns = {
+        LB: /^(?:0?[13789]\d{6}|0?[3467]\d{7})$/, // Lebanon: 7 or 8 digits depending on prefix
+        SY: /^0?9\d{8}$/, // Syria mobile
+        JO: /^0?7[789]\d{7}$/, // Jordan mobile
+        KW: /^[569]\d{7}$/, // Kuwait mobile
+        EG: /^0?1[0125]\d{8}$/ // Egypt mobile
     };
-
-    // رفض الرقم الناقص أو الزائد
-    if (number.length !== lengths[country]) {
-        return false;
-    }
-
-    // رفض الأرقام المتكررة مثل 11111111
-    if (/^(\d)\1+$/.test(number)) {
-        return false;
-    }
-
-    // رفض الأرقام المتسلسلة مثل 12345678
-    const ascending = "01234567890123456789";
-    const descending = "98765432109876543210";
-
-    if (
-        ascending.includes(number) ||
-        descending.includes(number)
-    ) {
-        return false;
-    }
-
-    return true;
+    return !!patterns[country]?.test(number) && !/^(\d)\1+$/.test(number);
 }
 
 function showToast(message) {
@@ -238,44 +213,7 @@ function selectCountry(code) {
     }
 }
 
-/* التحقق من رقم الهاتف حسب البلد */
-function isValidPhone(phone, country) {
 
-    // إزالة الفراغات والرموز
-    const number = String(phone).replace(/\D/g, "");
-
-    // عدد الخانات حسب البلد
-    const lengths = {
-        LB: 8,
-        SY: 9,
-        JO: 9,
-        KW: 8,
-        EG: 10
-    };
-
-    // منع الأرقام الناقصة أو الزائدة
-    if (number.length !== lengths[country]) {
-        return false;
-    }
-
-    // منع الأرقام المكررة مثل 11111111
-    if (/^(\d)\1+$/.test(number)) {
-        return false;
-    }
-
-    // منع الأرقام المتسلسلة مثل 12345678
-    const ascending = "01234567890123456789";
-    const descending = "98765432109876543210";
-
-    if (
-        ascending.includes(number) ||
-        descending.includes(number)
-    ) {
-        return false;
-    }
-
-    return true;
-}
 
 
 // تعبئة قائمة البلدان
@@ -391,6 +329,11 @@ if (window.lucide) {
     // قوائم العرض مؤقتة حتى يحدد المدير الأكثر مبيعاً والجديد فعلاً
     $("#bestProducts").innerHTML = PRODUCTS.slice(0, 8).map((product) => productCard(product, true)).join("");
     $("#newProducts").innerHTML = PRODUCTS.slice(-8).map((product) => productCard(product, true)).join("");
+    $("#categoryShowcases").innerHTML = CATEGORIES.map(category => {
+        const products = PRODUCTS.filter(product => categoryOf(product) === category.name).slice(0, 8);
+        if (!products.length) return "";
+        return `<section class="category-showcase"><div class="section-heading"><h2>${escapeHtml(category.name)}</h2><button data-category="${escapeHtml(category.name)}">View All <span>›</span></button></div><div class="product-grid home-products">${products.map(product => productCard(product, true)).join("")}</div></section>`;
+    }).join("");
     const brands = [...new Set(PRODUCTS.map((product) => product.brand))];
     $("#homeBrands").innerHTML = brands.map((brand) => {
         // Show a clean typographic brand mark until the verified official logo is supplied.
@@ -425,6 +368,11 @@ function updateFavoritesBadge() {
     const count = new Set(favorites).size;
     badge.textContent = count > 99 ? "99+" : String(count);
     badge.hidden = count === 0;
+    const navBadge = $("#favoritesNavBadge");
+    if (navBadge) {
+        navBadge.textContent = count > 99 ? "99+" : String(count);
+        navBadge.hidden = count === 0;
+    }
 }
 
 function renderFavorites() {
@@ -451,9 +399,82 @@ function renderCart() {
     const currency = COUNTRIES.find((country) => country.code === countryCode)?.currency || "USD";
     const formatted = new Intl.NumberFormat("en-US", { style: "currency", currency }).format(total);
     $("#cartSummary").innerHTML = items.length ? `<div><span>Subtotal</span><span>${formatted}</span></div>
-        <p class="small-note">Shipping and payment will be available when checkout is connected.</p>
-        <button class="checkout" id="checkoutButton">Checkout — Coming Soon</button>` : "";
+        <p class="small-note">Complete your account before checkout.</p>
+        <button class="checkout" id="checkoutButton">Continue to payment</button>
+        <div id="paymentOptions" class="payment-options" hidden><h3>Choose payment method</h3>
+        <button data-payment="Visa" type="button"><span class="payment-mark">VISA</span> Visa <small>Not connected</small></button>
+        <button data-payment="Whish" type="button"><span class="payment-mark">W</span> Whish <small>Not connected</small></button>
+        <button data-payment="PayPal" type="button"><span class="payment-mark">P</span> PayPal <small>Not connected</small></button>
+        <p class="small-note">Payments and automatic order emails require a secure backend. No charge is made here.</p></div>` : "";
 }
+
+
+// Customer details are local-only until a secure backend is connected.
+function normalizeNationalPhone(value, code) {
+    let digits = String(value || "").replace(/\D/g, "");
+    const dial = (COUNTRIES.find(c => c.code === code)?.dial || "").replace(/\D/g, "");
+    if (dial && digits.startsWith(dial) && digits.length > 9) digits = digits.slice(dial.length);
+    return digits;
+}
+const PHONE_HINTS = {LB:"03 123 456 or 71 123 456", SY:"9XXXXXXXX", JO:"7XXXXXXXX", KW:"5XXXXXXX", EG:"1XXXXXXXXX"};
+const PROFILE_KEY = "bys-customer-profile";
+function getCustomerProfile() { return loadSaved(PROFILE_KEY, {}); }
+function profileIsComplete(profile = getCustomerProfile()) {
+    const phone = normalizeNationalPhone(profile.phone, countryCode);
+    return String(profile.fullName || "").trim().length >= 3 &&
+      isValidPhone(phone, countryCode) && String(profile.address || "").trim().length >= 8 &&
+      String(profile.occupation || "").trim().length > 0 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(profile.email || "").trim()) &&
+      profile.country === countryCode;
+}
+function fillCustomerProfile() {
+    const form = document.getElementById("customerProfileForm");
+    const profile = getCustomerProfile();
+    const dial = COUNTRIES.find(c => c.code === countryCode)?.dial || "+961";
+    document.getElementById("profileDial").textContent = dial;
+    form.elements.namedItem("phone").placeholder = "Enter your phone number";
+    for (const field of ["fullName", "phone", "address", "location", "occupation", "email"]) {
+        form.elements.namedItem(field).value = profile[field] || "";
+    }
+    document.getElementById("profileError").hidden = true;
+}
+document.getElementById("customerProfileForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const profile = Object.fromEntries(new FormData(form).entries());
+    profile.phone = normalizeNationalPhone(profile.phone, countryCode);
+    profile.country = countryCode;
+    const error = document.getElementById("profileError");
+    if (!profileIsComplete(profile)) {
+        error.textContent = "Please enter a valid full name, phone number for your selected country, address, occupation, and email.";
+        error.hidden = false;
+        return;
+    }
+    error.hidden = true;
+    save(PROFILE_KEY, profile);
+    showToast("Account details saved ✓");
+    if (currentView === "cart") renderCart();
+});
+
+document.getElementById("useCurrentLocation").addEventListener("click", () => {
+    const button = document.getElementById("useCurrentLocation");
+    const status = document.getElementById("locationStatus");
+    if (!navigator.geolocation || !window.isSecureContext) {
+        status.textContent = "Location needs HTTPS (or localhost) and a supported browser.";
+        return;
+    }
+    button.disabled = true;
+    status.textContent = "Getting your location… Please allow location access.";
+    navigator.geolocation.getCurrentPosition(position => {
+        const {latitude, longitude} = position.coords;
+        document.getElementById("profileLocation").value = `https://www.google.com/maps?q=${latitude.toFixed(6)},${longitude.toFixed(6)}`;
+        status.textContent = "Location added. Save your account to keep it.";
+        button.disabled = false;
+    }, error => {
+        status.textContent = error.code === 1 ? "Location permission was denied. You can enter it manually." : "Couldn't get your location. Try again or enter it manually.";
+        button.disabled = false;
+    }, {enableHighAccuracy: true, timeout: 12000, maximumAge: 60000});
+});
 
 function renderAll() {
     renderHome();
@@ -464,6 +485,7 @@ function renderAll() {
 
 function showView(name) {
     currentView = name;
+    document.body.classList.toggle("bys-settings-open", name === "settings");
     document.querySelectorAll(".view").forEach((view) => view.classList.add("hidden"));
     const target = $("#" + name + "View");
     if (!target) return;
@@ -474,6 +496,8 @@ function showView(name) {
     if (name === "products") renderProducts();
     if (name === "cart") renderCart();
     if (name === "favorites") renderFavorites();
+    if (name === "account") fillCustomerProfile();
+    if (window.lucide) lucide.createIcons();
     window.scrollTo({ top: 0, behavior: "instant" });
 }
 
@@ -583,8 +607,15 @@ function showCartFeedback() {
         renderProducts();
         return;
     }
-    if (button.id === "checkoutButton") return showToast("Secure checkout will be available soon");
-    if (button.dataset.action === "menu") return showView("categories");
+    if (button.id === "checkoutButton") {
+        if (!profileIsComplete()) { showToast("Complete your account information first"); return showView("account"); }
+        document.getElementById("paymentOptions").hidden = false;
+        document.getElementById("paymentOptions").scrollIntoView({behavior:"smooth", block:"nearest"});
+        return;
+    }
+    if (button.dataset.payment) return showToast(button.dataset.payment + " secure payment is not connected yet");
+    if (button.dataset.settings) return showToast(button.dataset.settings + " page is coming soon");
+    if (button.dataset.action === "menu") return showView("settings");
 });
 
 // البحث أثناء الكتابة

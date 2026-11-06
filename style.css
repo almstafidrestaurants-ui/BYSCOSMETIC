@@ -1441,3 +1441,264 @@ main { padding: 17px 22px 35px; }
   z-index: 2;
 }
 .header-actions .favorites-count[hidden] { display: none !important; }
+
+/* Favorites count in bottom navigation, without changing the nav layout */
+.bottom-nav .favorites-nav-icon { position: relative; }
+.bottom-nav .favorites-nav-icon .favorites-nav-count {
+  position: absolute;
+  top: -5px;
+  right: -11px;
+  display: grid;
+  place-items: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #df3982;
+  color: white;
+  font: 700 10px/1 "Segoe UI", Arial, sans-serif;
+  box-shadow: 0 0 0 2px #fff;
+  z-index: 1;
+}
+.bottom-nav .favorites-nav-icon .favorites-nav-count[hidden] { display: none !important; }
+
+/* Customer account, settings and payment choices — original navigation unchanged */
+.profile-panel{max-width:650px;margin:0 auto;background:white;border:1px solid #f4dce7;border-radius:22px;padding:20px;box-shadow:0 8px 25px #a63c6b12}
+.profile-panel h2{margin:0 0 8px}.profile-form{display:grid;gap:14px;margin-top:18px}
+.profile-form label{display:grid;gap:7px;font-size:13px;font-weight:700;color:#503141}
+.profile-form input,.profile-form textarea{width:100%;border:1px solid #e9cbd9;border-radius:12px;background:#fffafd;padding:12px;color:#281b23;font:inherit;outline-color:#dc4481}
+.profile-phone{display:flex;align-items:center;gap:10px}.profile-phone span{white-space:nowrap;color:#a42f62}
+.profile-error{color:#b32042;font-size:12px;margin:0}.profile-save,.profile-country{border:0;border-radius:14px;padding:13px;font-weight:700}.profile-save{background:#d63375;color:white}.profile-country{margin-top:12px;background:#fff0f6;color:#ac285d;width:100%}
+.settings-head{background:#f16b9c;display:flex;align-items:center;justify-content:center;min-height:95px;position:relative;margin:-17px -22px 0}.settings-head h1{font-size:24px;font-weight:500;color:#21141c}.settings-head>button{position:absolute;left:20px;top:24px;border:0;border-radius:10px;background:white;width:45px;height:45px;font-size:32px}
+.settings-content{background:#f5f5f5;min-height:65vh;padding:28px 14px 70px}.settings-login,.settings-links button{width:100%;display:flex;align-items:center;gap:19px;text-align:left;border:0;background:white;border-radius:16px;padding:20px 18px;box-shadow:0 12px 18px #bd3f7330;font-size:17px;color:#222}
+.settings-login{margin-bottom:30px}.settings-links{display:grid;gap:11px}.settings-content svg{width:25px;height:25px;flex-shrink:0}.settings-content button span{flex:1}.settings-content button b{font-size:31px;font-weight:400;color:#e95e95}
+.payment-options{display:grid;gap:10px;margin-top:18px}.payment-options[hidden]{display:none}.payment-options h3{margin:0 0 4px}.payment-options button{border:1px solid #efd2df;background:#fff;border-radius:13px;padding:12px;display:flex;align-items:center;gap:12px;text-align:left;font-weight:700}.payment-options button small{margin-left:auto;color:#977b87}.payment-mark{background:#ec3e80;color:white;min-width:48px;padding:8px;border-radius:8px;text-align:center;font-weight:800}
+.category-showcases{margin-top:25px}.category-showcase{margin-bottom:27px}
+@media(max-width:600px){.settings-head{margin:-17px -14px 0}.settings-content{padding:22px 8px 70px}.settings-links button{padding:16px 13px;font-size:15px}.profile-panel{padding:15px}}
+
+/* Customer phone and opt-in location refinements */
+.profile-form .profile-phone{display:flex;align-items:center;gap:0;min-height:48px;border:1px solid #e9cbd9;border-radius:12px;background:#fffafd;overflow:hidden}
+.profile-form .profile-phone span{display:flex;align-items:center;align-self:stretch;flex:0 0 auto;padding:0 12px;border-right:1px solid #e9cbd9;font-weight:750;font-size:14px}
+.profile-form .profile-phone input{flex:1 1 0;min-width:0;width:100%;border:0;border-radius:0;background:transparent;padding:12px;font-size:15px}
+.profile-location-btn{width:100%;border:1px solid #e7b9ce;border-radius:12px;background:#fff0f6;color:#a52a61;padding:12px;font-weight:750;display:flex;align-items:center;justify-content:center;gap:9px}
+.profile-location-btn:disabled{opacity:.6;cursor:wait}
+.location-status{font-size:12px;color:#806c76;margin:-6px 0 0;min-height:1em}
+
+/* Soft hint for empty account phone field */
+.profile-form .profile-phone input::placeholder { color: #b9a9b1; font-size: 12px; font-weight: 400; opacity: 1; }
+
+/* Settings opens as a full-screen page, without shop chrome. */
+body.bys-settings-open { overflow: hidden; }
+body.bys-settings-open .header,
+body.bys-settings-open .bottom-nav,
+body.bys-settings-open #cartFeedback { display: none !important; }
+body.bys-settings-open #settingsView {
+  display: block !important;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #f4f4f4;
+  padding: 0 0 env(safe-area-inset-bottom, 0px);
+  animation: fade .2s ease;
+}
+body.bys-settings-open #settingsView .settings-head {
+  margin: 0;
+  min-height: calc(95px + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+}
+body.bys-settings-open #settingsView .settings-head > button {
+  top: calc(24px + env(safe-area-inset-top, 0px));
+}
+body.bys-settings-open #settingsView .settings-content {
+  padding-bottom: 45px;
+}
+
+/* BYS Settings refined layout — visual changes only */
+body.bys-settings-open #settingsView {
+  background: #f7f5f6;
+  scrollbar-width: thin;
+}
+body.bys-settings-open #settingsView .settings-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  min-height: calc(78px + env(safe-area-inset-top, 0px));
+  background: #ee6396;
+  box-shadow: none;
+}
+body.bys-settings-open #settingsView .settings-head h1 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -.3px;
+}
+body.bys-settings-open #settingsView .settings-head > button {
+  top: calc(18px + env(safe-area-inset-top, 0px));
+  left: 17px;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  font-size: 27px;
+  display: grid;
+  place-items: center;
+}
+body.bys-settings-open #settingsView .settings-content {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 560px;
+  min-height: calc(100dvh - 78px);
+  margin: 0 auto;
+  padding: 20px 16px calc(30px + env(safe-area-inset-bottom, 0px));
+  background: transparent;
+}
+body.bys-settings-open #settingsView .settings-login,
+body.bys-settings-open #settingsView .settings-links button {
+  box-sizing: border-box;
+  min-height: 66px;
+  padding: 14px 17px;
+  gap: 16px;
+  border: 1px solid #f5e7ed;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 5px 13px rgba(145, 56, 91, .085);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+body.bys-settings-open #settingsView .settings-login {
+  margin: 0 0 23px;
+  min-height: 72px;
+}
+body.bys-settings-open #settingsView .settings-links {
+  display: grid;
+  gap: 10px;
+}
+body.bys-settings-open #settingsView .settings-content svg {
+  width: 23px;
+  height: 23px;
+  stroke-width: 1.9;
+}
+body.bys-settings-open #settingsView .settings-content button span {
+  flex: 1;
+  min-width: 0;
+}
+body.bys-settings-open #settingsView .settings-content button b {
+  font-size: 25px;
+  line-height: 1;
+  color: #e94383;
+}
+@media (hover: hover) {
+  body.bys-settings-open #settingsView .settings-content button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(145, 56, 91, .12);
+  }
+}
+@media (max-width: 380px) {
+  body.bys-settings-open #settingsView .settings-content { padding-left: 12px; padding-right: 12px; }
+  body.bys-settings-open #settingsView .settings-login,
+  body.bys-settings-open #settingsView .settings-links button { min-height: 62px; padding: 12px 14px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.bys-settings-open #settingsView .settings-content button { transition: none; }
+}
+
+/* Settings: shorter pink header and equal spacing for every row */
+body.bys-settings-open #settingsView .settings-head {
+  min-height: calc(64px + env(safe-area-inset-top, 0px));
+  height: calc(64px + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+}
+body.bys-settings-open #settingsView .settings-head h1 { font-size: 19px; }
+body.bys-settings-open #settingsView .settings-head > button {
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  left: 16px;
+  width: 40px;
+  height: 40px;
+}
+body.bys-settings-open #settingsView .settings-content {
+  padding-top: 12px;
+}
+body.bys-settings-open #settingsView .settings-login,
+body.bys-settings-open #settingsView .settings-links button {
+  min-height: 64px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+body.bys-settings-open #settingsView .settings-login {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+body.bys-settings-open #settingsView .settings-links { gap: 10px; }
+@media (max-width: 380px) {
+  body.bys-settings-open #settingsView .settings-login,
+  body.bys-settings-open #settingsView .settings-links button { min-height: 62px; }
+}
+
+/* Compact product cards — only horizontal product showcases, not navigation or category tiles */
+#homeView .home-products .showcase-card,
+.category-showcases .home-products .showcase-card {
+  flex: 0 0 clamp(148px, 40vw, 185px);
+  width: clamp(148px, 40vw, 185px);
+  border-radius: 16px;
+}
+#homeView .showcase-card .product-photo,
+.category-showcases .showcase-card .product-photo {
+  aspect-ratio: auto;
+  height: clamp(122px, 35vw, 156px);
+}
+#homeView .showcase-card .product-photo > img,
+.category-showcases .showcase-card .product-photo > img {
+  padding: 8px 12px;
+  object-fit: contain;
+}
+#homeView .showcase-card .product-body,
+.category-showcases .showcase-card .product-body {padding: 7px 10px 10px;}
+#homeView .showcase-card .product-title,
+.category-showcases .showcase-card .product-title {
+  font-size: 11.5px;
+  line-height: 1.35;
+  margin: 0 0 6px;
+  min-height: 31px;
+  height: auto;
+  overflow-wrap: anywhere;
+}
+#homeView .showcase-card .product-bottom,
+.category-showcases .showcase-card .product-bottom {gap: 7px;}
+#homeView .showcase-card .price,
+.category-showcases .showcase-card .price {font-size: 15px;}
+#homeView .showcase-card .add-cart,
+.category-showcases .showcase-card .add-cart {
+  min-height: 33px;
+  height: 33px;
+  border-radius: 9px;
+  font-size: 11px;
+}
+#homeView .home-products {gap: 10px;}
+@media (max-width: 400px) {
+  #homeView .home-products .showcase-card,
+  .category-showcases .home-products .showcase-card {flex-basis: 42vw; width: 42vw;}
+  #homeView .showcase-card .product-photo,
+  .category-showcases .showcase-card .product-photo {height: 128px;}
+}
+
+/* Keep the entire product visible, with a little breathing room */
+#homeView .showcase-card .product-photo,
+.category-showcases .showcase-card .product-photo {
+  overflow: hidden;
+}
+#homeView .showcase-card .product-photo > img,
+.category-showcases .showcase-card .product-photo > img {
+  display: block;
+  width: 88%;
+  height: 88%;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 0;
+  margin: auto;
+  object-fit: contain;
+  object-position: center;
+}

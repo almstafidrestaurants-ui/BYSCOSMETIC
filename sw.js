@@ -1,5 +1,5 @@
 // Cache static files and images to make repeat visits faster.
-const CACHE_NAME = "bys-favorites-badge-20261105-v1";
+const CACHE_NAME = "settings-fullscreen-bys-phone-location-20261106-v2";
 const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./catalog.js", "./manifest.webmanifest"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_FILES)));
