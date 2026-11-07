@@ -301,11 +301,11 @@ function productCard(product, showcase = false) {
         </div>
         <div class="product-body">
             <span class="product-brand">${escapeHtml(product.brand)}</span>
-            <button class="product-title" data-product="${escapeHtml(product.id)}">${escapeHtml(product.name)}</button>
+            <div class="product-title">${escapeHtml(product.name)}</div>
             <p class="product-unit">${escapeHtml(product.unit)}</p>
             <div class="product-bottom">
                 <span class="${available ? "price" : "unavailable"}">${formatPrice(product)}</span>
-                <button class="add-cart" data-add="${escapeHtml(product.id)}" aria-label="Add to cart" ${available ? "" : "disabled"}>${showcase ? '<span class="cart-mini-icon" aria-hidden="true">🛒</span><span>Add to cart</span>' : "+"}</button>
+                <button class="add-cart" data-add="${escapeHtml(product.id)}" aria-label="Add to cart" ${available ? "" : "disabled"}>${showcase ? '<span class="cart-mini-icon" aria-hidden="true">🛒</span><span>Add to cart</span>' : '<span class="bys-plus-symbol" aria-hidden="true">+</span>'}</button>
             </div>
         </div>
     </article>`;
@@ -508,6 +508,7 @@ function showView(name) {
 }
 
 function showProduct(id) {
+    return; // Product detail navigation disabled by store owner request.
     const product = PRODUCTS.find((item) => item.id === id);
     if (!product) return;
     $("#productDetail").innerHTML = `<div class="product-detail">
@@ -564,7 +565,7 @@ function showCartFeedback() {
         return showView(button.dataset.view);
     }
     if (button.dataset.add) return addToCart(button.dataset.add);
-    if (button.dataset.product) return showProduct(button.dataset.product);
+    // Product pictures and titles are informational; only the + button adds to cart.
     if (button.dataset.favorite) {
         const id = button.dataset.favorite;
         favorites = favorites.includes(id) ? favorites.filter((item) => item !== id) : [...favorites, id];

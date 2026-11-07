@@ -1,5 +1,5 @@
 // Cache static files and images to make repeat visits faster.
-const CACHE_NAME = "bys-payment-layout-20261107-v1-img20261107";
+const CACHE_NAME = "bys-viewall-plus-20261107-v2";
 const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./catalog.js", "./manifest.webmanifest"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_FILES)));

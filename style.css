@@ -1726,3 +1726,30 @@ body.bys-settings-open #settingsView .settings-links { gap: 10px; }
 .product-photo > img {object-fit:contain;object-position:center;}
 #homeView .showcase-card .product-photo > img,
 .category-showcases .showcase-card .product-photo > img {width:94%;height:94%;object-fit:contain;object-position:center;}
+
+/* BYS: Product photos and names are display-only. Cart action is the + button. */
+.product-photo > img, .product-card .product-title { cursor: default; }
+#productsView .product-bottom .add-cart, #favoritesView .product-bottom .add-cart {
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  font-size:22px;line-height:1;font-weight:600;
+}
+
+/* BYS View All: same clean + button on every product, no icon overlays. */
+#productsView .product-card .product-bottom .add-cart,
+#favoritesView .product-card .product-bottom .add-cart {
+  position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  flex:0 0 34px!important;width:34px!important;min-width:34px!important;max-width:34px!important;
+  height:34px!important;min-height:34px!important;max-height:34px!important;
+  padding:0!important;margin:0!important;overflow:hidden!important;
+  border:0!important;border-radius:10px!important;background:#cc2c71!important;
+  color:white!important;font:700 23px/1 Arial,sans-serif!important;box-shadow:none!important;
+  isolation:isolate;
+}
+#productsView .product-card .add-cart > *, #favoritesView .product-card .add-cart > * {
+  display:none!important;
+}
+#productsView .product-card .add-cart::after, #favoritesView .product-card .add-cart::after {
+  content:'+'!important;display:block!important;position:relative!important;
+  color:#fff!important;font:700 23px/1 Arial,sans-serif!important;
+}
+#productsView .product-card .add-cart:disabled, #favoritesView .product-card .add-cart:disabled {background:#e9d6df!important;}
