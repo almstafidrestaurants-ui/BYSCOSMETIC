@@ -118,21 +118,21 @@ function showToast(message) {
     toastTimeout = setTimeout(() => toast.classList.remove("visible"), 2300);
 }
 
-// صور المنتجات تتحرك بصفّين بشكل مستمر بشاشة الترحيب
+// صور المنتجات تتحرك بأربعة صفوف بشكل مستمر بشاشة الترحيب
 function renderWelcomeShowcase() {
     const source = PRODUCTS.filter((product) => product.image);
     const chosen = source.length ? source : PRODUCTS;
-    // تقسيم صور المنتجات على ثلاثة صفوف متحركة
-    const tiles = chosen.slice(0, 12);
+    // تقسيم صور المنتجات على أربعة صفوف متحركة
+    const tiles = chosen.slice(0, 20);
     const renderTile = (product) => `
         <div class="welcome-product-tile">
             <img src="${escapeHtml(imageOf(product))}"
                  data-fallback="${escapeHtml(sampleOf(product))}"
                  alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" fetchpriority="low">
         </div>`;
-    const rows = [[], [], []];
-    tiles.forEach((product, index) => rows[index % 3].push(product));
-    ["#welcomeTrackOne", "#welcomeTrackTwo", "#welcomeTrackThree"].forEach((selector, index) => {
+    const rows = [[], [], [], []];
+    tiles.forEach((product, index) => rows[index % 4].push(product));
+    ["#welcomeTrackOne", "#welcomeTrackTwo", "#welcomeTrackThree", "#welcomeTrackFour"].forEach((selector, index) => {
         const items = rows[index].map(renderTile).join("");
         // تكرار المجموعة يضمن حركة متواصلة بدون فراغات
         $(selector).innerHTML = `<div class="welcome-marquee-set">${items}</div><div class="welcome-marquee-set" aria-hidden="true">${items}</div>`;

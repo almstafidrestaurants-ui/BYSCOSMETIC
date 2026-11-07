@@ -277,7 +277,7 @@ const PRODUCTS = [
         "brand": "Jomeer",
         "name": "Jomeer Body Butter Vanilia",
         "category": "Body Care",
-        "unit": "قطعة 200 ml",
+        "unit": " 200 ml",
         "image": "images/products/Jomeer Body Butter Vanilia.webp",
         "prices": {
             "LB": 29.0,
@@ -441,10 +441,10 @@ const PRODUCTS = [
     {
         "id": "MA-Body Butter-Green",
         "brand": "Magic Aura",
-        "name": "Magic Aura Body Butter Green 200 ml",
+        "name": "Magic Aura Body Butter Green ",
         "category": "Body Care",
-        "unit": "قطعة 200 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 200 ml",
+        "image": "images/products/Magic Aura Body Butter Red.webp",
         "prices": {
             "LB": 30.0,
             "SY": null,
@@ -456,10 +456,10 @@ const PRODUCTS = [
     {
         "id": "MA-Body Butter-Yellow",
         "brand": "Magic Aura",
-        "name": "Magic Aura Body Butter Yellow 200 ml",
+        "name": "Magic Aura Body Butter Yellow ",
         "category": "Body Care",
-        "unit": "قطعة 200 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 200 ml",
+        "image": "images/products/Magic Aura Body Butter Red.webp",
         "prices": {
             "LB": 30.0,
             "SY": null,
@@ -471,10 +471,10 @@ const PRODUCTS = [
     {
         "id": "MA-Body Butter-White",
         "brand": "Magic Aura",
-        "name": "Magic Aura Body Butter White 200 ml",
+        "name": "Magic Aura Body Butter White ",
         "category": "Body Care",
-        "unit": "قطعة 200 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 200 ml",
+        "image": "images/products/Magic Aura Body Butter Red.webp",
         "prices": {
             "LB": 30.0,
             "SY": null,
@@ -486,10 +486,10 @@ const PRODUCTS = [
     {
         "id": "MA-Body Serum-Red",
         "brand": "Magic Aura",
-        "name": "Magic Aura Body Serum Red 50 ml",
+        "name": "Magic Aura Body Serum Red ",
         "category": "Body Care",
-        "unit": "قطعة 50 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 50 ml",
+        "image": "images/products/Magic Aura Body Serum White.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -501,10 +501,10 @@ const PRODUCTS = [
     {
         "id": "MA-Body Serum-Green",
         "brand": "Magic Aura",
-        "name": "Magic Aura Body Serum Green 50 ml",
+        "name": "Magic Aura Body Serum Green ",
         "category": "Body Care",
-        "unit": "قطعة 50 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 50 ml",
+        "image": "images/products/Magic Aura Body Serum White.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -516,10 +516,10 @@ const PRODUCTS = [
     {
         "id": "MA-Body Serum-Yellow",
         "brand": "Magic Aura",
-        "name": "Magic Aura Body Serum Yellow 50 ml",
+        "name": "Magic Aura Body Serum Yellow",
         "category": "Body Care",
-        "unit": "قطعة 50 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 50 ml",
+        "image": "images/products/Magic Aura Body Serum White.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -531,10 +531,10 @@ const PRODUCTS = [
     {
         "id": "MA-Body Serum-White",
         "brand": "Magic Aura",
-        "name": "Magic Aura Body Serum White 50 ml",
+        "name": "Magic Aura Body Serum White ",
         "category": "Body Care",
-        "unit": "قطعة 50 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 50 ml",
+        "image": "images/products/Magic Aura Body Serum White.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -548,8 +548,8 @@ const PRODUCTS = [
         "brand": "Medicube",
         "name": "Medicube zero foam cleanser 120 g",
         "category": "Skincare",
-        "unit": "قطعة 120 g",
-        "image": "images/products/placeholder.webp",
+        "unit": " 120 g",
+        "image": "images/products/Magic Aura Body Serum White.webp",
         "prices": {
             "LB": 22.0,
             "SY": null,
@@ -591,10 +591,10 @@ const PRODUCTS = [
     {
         "id": "LU-Nila-Mask-100",
         "brand": "Luméra",
-        "name": "Luméra Blue Nila & Argan Mask 100 ml",
+        "name": "Luméra Blue Nila & Argan Mask ",
         "category": "Bath & Body",
-        "unit": "قطعة 100 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 100 ml",
+        "image": "images/products/Luméra Blue Nila & Argan Mask.webp",
         "prices": {
             "LB": 25.0,
             "SY": null,
@@ -817,10 +817,10 @@ const PRODUCTS = [
     {
         "id": "LU-Barrier-Cream",
         "brand": "Luméra",
-        "name": "Luméra Barrier Rash Cream 30 ml",
+        "name": "Luméra Barrier Rash Cream ",
         "category": "Body Care",
-        "unit": "قطعة 30 ml",
-        "image": "images/products/placeholder.webp",
+        "unit": " 30 ml",
+        "image": "images/products/Magic Aura Body Serum White.webp",
         "prices": {
             "LB": 9.0,
             "SY": null,
@@ -967,7 +967,7 @@ const PRODUCTS = [
     {
         "id": "LR-Male-with sticker",
         "brand": "Loréve",
-        "name": "Loréve Male (with sticker) (kung of seduccion )  ",
+        "name": "Loréve Male  ",
         "category": "Perfumes",
         "unit": " 60 ml",
         "image": "images/products/Loréve Male (with sticker) (kung of seduccion).webp",
@@ -980,24 +980,9 @@ const PRODUCTS = [
         }
     },
     {
-        "id": "LR-Male-without  sticker",
+        "id": "LR-Unisex-without sticker",
         "brand": "Loréve",
-        "name": "Loréve Male (without  sticker) (bad boy electric ) 60 ml",
-        "category": "Perfumes",
-        "unit": "قطعة 60 ml",
-        "image": "images/products/placeholder.webp",
-        "prices": {
-            "LB": 9.99,
-            "SY": null,
-            "KW": null,
-            "JO": null,
-            "EG": null
-        }
-    },
-    {
-        "id": "LR-Unisex-with sticker",
-        "brand": "Loréve",
-        "name": "Loreve Unisex (with sticker)(Thursday valentine) ",
+        "name": "Loréve Unisex ",
         "category": "Perfumes",
         "unit": " 60 ml",
         "image": "images/products/Loreve Unisex (with sticker)(Thursday valentine) 60 ml.webp",
@@ -1010,42 +995,12 @@ const PRODUCTS = [
         }
     },
     {
-        "id": "LR-Unisex-without sticker",
+        "id": "LR-Femme-without sticker",
         "brand": "Loréve",
-        "name": "Loréve Unisex (without  sticker) (baqarat rouge) 60 ml",
-        "category": "Perfumes",
-        "unit": "قطعة 60 ml",
-        "image": "images/products/placeholder.webp",
-        "prices": {
-            "LB": 9.99,
-            "SY": null,
-            "KW": null,
-            "JO": null,
-            "EG": null
-        }
-    },
-    {
-        "id": "LR-Femme-with sticke",
-        "brand": "Loréve",
-        "name": "Loréve Femme (with sticker) ( killer queen )  ",
+        "name": "Loréve Femme ",
         "category": "Perfumes",
         "unit": " 60 ml",
         "image": "images/products/Loréve Femme (with sticker) (killerqueen ).webp",
-        "prices": {
-            "LB": 9.99,
-            "SY": null,
-            "KW": null,
-            "JO": null,
-            "EG": null
-        }
-    },
-    {
-        "id": "LR-Femme-without sticker",
-        "brand": "Loréve",
-        "name": "Loréve Femme (without  sticker) ( kenzo flower) 60 ml",
-        "category": "Perfumes",
-        "unit": "قطعة 60 ml",
-        "image": "images/products/placeholder.webp",
         "prices": {
             "LB": 9.99,
             "SY": null,

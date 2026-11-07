@@ -1753,3 +1753,22 @@ body.bys-settings-open #settingsView .settings-links { gap: 10px; }
   color:#fff!important;font:700 23px/1 Arial,sans-serif!important;
 }
 #productsView .product-card .add-cart:disabled, #favoritesView .product-card .add-cart:disabled {background:#e9d6df!important;}
+
+/* BYS: four delicate product rows on the welcome screen; cards elsewhere unchanged. */
+.country-screen .welcome-track-fourth { animation-direction: reverse; animation-duration: 35s; }
+@media (max-width: 600px) {
+  .country-screen .welcome-showcase { padding: 4px 0 0; }
+  .country-screen .welcome-track { margin-bottom: 5px; }
+  .country-screen .welcome-marquee-set { gap: 7px; padding-right: 7px; }
+  .country-screen .welcome-product-tile {
+    width: clamp(49px, min(15.5vw, 8.3dvh), 68px);
+    height: clamp(49px, min(15.5vw, 8.3dvh), 68px);
+    border-radius: 14px;
+  }
+  .country-screen .welcome-product-tile img { padding: 4px; }
+  .country-screen .welcome-form-area { flex: 1 0 auto; padding: 6px 0 12px; }
+}
+@media (max-width: 600px) and (max-height: 670px) {
+  .country-screen .welcome-product-tile { width: 47px; height: 47px; }
+  .country-screen .welcome-track { margin-bottom: 3px; }
+}
