@@ -489,7 +489,20 @@ function renderAll() {
     renderCart();
 }
 
-function showView(name) {
+// Browser/Android back button follows the shop's internal pages.
+// Keep the original URL unchanged (GitHub Pages compatible).
+const BYS_HISTORY_KEY = "bysShopView";
+try { history.replaceState({ ...(history.state || {}), [BYS_HISTORY_KEY]: "home" }, "", location.href); } catch (_) {}
+window.addEventListener("popstate", (event) => {
+    const destination = event.state && event.state[BYS_HISTORY_KEY];
+    showView(destination && document.getElementById(destination + "View") ? destination : "home", false);
+});
+
+function showView(name, addHistory = true) {
+    if (!document.getElementById(name + "View")) return;
+    if (addHistory && name !== currentView) {
+        try { history.pushState({ [BYS_HISTORY_KEY]: name }, "", location.href); } catch (_) {}
+    }
     currentView = name;
     document.body.classList.toggle("bys-settings-open", name === "settings");
     document.querySelectorAll(".view").forEach((view) => view.classList.add("hidden"));
