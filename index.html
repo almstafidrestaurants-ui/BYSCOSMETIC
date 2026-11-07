@@ -6,6 +6,17 @@
     <meta name="theme-color" content="#f9d5e5">
     <meta name="description" content="BYS Cosmetics - Discover your beauty essentials.">
     <title>BYS Cosmetics | Beauty, Elevated</title>
+    <script>
+      // Hide the welcome screen before first paint for returning shoppers.
+      try {
+        const savedCountry = JSON.parse(localStorage.getItem("bys-country"));
+        const savedPhone = JSON.parse(localStorage.getItem("bys-phone-local"));
+        if (["LB", "SY", "JO", "KW", "EG"].includes(savedCountry) && typeof savedPhone === "string" && savedPhone.trim()) {
+          document.documentElement.classList.add("bys-returning-shopper");
+        }
+      } catch (error) { /* New visitor: show the welcome screen. */ }
+    </script>
+    <style>html.bys-returning-shopper #countryScreen { display: none !important; }</style>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/slide-1.webp" fetchpriority="high">
     <link rel="stylesheet" href="style.css?v=welcome4">

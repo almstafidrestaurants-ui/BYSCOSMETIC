@@ -149,6 +149,7 @@ function updateWelcomeCountry(code) {
 
 // شاشة الدخول تظهر أول زيارة، أو عند طلب تغيير البلد من المتجر
 function showCountryScreen() {
+    document.documentElement.classList.remove("bys-returning-shopper");
     $("#app").classList.add("hidden");
     $("#countryScreen").classList.remove("hidden");
     $("#roleScreen").classList.add("hidden");
@@ -203,6 +204,7 @@ function selectCountry(code) {
     $("#countryScreen").classList.add("hidden");
     $("#roleScreen").classList.add("hidden");
     $("#app").classList.remove("hidden");
+    document.documentElement.classList.add("bys-returning-shopper");
     const selected = COUNTRIES.find((country) => country.code === code);
     $("#changeCountry").textContent = `${selected.flag} ${selected.name} ▾`;
     renderAll();
