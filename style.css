@@ -1797,3 +1797,24 @@ body.bys-settings-open #settingsView .settings-links { gap: 10px; }
 #cartSummary > div:first-child > :last-child { white-space: nowrap; text-align: right; }
 #cartSummary .consultant-total-line { font-size: 16px; }
 body.bys-cart-open #cartFeedback { display: none !important; }
+
+/* BYS manual Whish transfer instructions */
+#paymentOptions .whish-manual-box { min-width:0; overflow-wrap:anywhere; color:#39212e; }
+#paymentOptions .whish-manual-box p { margin:10px 0; font-size:13px; line-height:1.55; }
+#paymentOptions .whish-account { font-weight:800; color:#b72966; }
+#paymentOptions .whish-number { font-weight:800; font-size:19px!important; letter-spacing:.3px; }
+#paymentOptions button.whish-copy { display:inline-flex; width:auto; max-width:100%; min-height:42px; padding:10px 15px; background:#cf2d72; color:#fff; border:0; border-radius:11px; font-size:13px; }
+
+/* Clean, inline Whish transfer card directly beneath the Whish option */
+#paymentOptions .payment-method-list { display:flex; flex-direction:column; gap:9px; }
+#paymentOptions .payment-selection { margin: -2px 0 5px; padding: 0; background: transparent; border: 0; border-radius: 17px; overflow: hidden; }
+#paymentOptions .payment-selection[hidden] { display:none!important; }
+#paymentOptions .whish-manual-box { background:linear-gradient(160deg,#fff9fc,#fff0f6); border:1px solid #f2c9db; border-radius:16px; padding:17px 16px; box-shadow:0 5px 16px rgba(170,48,98,.06); }
+#paymentOptions .whish-transfer-heading { color:#8b2448; font-size:15px; font-weight:800; margin-bottom:16px; }
+#paymentOptions .whish-transfer-caption { display:block; color:#987084; font-size:11px; font-weight:650; margin-bottom:3px; }
+#paymentOptions .whish-transfer-amount { color:#bd2866; font-size:27px; font-weight:850; letter-spacing:-.5px; margin:0 0 15px; }
+#paymentOptions .whish-account { font-size:14px; margin:0 0 2px; }
+#paymentOptions .whish-number { font-size:19px!important; margin:2px 0 13px; color:#351c2b; }
+#paymentOptions button.whish-copy { display:flex; justify-content:center; width:100%; min-height:44px; background:#cf2d72; color:white; border-radius:12px; font-weight:750; }
+#paymentOptions .whish-manual-box p.whish-transfer-help { margin:13px 0 8px; font-size:12px; color:#664c5b; line-height:1.6; }
+#paymentOptions .whish-manual-box p.whish-transfer-warning { margin:0; padding-top:10px; border-top:1px solid #f0d8e2; font-size:11px; color:#9b5774; line-height:1.55; }

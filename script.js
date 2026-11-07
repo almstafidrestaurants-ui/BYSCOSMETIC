@@ -429,11 +429,11 @@ function renderCart() {
           <p class="payment-intro">Select how you would like to pay.</p>
           <div class="payment-method-list" role="group" aria-label="Payment methods">
             <button class="payment-method" data-payment="Visa" type="button"><span class="payment-mark">VISA</span><span class="payment-label">Visa / Card<small>Secure card checkout</small></span><span class="payment-chevron">›</span></button>
-            <button class="payment-method" data-payment="Whish" type="button"><span class="payment-mark">W</span><span class="payment-label">Whish<small>Pay with Whish</small></span><span class="payment-chevron">›</span></button>
+            <button class="payment-method" data-payment="Whish" type="button"><span class="payment-mark">W</span><span class="payment-label">Whish<small>Manual transfer</small></span><span class="payment-chevron">›</span></button>
             <button class="payment-method" data-payment="PayPal" type="button"><span class="payment-mark">P</span><span class="payment-label">PayPal<small>Pay using PayPal</small></span><span class="payment-chevron">›</span></button>
           </div>
           <div id="paymentSelection" class="payment-selection" role="status" aria-live="polite" hidden></div>
-          <p class="payment-security-note">Payment is not active until a secure merchant checkout is connected. No charge will be made on this website yet.</p>
+          <p class="payment-security-note">Whish is a manual transfer. Orders are not marked paid automatically. Visa and PayPal are not connected.</p>
         </div>` : "";
 }
 
@@ -657,6 +657,15 @@ function showCartFeedback() {
         document.getElementById("paymentOptions").scrollIntoView({behavior:"smooth", block:"nearest"});
         return;
     }
+    if (button.dataset.copyWhish) {
+        const number = button.dataset.copyWhish;
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(number).then(() => showToast("Whish number copied")).catch(() => showToast("Number: " + number));
+        } else {
+            showToast("Whish number: " + number);
+        }
+        return;
+    }
     if (button.dataset.payment) {
         const method = button.dataset.payment;
         document.querySelectorAll(".payment-method").forEach(item => {
@@ -665,8 +674,28 @@ function showCartFeedback() {
             item.setAttribute("aria-pressed", String(selected));
         });
         const panel = document.getElementById("paymentSelection");
+        // Show transfer details directly beneath the selected Whish method.
+        button.insertAdjacentElement("afterend", panel);
         panel.hidden = false;
-        panel.textContent = method + " selected. Secure payment setup is required before checkout can be completed.";
+        if (method === "Whish") {
+            const items = PRODUCTS.filter(product => cart[product.id] > 0);
+            const pricing = consultantCartPricing(items);
+            const currency = COUNTRIES.find(c => c.code === countryCode)?.currency || "USD";
+            const amount = new Intl.NumberFormat("en-US", {style:"currency", currency}).format(pricing.total);
+            panel.innerHTML = `<div class="whish-manual-box">
+                <div class="whish-transfer-heading">Whish transfer details</div>
+                <span class="whish-transfer-caption">Amount to transfer</span>
+                <div class="whish-transfer-amount">${escapeHtml(amount)}</div>
+                <span class="whish-transfer-caption">Send to</span>
+                <div class="whish-account">Bys Wish Account</div>
+                <div class="whish-number" dir="ltr">+961 81 394 916</div>
+                <button type="button" class="whish-copy" data-copy-whish="+96181394916">Copy Whish number</button>
+                <p class="whish-transfer-help">Open Whish, transfer the exact amount to this number, and keep the receipt.</p>
+                <p class="whish-transfer-warning">Manual payment only. The store owner must verify your transfer before confirming your order.</p>
+            </div>`;
+        } else {
+            panel.textContent = method + " is not connected yet. No payment can be made using this option.";
+        }
         return;
     }
     if (button.dataset.settings) return showToast(button.dataset.settings + " page is coming soon");
