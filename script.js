@@ -401,11 +401,17 @@ function renderCart() {
     $("#cartSummary").innerHTML = items.length ? `<div><span>Subtotal</span><span>${formatted}</span></div>
         <p class="small-note">Complete your account before checkout.</p>
         <button class="checkout" id="checkoutButton">Continue to payment</button>
-        <div id="paymentOptions" class="payment-options" hidden><h3>Choose payment method</h3>
-        <button data-payment="Visa" type="button"><span class="payment-mark">VISA</span> Visa <small>Not connected</small></button>
-        <button data-payment="Whish" type="button"><span class="payment-mark">W</span> Whish <small>Not connected</small></button>
-        <button data-payment="PayPal" type="button"><span class="payment-mark">P</span> PayPal <small>Not connected</small></button>
-        <p class="small-note">Payments and automatic order emails require a secure backend. No charge is made here.</p></div>` : "";
+        <div id="paymentOptions" class="payment-options" hidden>
+          <h3>Choose payment method</h3>
+          <p class="payment-intro">Select how you would like to pay.</p>
+          <div class="payment-method-list" role="group" aria-label="Payment methods">
+            <button class="payment-method" data-payment="Visa" type="button"><span class="payment-mark">VISA</span><span class="payment-label">Visa / Card<small>Secure card checkout</small></span><span class="payment-chevron">›</span></button>
+            <button class="payment-method" data-payment="Whish" type="button"><span class="payment-mark">W</span><span class="payment-label">Whish<small>Pay with Whish</small></span><span class="payment-chevron">›</span></button>
+            <button class="payment-method" data-payment="PayPal" type="button"><span class="payment-mark">P</span><span class="payment-label">PayPal<small>Pay using PayPal</small></span><span class="payment-chevron">›</span></button>
+          </div>
+          <div id="paymentSelection" class="payment-selection" role="status" aria-live="polite" hidden></div>
+          <p class="payment-security-note">Payment is not active until a secure merchant checkout is connected. No charge will be made on this website yet.</p>
+        </div>` : "";
 }
 
 
@@ -613,7 +619,18 @@ function showCartFeedback() {
         document.getElementById("paymentOptions").scrollIntoView({behavior:"smooth", block:"nearest"});
         return;
     }
-    if (button.dataset.payment) return showToast(button.dataset.payment + " secure payment is not connected yet");
+    if (button.dataset.payment) {
+        const method = button.dataset.payment;
+        document.querySelectorAll(".payment-method").forEach(item => {
+            const selected = item === button;
+            item.classList.toggle("is-selected", selected);
+            item.setAttribute("aria-pressed", String(selected));
+        });
+        const panel = document.getElementById("paymentSelection");
+        panel.hidden = false;
+        panel.textContent = method + " selected. Secure payment setup is required before checkout can be completed.";
+        return;
+    }
     if (button.dataset.settings) return showToast(button.dataset.settings + " page is coming soon");
     if (button.dataset.action === "menu") return showView("settings");
 });
