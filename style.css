@@ -1778,3 +1778,22 @@ body.bys-settings-open #settingsView .settings-links { gap: 10px; }
 #cartSummary .consultant-discount-line span{max-width:72%;line-height:1.5;color:#8b2448}
 #cartSummary .consultant-discount-line strong{white-space:nowrap;color:#cc3168}
 #cartSummary .consultant-total-line{font-size:16px;color:#8b2448}
+
+/* BYS: clean, readable consultant totals on narrow mobile screens. */
+#cartSummary { padding: 16px; }
+#cartSummary > div:first-child,
+#cartSummary .consultant-discount-line,
+#cartSummary .consultant-total-line {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 13px;
+  line-height: 1.4;
+}
+#cartSummary .consultant-discount-line span { max-width: none; min-width: 0; }
+#cartSummary .consultant-discount-line strong,
+#cartSummary .consultant-total-line strong,
+#cartSummary > div:first-child > :last-child { white-space: nowrap; text-align: right; }
+#cartSummary .consultant-total-line { font-size: 16px; }
+body.bys-cart-open #cartFeedback { display: none !important; }

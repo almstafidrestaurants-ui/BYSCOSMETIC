@@ -418,8 +418,8 @@ function renderCart() {
     const currency = COUNTRIES.find((country) => country.code === countryCode)?.currency || "USD";
     const money = (amount) => new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
     const discountDetails = pricing.consultant ? `
-        <div class="consultant-discount-line"><span>Consultant discount (regular items: ${Math.round(pricing.tierRate * 100)}%; Magic Aura / Loréve: 15%)</span><strong>−${money(pricing.discount)}</strong></div>
-        <div class="consultant-total-line"><strong>Total after discount</strong><strong>${money(pricing.total)}</strong></div>` :
+        <div class="consultant-discount-line"><span>Consultant discounts</span><strong>−${money(pricing.discount)}</strong></div>
+        <div class="consultant-total-line"><span>Total</span><strong>${money(pricing.total)}</strong></div>` :
         `<div class="consultant-total-line"><strong>Total</strong><strong>${money(pricing.total)}</strong></div>`;
     $("#cartSummary").innerHTML = items.length ? `<div><span>Subtotal</span><span>${money(pricing.subtotal)}</span></div>${discountDetails}
         <p class="small-note">Complete your account before checkout.</p>
@@ -528,6 +528,7 @@ function showView(name, addHistory = true) {
     }
     currentView = name;
     document.body.classList.toggle("bys-settings-open", name === "settings");
+    document.body.classList.toggle("bys-cart-open", name === "cart");
     document.querySelectorAll(".view").forEach((view) => view.classList.add("hidden"));
     const target = $("#" + name + "View");
     if (!target) return;
