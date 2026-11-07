@@ -447,6 +447,8 @@ function normalizeNationalPhone(value, code) {
 }
 const PHONE_HINTS = {LB:"03 123 456 or 71 123 456", SY:"9XXXXXXXX", JO:"7XXXXXXXX", KW:"5XXXXXXX", EG:"1XXXXXXXXX"};
 const PROFILE_KEY = "bys-customer-profile";
+// Remember when the account form was opened from checkout.
+let returnToCheckoutAfterProfile = false;
 function getCustomerProfile() { return loadSaved(PROFILE_KEY, {}); }
 function profileIsComplete(profile = getCustomerProfile()) {
     const phone = normalizeNationalPhone(profile.phone, countryCode);
@@ -482,7 +484,17 @@ document.getElementById("customerProfileForm").addEventListener("submit", event 
     error.hidden = true;
     save(PROFILE_KEY, profile);
     showToast("Account details saved ✓");
-    if (currentView === "cart") renderCart();
+    if (returnToCheckoutAfterProfile) {
+        returnToCheckoutAfterProfile = false;
+        showView("cart");
+        const paymentOptions = document.getElementById("paymentOptions");
+        if (paymentOptions) {
+            paymentOptions.hidden = false;
+            paymentOptions.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+    } else if (currentView === "cart") {
+        renderCart();
+    }
 });
 
 document.getElementById("useCurrentLocation").addEventListener("click", () => {
@@ -523,6 +535,7 @@ window.addEventListener("popstate", (event) => {
 
 function showView(name, addHistory = true) {
     if (!document.getElementById(name + "View")) return;
+    if (returnToCheckoutAfterProfile && name !== "account" && name !== "cart") returnToCheckoutAfterProfile = false;
     if (addHistory && name !== currentView) {
         try { history.pushState({ [BYS_HISTORY_KEY]: name }, "", location.href); } catch (_) {}
     }
@@ -652,7 +665,11 @@ function showCartFeedback() {
         return;
     }
     if (button.id === "checkoutButton") {
-        if (!profileIsComplete()) { showToast("Complete your account information first"); return showView("account"); }
+        if (!profileIsComplete()) {
+            returnToCheckoutAfterProfile = true;
+            showToast("Complete your account information first");
+            return showView("account");
+        }
         document.getElementById("paymentOptions").hidden = false;
         document.getElementById("paymentOptions").scrollIntoView({behavior:"smooth", block:"nearest"});
         return;
