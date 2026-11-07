@@ -383,6 +383,23 @@ function renderFavorites() {
     $("#favoriteProducts").innerHTML = list.length ? list.map(productCard).join("") : `<p class="empty">Your favorites will appear here ♡</p>`;
 }
 
+// Consultant discounts: tier is based on the full cart subtotal before discounts.
+// Magic Aura and Loreve items always receive 15% instead of the tier rate.
+function isSpecialConsultantBrand(product) {
+    const brand = String(product.brand || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "");
+    return brand === "magicaura" || brand === "loreve";
+}
+function consultantCartPricing(items) {
+    const subtotal = items.reduce((sum, product) => sum + (priceOf(product) ?? 0) * cart[product.id], 0);
+    const consultant = userRole === "consultant" && countryCode === "LB";
+    const tierRate = subtotal >= 75 ? 0.30 : subtotal >= 50 ? 0.25 : 0.20;
+    const discount = consultant ? items.reduce((sum, product) => {
+        const rate = isSpecialConsultantBrand(product) ? 0.15 : tierRate;
+        return sum + (priceOf(product) ?? 0) * cart[product.id] * rate;
+    }, 0) : 0;
+    return { subtotal, discount, total: Math.max(0, subtotal - discount), tierRate, consultant };
+}
+
 function renderCart() {
     const items = PRODUCTS.filter((product) => cart[product.id] > 0);
     const count = items.reduce((sum, product) => sum + cart[product.id], 0);
@@ -397,10 +414,14 @@ function renderCart() {
                     <span>${cart[product.id]}</span><button data-qty="${escapeHtml(product.id)}" data-delta="1">+</button></div>
             </div>
         </div>`).join("") : `<p class="empty">Your shopping bag is empty.</p>`;
-    const total = items.reduce((sum, product) => sum + (priceOf(product) ?? 0) * cart[product.id], 0);
+    const pricing = consultantCartPricing(items);
     const currency = COUNTRIES.find((country) => country.code === countryCode)?.currency || "USD";
-    const formatted = new Intl.NumberFormat("en-US", { style: "currency", currency }).format(total);
-    $("#cartSummary").innerHTML = items.length ? `<div><span>Subtotal</span><span>${formatted}</span></div>
+    const money = (amount) => new Intl.NumberFormat("en-US", { style: "currency", currency }).format(amount);
+    const discountDetails = pricing.consultant ? `
+        <div class="consultant-discount-line"><span>Consultant discount (regular items: ${Math.round(pricing.tierRate * 100)}%; Magic Aura / Loréve: 15%)</span><strong>−${money(pricing.discount)}</strong></div>
+        <div class="consultant-total-line"><strong>Total after discount</strong><strong>${money(pricing.total)}</strong></div>` :
+        `<div class="consultant-total-line"><strong>Total</strong><strong>${money(pricing.total)}</strong></div>`;
+    $("#cartSummary").innerHTML = items.length ? `<div><span>Subtotal</span><span>${money(pricing.subtotal)}</span></div>${discountDetails}
         <p class="small-note">Complete your account before checkout.</p>
         <button class="checkout" id="checkoutButton">Continue to payment</button>
         <div id="paymentOptions" class="payment-options" hidden>

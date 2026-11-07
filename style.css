@@ -1772,3 +1772,9 @@ body.bys-settings-open #settingsView .settings-links { gap: 10px; }
   .country-screen .welcome-product-tile { width: 47px; height: 47px; }
   .country-screen .welcome-track { margin-bottom: 3px; }
 }
+
+/* Consultant pricing - compact mobile-friendly summary */
+#cartSummary .consultant-discount-line,#cartSummary .consultant-total-line{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:10px 0;border-top:1px solid #f1dce5;font-size:13px}
+#cartSummary .consultant-discount-line span{max-width:72%;line-height:1.5;color:#8b2448}
+#cartSummary .consultant-discount-line strong{white-space:nowrap;color:#cc3168}
+#cartSummary .consultant-total-line{font-size:16px;color:#8b2448}
