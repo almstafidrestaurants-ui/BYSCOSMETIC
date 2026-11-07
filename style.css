@@ -1721,3 +1721,8 @@ body.bys-settings-open #settingsView .settings-links { gap: 10px; }
 #paymentOptions .payment-selection { margin-top: 12px; padding: 12px; border: 1px solid #f0cbdc; border-radius: 12px; background: #fff; color: #7a294c; font-size: 12px; line-height: 1.5; }
 #paymentOptions .payment-security-note { margin: 12px 0 0; color: #846b78; font-size: 11px; line-height: 1.5; }
 @media (max-width: 600px) { #paymentOptions .payment-method { min-height: 62px; } }
+
+/* Uniform optimized product images: card dimensions remain unchanged. */
+.product-photo > img {object-fit:contain;object-position:center;}
+#homeView .showcase-card .product-photo > img,
+.category-showcases .showcase-card .product-photo > img {width:94%;height:94%;object-fit:contain;object-position:center;}
