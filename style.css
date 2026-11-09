@@ -223,7 +223,7 @@ main { padding: 17px 22px 35px; }
 /* صور التصنيفات */
 .category-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 17px 12px; }
 .category-item { border: 0; background: transparent; text-align: center; color: #2b1d25; padding: 0; min-width: 0; }
-.category-item img { width: min(100%, 112px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 0 0 1px #f5d8e3; transition: transform .2s; }
+.category-item img { width: min(88%, 99px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 0 0 1px #f5d8e3; transition: transform .2s; }
 .category-item:hover img { transform: scale(1.05); }
 .category-item span { display: block; font-size: 12px; font-weight: 700; margin-top: 7px; }
 .needs-banner { margin-top: 28px; padding: 22px 18px 19px; border-radius: 23px; background: linear-gradient(115deg, #f9c6db, #f9dfeb 70%, #f5b4d0); }
@@ -346,7 +346,7 @@ main { padding: 17px 22px 35px; }
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 /* ==================================================
@@ -378,7 +378,7 @@ main { padding: 17px 22px 35px; }
     .brand img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
 
     /* تقريب أيقونات القلب والسلة والقائمة */
@@ -1836,7 +1836,7 @@ body.bys-cart-open #cartFeedback { display: none !important; }
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 html:has(#openingScreen[open]) { overflow: hidden; }

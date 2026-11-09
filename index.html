@@ -8,17 +8,17 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=worldwide1">
+    <link rel="stylesheet" href="style.css?v=worldwide3">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
         <img id="openingImage" alt="">
         <button id="openingSkip" type="button" aria-label="Skip opening screen">
             <span lang="ar">تخطّي</span>
-            <span id="openingCountdown" aria-hidden="true">10</span>
+            <span id="openingCountdown" aria-hidden="true">5</span>
         </button>
     </dialog>
-    <script src="opening.js?v=2"></script>
+    <script src="opening.js?v=3"></script>
     <!-- شاشة الترحيب: أربعة صفوف متحركة من صور المنتجات -->
     <section class="country-screen hidden" id="countryScreen">
         <div class="welcome-showcase" aria-label="Beauty products showcase">
@@ -29,7 +29,7 @@
         </div>
         <div class="welcome-form-area">
             <div class="welcome-logo">
-                <img src="images/bys-silver.webp" alt="BYS Cosmetics" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+                <img src="images/bys-logo.jpeg" alt="BYS Cosmetics" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
                 <span hidden>BYS</span>
             </div>
             <h1>Welcome to BYS Cosmetics</h1>
@@ -55,7 +55,7 @@
     <!-- شاشة اختيار نوع المستخدم: تظهر مرة واحدة -->
     <section class="role-screen hidden" id="roleScreen" aria-labelledby="roleTitle">
         <div class="role-panel">
-            <img class="role-logo" src="images/bys-silver.webp" alt="BYS Cosmetics">
+            <img class="role-logo" src="images/bys-logo.jpeg" alt="BYS Cosmetics">
             <h1 id="roleTitle">How will you shop with us?</h1>
             <p>Choose your account type to continue</p>
             <div class="role-options">
@@ -89,12 +89,16 @@
     <!-- صورة الشعار الأصلية -->
     <img
         id="logoImage"
-        src="images/bys-silver.webp"
+        src="images/bys-logo.jpeg"
         alt="BYS Cosmetics"
     >
 </button>
 
                 <div class="header-actions">
+                    <button class="icon-button" type="button" data-view="categories" aria-label="Categories" title="Categories">
+                        <i data-lucide="layout-grid" aria-hidden="true"></i>
+                    </button>
+
                     <!-- كل أيقونة عبارة عن صورة مستقلة في مجلد images/ui -->
                     <button class="icon-button" data-view="favorites" aria-label="Favorites">
                         <img class="header-icon" src="images/ui/heart.svg" alt="">

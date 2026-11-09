@@ -2,6 +2,7 @@
     const screen = document.getElementById("openingScreen");
     const image = document.getElementById("openingImage");
     const imageCount = 10;
+    const displayDuration = 5000;
     const storageKey = "bys-last-opening-image";
     let index = Math.floor(Math.random() * imageCount);
 
@@ -37,7 +38,7 @@
     image.addEventListener("load", () => {
         if (!screen.open) return;
         clearTimeout(loadTimeout);
-        const end = performance.now() + 10000;
+        const end = performance.now() + displayDuration;
         timer = setInterval(() => {
             const seconds = Math.max(0, Math.ceil((end - performance.now()) / 1000));
             countdown.textContent = String(seconds);
