@@ -308,6 +308,10 @@ function imageOf(product) {
     return product.image || ("images/products/" + encodeURIComponent(product.id) + ".png");
 }
 
+function cardImageOf(originalImage) {
+    return originalImage.replace(/^images\/products\/([^/]+\.webp)$/, "images/products/card/$1");
+}
+
 // الصورة البديلة مؤقتة إلى أن تضيف صور المنتجات الحقيقية
 function sampleOf(product) {
     const category = categoryOf(product);
@@ -347,8 +351,8 @@ function renderWelcomeShowcase() {
     const tiles = chosen.slice(0, 20);
     const renderTile = (product) => `
         <div class="welcome-product-tile">
-            <img src="${escapeHtml(imageOf(product))}"
-                 data-fallback="${escapeHtml(sampleOf(product))}"
+            <img src="${escapeHtml(cardImageOf(imageOf(product)))}"
+                 data-fallback="${escapeHtml(imageOf(product))}"
                  alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" fetchpriority="low">
         </div>`;
     const rows = [[], [], [], []];
@@ -366,6 +370,7 @@ function updateWelcomeCountry(code) {
     $("#welcomeFlag").textContent = selected.flag;
     $("#welcomeDial").textContent = selected.dial;
     $("#welcomeCountry").value = selected.code;
+    $("#welcomeCountryName").textContent = selected.name;
 }
 
 // شاشة الدخول تظهر أول زيارة، أو عند طلب تغيير البلد من المتجر
@@ -437,14 +442,41 @@ function selectCountry(code) {
 
 
 
-// تعبئة قائمة البلدان
-$("#welcomeCountry").innerHTML = COUNTRIES.map((country) =>
-    `<option value="${country.code}">${country.name}</option>`
-).join("");
+const countryPicker = $("#countryPicker");
+const countrySearch = $("#countrySearch");
+const countryResults = $("#countryResults");
+const arabicCountryNames = new Intl.DisplayNames(["ar"], { type: "region" });
 
-// تحديث البلد ورمز الاتصال
-$("#welcomeCountry").addEventListener("change", (event) => {
-    updateWelcomeCountry(event.target.value);
+function renderCountryResults() {
+    const query = countrySearch.value.trim().toLowerCase()
+        .replace(/[٠-٩]/g, digit => String(digit.charCodeAt(0) - 1632))
+        .replace(/[۰-۹]/g, digit => String(digit.charCodeAt(0) - 1776));
+    const dialQuery = query.replace(/^00/, "+").replace(/\s/g, "");
+    const matches = COUNTRIES.filter(country =>
+        country.name.toLowerCase().includes(query) ||
+        arabicCountryNames.of(country.code).includes(query) ||
+        country.code.toLowerCase().includes(query) ||
+        country.dial.startsWith(dialQuery.startsWith("+") ? dialQuery : "+" + dialQuery)
+    );
+    countryResults.innerHTML = matches.map(country => `
+        <button type="button" data-pick-country="${country.code}">
+            <span>${country.flag} ${escapeHtml(country.name)}</span><small>${country.code} · ${country.dial}</small>
+        </button>`).join("") || '<p role="status">No countries found.</p>';
+    countryResults.scrollTop = 0;
+}
+
+$("#openCountryPicker").addEventListener("click", () => {
+    countrySearch.value = "";
+    renderCountryResults();
+    countryPicker.showModal();
+});
+$("#closeCountryPicker").addEventListener("click", () => countryPicker.close());
+countrySearch.addEventListener("input", renderCountryResults);
+countryResults.addEventListener("click", event => {
+    const option = event.target.closest("[data-pick-country]");
+    if (!option) return;
+    updateWelcomeCountry(option.dataset.pickCountry);
+    countryPicker.close();
 });
 
 // استرجاع رقم الهاتف المحفوظ
@@ -516,10 +548,12 @@ function productCard(product, showcase = false) {
     const available = priceOf(product) !== null;
     const liked = favorites.includes(product.id);
     const unit = product.unit?.trim();
+    const originalImage = imageOf(product);
+    const cardImage = cardImageOf(originalImage);
     return `<article class="product-card ${showcase ? "showcase-card" : ""}">
         <div class="product-photo">
             <button type="button" class="product-image-link" data-product="${escapeHtml(product.id)}" aria-label="View details for ${escapeHtml(product.name.trim())}">
-                <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="" loading="lazy" decoding="async" fetchpriority="low">
+                <img src="${escapeHtml(cardImage)}" data-fallback="${escapeHtml(cardImage === originalImage ? sampleOf(product) : originalImage)}" alt="" loading="lazy" decoding="async" fetchpriority="low">
             </button>
             <button class="favorite ${liked ? "saved" : ""}" data-favorite="${escapeHtml(product.id)}" aria-label="Toggle favorite">${liked ? "♥" : "♡"}</button>
         </div>

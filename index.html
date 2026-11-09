@@ -8,7 +8,7 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=products1">
+    <link rel="stylesheet" href="style.css?v=countrysearch1">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
@@ -35,12 +35,13 @@
             <h1>Welcome to BYS Cosmetics</h1>
             <p class="welcome-subtitle">Your beauty destination, wherever you are.</p>
             <form id="welcomeForm" class="welcome-form">
-                <label for="welcomeCountry">Select your country</label>
-                <div class="welcome-select-wrap">
+                <label for="openCountryPicker">Select your country</label>
+                <button type="button" class="welcome-select-wrap" id="openCountryPicker" aria-haspopup="dialog">
                     <span id="welcomeFlag" aria-hidden="true">🇱🇧</span>
-                    <select id="welcomeCountry" required aria-label="Select country"></select>
+                    <span id="welcomeCountryName">Lebanon</span>
                     <span class="welcome-chevron" aria-hidden="true">⌄</span>
-                </div>
+                </button>
+                <input type="hidden" id="welcomeCountry" value="LB">
                 <label for="welcomePhone">Phone number</label>
                 <div class="welcome-phone-wrap">
                     <span id="welcomeDial">+961</span>
@@ -51,6 +52,14 @@
             </form>
         </div>
     </section>
+    <dialog id="countryPicker" aria-labelledby="countryPickerTitle">
+        <div class="country-picker-heading">
+            <h2 id="countryPickerTitle">Select your country</h2>
+            <button type="button" id="closeCountryPicker" aria-label="Close">×</button>
+        </div>
+        <input id="countrySearch" type="search" aria-label="Search countries" placeholder="Name, country code or +961" autocomplete="off" autofocus>
+        <div id="countryResults"></div>
+    </dialog>
 
     <!-- شاشة اختيار نوع المستخدم: تظهر مرة واحدة -->
     <section class="role-screen hidden" id="roleScreen" aria-labelledby="roleTitle">
@@ -243,6 +252,6 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js"></script>
-    <script src="script.js?v=products1"></script>
+    <script src="script.js?v=countrysearch1"></script>
 </body>
 </html>

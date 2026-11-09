@@ -224,7 +224,7 @@ main { padding: 17px 22px 35px; }
 .category-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 17px 12px; }
 .category-item { border: 0; background: transparent; text-align: center; color: #2b1d25; padding: 0; min-width: 0; }
 .category-item img { width: min(79.2%, 89.1px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 0 0 1px #f5d8e3; transition: transform .2s; }
-.category-item.all-categories-item img { border: 0; border-radius: 0; box-shadow: none; }
+.category-item.all-categories-item img { width: min(55.44%, 62.37px); border: 0; border-radius: 0; box-shadow: none; }
 .category-item:hover img { transform: scale(1.05); }
 .category-item span { display: block; font-size: 12px; font-weight: 700; margin-top: 7px; }
 .needs-banner { margin-top: 28px; padding: 22px 18px 19px; border-radius: 23px; background: linear-gradient(115deg, #f9c6db, #f9dfeb 70%, #f5b4d0); }
@@ -1926,7 +1926,7 @@ html:has(#openingScreen[open]) { overflow: hidden; }
     inset: 0;
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 14% 16%;
     border: 0;
     background: transparent;
     cursor: pointer;
@@ -1989,3 +1989,40 @@ html:has(#openingScreen[open]) { overflow: hidden; }
         height: clamp(56px, min(17vw, 9dvh), 76px);
     }
 }
+
+.country-screen .welcome-product-tile img { padding: 12%; }
+#openCountryPicker { width: 100%; text-align: left; cursor: pointer; }
+#welcomeCountryName { flex: 1; min-width: 0; color: #29232a; }
+#countryPicker {
+    width: min(calc(100% - 28px), 480px);
+    max-height: 85dvh;
+    margin: auto;
+    padding: 16px;
+    border: 1px solid #efd1df;
+    border-radius: 20px;
+    background: #fff9fc;
+    color: #29232a;
+}
+#countryPicker[open] { display: flex; flex-direction: column; gap: 12px; }
+#countryPicker::backdrop { background: #32172780; }
+.country-picker-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.country-picker-heading h2 { font-size: 19px; }
+#closeCountryPicker { border: 0; border-radius: 50%; width: 40px; height: 40px; background: #fce6f0; color: #76274c; font-size: 24px; cursor: pointer; }
+#countrySearch { width: 100%; padding: 12px; border: 1px solid #e9bace; border-radius: 12px; font-size: 16px; }
+#countryResults { min-height: 0; overflow: auto; }
+#countryResults button {
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    text-align: left;
+    border: 0;
+    border-bottom: 1px solid #f1dce6;
+    background: transparent;
+    cursor: pointer;
+}
+#countryResults button:hover { background: #fce6f0; }
+#countryResults small { white-space: nowrap; color: #76274c; }
