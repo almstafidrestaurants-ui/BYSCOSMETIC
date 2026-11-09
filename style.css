@@ -1818,3 +1818,77 @@ body.bys-cart-open #cartFeedback { display: none !important; }
 #paymentOptions button.whish-copy { display:flex; justify-content:center; width:100%; min-height:44px; background:#cf2d72; color:white; border-radius:12px; font-weight:750; }
 #paymentOptions .whish-manual-box p.whish-transfer-help { margin:13px 0 8px; font-size:12px; color:#664c5b; line-height:1.6; }
 #paymentOptions .whish-manual-box p.whish-transfer-warning { margin:0; padding-top:10px; border-top:1px solid #f0d8e2; font-size:11px; color:#9b5774; line-height:1.55; }
+
+#openingScreen {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #f9d5e5;
+}
+
+#openingImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+html:has(#openingScreen[open]) { overflow: hidden; }
+
+.hero-artwork { background: #f8cbdc; }
+.hero-slide.hero-artwork > img { object-fit: contain; }
+.hero-artwork-link {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    border: 0;
+    background: transparent;
+}
+.hero-artwork-link:focus-visible { outline: 3px solid #64213c; outline-offset: -4px; }
+
+#openingSkip {
+    position: absolute;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 6px 12px;
+    border: 1px solid #fff;
+    border-radius: 24px;
+    color: #fff;
+    background: #411c31;
+    font: 700 14px/1.2 system-ui, sans-serif;
+    cursor: pointer;
+}
+
+#openingCountdown {
+    display: grid;
+    place-items: center;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 50%;
+    color: #411c31;
+    background: #fff;
+    font-variant-numeric: tabular-nums;
+}
+
+.home-banner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #f8cbdc;
+}
+.home-banner > img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+#logoImage { object-fit: contain; }

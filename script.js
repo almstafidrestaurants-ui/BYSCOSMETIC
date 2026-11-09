@@ -9,14 +9,14 @@ const COUNTRIES = [
 
 // التصنيفات - يمكنك تغيير صورة كل تصنيف من المجلد images/categories
 const CATEGORIES = [
-    { name: "Skincare", image: "images/categories/skincare.webp", words: ["face", "serum", "cream", "toner", "cleanser", "eye", "collagen", "niacinamide", "vitamin c", "skin"] },
-    { name: "Body Care", image: "images/categories/body-care.webp", words: ["body", "cellulite", "stretch", "butter", "hand", "foot", "firming"] },
-    { name: "Hair Care", image: "images/categories/hair-care.webp", words: ["hair", "shampoo", "conditioner", "scalp"] },
-    { name: "Perfumes", image: "images/categories/perfumes.webp", words: ["perfume", "fragrance", "splash", "eau de"] },
-    { name: "Feminine Care", image: "images/categories/feminine-care.webp", words: ["intimate", "feminine", "vaginal"] },
-    { name: "Bath & Body", image: "images/categories/bath-and-body.webp", words: ["bath", "soap", "loofah", "scrub", "moroccan"] },
-    { name: "Sun Care", image: "images/categories/sun-care.webp", words: ["sun", "spf", "sunscreen"] },
-    { name: "Accessories", image: "images/categories/accessories.webp", words: ["accessor", "brush", "loofah"] }
+    { name: "Skincare", image: "images/categories/skincare.svg", words: ["face", "serum", "cream", "toner", "cleanser", "eye", "collagen", "niacinamide", "vitamin c", "skin"] },
+    { name: "Body Care", image: "images/categories/body-care.svg", words: ["body", "cellulite", "stretch", "butter", "hand", "foot", "firming"] },
+    { name: "Hair Care", image: "images/categories/hair-care.svg", words: ["hair", "shampoo", "conditioner", "scalp"] },
+    { name: "Perfumes", image: "images/categories/perfumes.svg", words: ["perfume", "fragrance", "splash", "eau de"] },
+    { name: "Feminine Care", image: "images/categories/feminine-care.svg", words: ["intimate", "feminine", "vaginal"] },
+    { name: "Bath & Body", image: "images/categories/bath-and-body.svg", words: ["bath", "soap", "loofah", "scrub", "moroccan"] },
+    { name: "Sun Care", image: "images/categories/sun-care.svg", words: ["sun", "spf", "sunscreen"] },
+    { name: "Accessories", image: "images/categories/accessories.svg", words: ["accessor", "brush", "loofah"] }
 ];
 
 // الحاجات الجمالية - يتم فلترة المنتجات بحسب كلمات أسمائها
@@ -36,7 +36,8 @@ const loadSaved = (key, fallback) => {
     }
 };
 
-let countryCode = loadSaved("bys-country", null);
+const savedCountry = loadSaved("bys-country", null);
+let countryCode = COUNTRIES.some(country => country.code === savedCountry) ? savedCountry : "LB";
 let cart = loadSaved("bys-cart", {});
 let favorites = loadSaved("bys-favorites", []);
 let currentView = "home";
@@ -149,7 +150,6 @@ function updateWelcomeCountry(code) {
 
 // شاشة الدخول تظهر أول زيارة، أو عند طلب تغيير البلد من المتجر
 function showCountryScreen() {
-    document.documentElement.classList.remove("bys-returning-shopper");
     $("#app").classList.add("hidden");
     $("#countryScreen").classList.remove("hidden");
     $("#roleScreen").classList.add("hidden");
@@ -204,7 +204,6 @@ function selectCountry(code) {
     $("#countryScreen").classList.add("hidden");
     $("#roleScreen").classList.add("hidden");
     $("#app").classList.remove("hidden");
-    document.documentElement.classList.add("bys-returning-shopper");
     const selected = COUNTRIES.find((country) => country.code === code);
     $("#changeCountry").textContent = `${selected.flag} ${selected.name} ▾`;
     renderAll();
@@ -760,118 +759,12 @@ document.addEventListener("error", (event) => {
 
 
 
-// صور السلايدر الستة: ضع صورك داخل images/banners بنفس الأسماء
-// category لازم يطابق اسم القسم في CATEGORIES فوق
-const HERO_BANNERS = [
-    { image: "images/banners/slide-1.webp", label: "THE BEAUTY EDIT", title: "Glow <br>Your Skin", description: "Discover your everyday radiance.", category: "Skincare" },
-    { image: "images/banners/slide-3.webp", label: "HAIR CARE EDIT", title: "Love Your Hair", description: "Beautiful hair starts with care.", category: "Hair Care" },
-    { image: "images/banners/slide-2.webp", label: "SKINCARE ESSENTIALS", title: "Your Daily Ritual", description: "Care that makes you glow.", category: "Skincare" },
-   
-    { image: "images/banners/slide-4.webp", label: "FRAGRANCE COLLECTION", title: "Your Signature Scent", description: "Find a fragrance to remember.", category: "Perfumes" },
-    { image: "images/banners/slide-5.webp", label: "BODY CARE RITUAL", title: "A Little <br> Self Care", description: "Everyday moments of indulgence.", category: "Bath & Body" },
-    { image: "images/banners/slide-6.webp", label: "BEAUTY FAVORITES", title: "Beauty <br> Your Way", description: "Explore the finishing touches.", category: "Body Care" }
-];
-
-let heroIndex = 0;
-let heroTimer = null;
-const heroSlider = $("#heroSlider");
-
-// إنشاء الصور والنصوص والنقاط من البيانات السابقة
-function createHeroSlider() {
-    $("#heroSlides").innerHTML = HERO_BANNERS.map((banner, index) => `
-        <article class="hero-slide ${index === 0 ? "is-active" : ""}" aria-hidden="${index !== 0}">
-            <img src="${banner.image}" alt="${escapeHtml(banner.category)} collection" ${index === 0 ? 'fetchpriority="high" decoding="async"' : 'loading="lazy" decoding="async"'}>
-            <div class="hero-shade"></div>
-            <div class="hero-copy">
-                <p>${escapeHtml(banner.label)}</p>
-                <h1>${escapeHtml(banner.title).replace(/&lt;br\s*\/?&gt;/gi, "<br>")}</h1>
-                <span>${escapeHtml(banner.description)}</span>
-                <button type="button" data-hero-category="${escapeHtml(banner.category)}" ${index !== 0 ? 'tabindex="-1"' : ''}>Shop Now <b>›</b></button>
-            </div>
-        </article>
-    `).join("");
-    $("#heroControls").innerHTML = HERO_BANNERS.map((banner, index) => `
-        <button type="button" class="hero-dot ${index === 0 ? "is-active" : ""}" data-slide="${index}" aria-label="Go to slide ${index + 1}" aria-current="${index === 0}"></button>
-    `).join("");
-    startHeroTimer();
-}
-
-// تبديل السلايد مع تحديث النقاط وإمكانية الوصول
-function goToHeroSlide(index) {
-    heroIndex = (index + HERO_BANNERS.length) % HERO_BANNERS.length;
-    document.querySelectorAll(".hero-slide").forEach((slide, i) => {
-        const active = i === heroIndex;
-        slide.classList.toggle("is-active", active);
-        slide.setAttribute("aria-hidden", String(!active));
-        slide.querySelector("button").tabIndex = active ? 0 : -1;
-    });
-    document.querySelectorAll(".hero-dot").forEach((dot, i) => {
-        dot.classList.toggle("is-active", i === heroIndex);
-        dot.setAttribute("aria-current", String(i === heroIndex));
-    });
-}
-
-// الانتقال كل خمس ثوانٍ، والتوقف عند مرور الماوس أو خروج الصفحة
-function stopHeroTimer() {
-    clearInterval(heroTimer);
-    heroTimer = null;
-}
-function startHeroTimer() {
-    stopHeroTimer();
-    if (document.hidden) return;
-    heroTimer = setInterval(() => {
-        if (currentView === "home" && !$("#app").classList.contains("hidden")) {
-            goToHeroSlide(heroIndex + 1);
-        }
-    }, 3000);
-}
-
-// Keep autoplay running while the pointer is over the banner.
-
-
-
-document.addEventListener("visibilitychange", () => document.hidden ? stopHeroTimer() : startHeroTimer());
-
-// أزرار السلايدر تنقلك مباشرة للقسم الصحيح
-heroSlider.addEventListener("click", (event) => {
-    const categoryButton = event.target.closest("[data-hero-category]");
-    if (categoryButton) {
-        activeFilter = categoryButton.dataset.heroCategory;
-        searchTerm = "";
-        $("#searchInput").value = "";
-        $("#productsTitle").textContent = activeFilter;
-        showView("products");
-        return;
-    }
-    const dot = event.target.closest("[data-slide]");
-    if (dot) goToHeroSlide(Number(dot.dataset.slide));
-    if (event.target.closest("#heroPrev")) goToHeroSlide(heroIndex - 1);
-    if (event.target.closest("#heroNext")) goToHeroSlide(heroIndex + 1);
-    startHeroTimer();
-});
-
-// دعم السحب بالإصبع على الموبايل
-let heroTouchX = null;
-heroSlider.addEventListener("touchstart", (event) => {
-    heroTouchX = event.changedTouches[0].clientX;
-    stopHeroTimer();
-}, { passive: true });
-heroSlider.addEventListener("touchend", (event) => {
-    if (heroTouchX !== null) {
-        const distance = event.changedTouches[0].clientX - heroTouchX;
-        if (Math.abs(distance) > 45) goToHeroSlide(heroIndex + (distance < 0 ? 1 : -1));
-    }
-    heroTouchX = null;
-    startHeroTimer();
-}, { passive: true });
-createHeroSlider();
-
 // بدء التطبيق
-if (countryCode && loadSaved("bys-phone-local", "")) {
-    selectCountry(countryCode);
-} else {
-    showCountryScreen();
-}
+const initialCountry = COUNTRIES.find(country => country.code === countryCode);
+$("#changeCountry").textContent = `${initialCountry.flag} ${initialCountry.name} ▾`;
+$("#app").classList.remove("hidden");
+renderAll();
+showView("home", false);
 
 // تسجيل Service Worker عند استخدام localhost أو HTTPS
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {

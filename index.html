@@ -6,24 +6,21 @@
     <meta name="theme-color" content="#f9d5e5">
     <meta name="description" content="BYS Cosmetics - Discover your beauty essentials.">
     <title>BYS Cosmetics | Beauty, Elevated</title>
-    <script>
-      // Hide the welcome screen before first paint for returning shoppers.
-      try {
-        const savedCountry = JSON.parse(localStorage.getItem("bys-country"));
-        const savedPhone = JSON.parse(localStorage.getItem("bys-phone-local"));
-        if (["LB", "SY", "JO", "KW", "EG"].includes(savedCountry) && typeof savedPhone === "string" && savedPhone.trim()) {
-          document.documentElement.classList.add("bys-returning-shopper");
-        }
-      } catch (error) { /* New visitor: show the welcome screen. */ }
-    </script>
-    <style>html.bys-returning-shopper #countryScreen { display: none !important; }</style>
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="preload" as="image" href="images/banners/slide-1.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=cartclean1">
+    <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
+    <link rel="stylesheet" href="style.css?v=staticbanner1">
 </head>
 <body>
+    <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
+        <img id="openingImage" alt="">
+        <button id="openingSkip" type="button" aria-label="Skip opening screen">
+            <span lang="ar">تخطّي</span>
+            <span id="openingCountdown" aria-hidden="true">10</span>
+        </button>
+    </dialog>
+    <script src="opening.js?v=2"></script>
     <!-- شاشة الترحيب: أربعة صفوف متحركة من صور المنتجات -->
-    <section class="country-screen" id="countryScreen">
+    <section class="country-screen hidden" id="countryScreen">
         <div class="welcome-showcase" aria-label="Beauty products showcase">
             <div class="welcome-track welcome-track-first" id="welcomeTrackOne"></div>
             <div class="welcome-track welcome-track-second" id="welcomeTrackTwo"></div>
@@ -32,7 +29,7 @@
         </div>
         <div class="welcome-form-area">
             <div class="welcome-logo">
-                <img src="images/LOGO.webp" alt="BYS Cosmetics" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+                <img src="images/bys-silver.webp" alt="BYS Cosmetics" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
                 <span hidden>BYS</span>
             </div>
             <h1>Welcome to BYS Cosmetics</h1>
@@ -58,7 +55,7 @@
     <!-- شاشة اختيار نوع المستخدم: تظهر مرة واحدة -->
     <section class="role-screen hidden" id="roleScreen" aria-labelledby="roleTitle">
         <div class="role-panel">
-            <img class="role-logo" src="images/LOGO.webp" alt="BYS Cosmetics">
+            <img class="role-logo" src="images/bys-silver.webp" alt="BYS Cosmetics">
             <h1 id="roleTitle">How will you shop with us?</h1>
             <p>Choose your account type to continue</p>
             <div class="role-options">
@@ -92,7 +89,7 @@
     <!-- صورة الشعار الأصلية -->
     <img
         id="logoImage"
-        src="images/LOGO.webp"
+        src="images/bys-silver.webp"
         alt="BYS Cosmetics"
     >
 </button>
@@ -136,11 +133,9 @@
         <main>
             <section class="view" id="homeView">
                 <!-- سلايدر الواجهة: الصور والعناوين يتم التحكم فيها من script.js -->
-                <section class="hero hero-slider" id="heroSlider" aria-label="Featured beauty collections" aria-roledescription="carousel">
-                    <div class="hero-slides" id="heroSlides"></div>
-                    <div class="hero-controls" id="heroControls" aria-label="Choose a slide"></div>
-                    <button class="hero-arrow hero-prev" type="button" id="heroPrev" aria-label="Previous slide">‹</button>
-                    <button class="hero-arrow hero-next" type="button" id="heroNext" aria-label="Next slide">›</button>
+                <section class="home-banner" aria-label="Featured beauty collection">
+                    <img src="images/banners/bys-home.webp" width="1364" height="768" alt="Your Beauty Ritual — Discover BYS" fetchpriority="high">
+                    <button class="hero-artwork-link" type="button" data-category="Skincare" aria-label="Discover BYS skincare"></button>
                 </section>
                 <div class="section-heading"><h2>Categories</h2><button data-view="categories">View All <span>›</span></button></div>
                 <div class="category-grid" id="homeCategories"></div>
@@ -244,6 +239,6 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js"></script>
-    <script src="script.js?v=checkoutreturn2"></script>
+    <script src="script.js?v=staticbanner1"></script>
 </body>
 </html>

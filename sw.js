@@ -1,6 +1,28 @@
 // Cache static files and images to make repeat visits faster.
-const CACHE_NAME = "bys-whish-manual-20261107-bys-discount-label-20261107-v2";
-const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./catalog.js", "./manifest.webmanifest"];
+const CACHE_NAME = "bys-whish-manual-20261107-bys-discount-label-20261109-static-banner-v1";
+const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./catalog.js", "./manifest.webmanifest",
+  "./opening.js?v=2",
+  "./images/banners/bys-home.webp",
+  "./images/bys-silver.webp",
+  "./images/opening/opening-01.webp",
+  "./images/opening/opening-02.webp",
+  "./images/opening/opening-03.webp",
+  "./images/opening/opening-04.webp",
+  "./images/opening/opening-05.webp",
+  "./images/opening/opening-06.webp",
+  "./images/opening/opening-07.webp",
+  "./images/opening/opening-08.webp",
+  "./images/opening/opening-09.webp",
+  "./images/opening/opening-10.webp",
+  "./images/categories/skincare.svg",
+  "./images/categories/body-care.svg",
+  "./images/categories/hair-care.svg",
+  "./images/categories/perfumes.svg",
+  "./images/categories/feminine-care.svg",
+  "./images/categories/bath-and-body.svg",
+  "./images/categories/sun-care.svg",
+  "./images/categories/accessories.svg"
+];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_FILES)));
   self.skipWaiting();
