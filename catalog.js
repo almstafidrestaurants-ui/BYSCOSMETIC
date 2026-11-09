@@ -822,7 +822,7 @@ const PRODUCTS = [
         "unit": "piece",
         "image": "images/products/Loofah - 1.webp",
         "prices": {
-            "LB": 11.0,
+            "LB": 7.0,
             "SY": null,
             "KW": null,
             "JO": null,
@@ -837,7 +837,7 @@ const PRODUCTS = [
         "unit": "piece",
         "image": "images/products/Loofah - 2.webp",
         "prices": {
-            "LB": 7.0,
+            "LB": 11.0,
             "SY": null,
             "KW": null,
             "JO": null,

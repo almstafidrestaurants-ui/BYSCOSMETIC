@@ -1045,7 +1045,7 @@ if (window.lucide) {
 
 const headerGreeting = $("#headerGreeting");
 function updateHeaderGreeting() {
-    headerGreeting.textContent = new Date().getHours() < 12 ? "صباح الخير" : "مساء الخير";
+    headerGreeting.textContent = new Date().getHours() < 12 ? "Good Morning" : "Good Evening";
 }
 updateHeaderGreeting();
 window.setInterval(updateHeaderGreeting, 60000);
