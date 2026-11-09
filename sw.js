@@ -1,5 +1,5 @@
 // Cache static files and images to make repeat visits faster.
-const CACHE_NAME = "bys-whish-manual-20261107-bys-discount-label-20261109-firebase-v12";
+const CACHE_NAME = "bys-whish-manual-20261107-bys-discount-label-20261109-wholesale-v13";
 const STATIC_FILES = ["./", "./index.html", "./style.css?v=firebase12", "./script.js?v=firebase12", "./images/ui/all-categories.svg", "./catalog.js?v=prices9", "./manifest.webmanifest",
   "./opening.js?v=3",
   "./images/banners/bys-home.webp",
