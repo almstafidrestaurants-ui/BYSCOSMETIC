@@ -1042,3 +1042,10 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
 if (window.lucide) {
     lucide.createIcons();
 }
+
+const headerGreeting = $("#headerGreeting");
+function updateHeaderGreeting() {
+    headerGreeting.textContent = new Date().getHours() < 12 ? "صباح الخير" : "مساء الخير";
+}
+updateHeaderGreeting();
+window.setInterval(updateHeaderGreeting, 60000);

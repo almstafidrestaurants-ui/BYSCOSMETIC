@@ -2125,3 +2125,8 @@ html:has(#openingScreen[open]) { overflow: hidden; }
     .store-benefit-icon { flex-basis: 30px; height: 30px; }
     .store-benefit-icon svg { width: 17px; height: 17px; }
 }
+
+.header-brand-group { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.header-brand-text { display: grid; justify-items: start; gap: 3px; line-height: 1.15; }
+.header-brand-text span { color: #8a365b; font-size: 0.75rem; }
+.header-brand-text strong { color: #301721; font-size: 0.9rem; }

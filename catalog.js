@@ -817,7 +817,7 @@ const PRODUCTS = [
     {
         "id": "LO-LF-1",
         "brand": "Loofah",
-        "name": "Loofah - 1",
+        "name": "Loofah - Classic",
         "category": "Accessories",
         "unit": "piece",
         "image": "images/products/Loofah - 1.webp",
@@ -832,7 +832,7 @@ const PRODUCTS = [
     {
         "id": "LO-LF-2",
         "brand": "Loofah",
-        "name": "Loofah - 2",
+        "name": "Loofah - Premium",
         "category": "Accessories",
         "unit": "piece",
         "image": "images/products/Loofah - 2.webp",

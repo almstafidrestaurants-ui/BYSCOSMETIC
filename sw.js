@@ -1,6 +1,6 @@
 // Cache static files and images to make repeat visits faster.
-const CACHE_NAME = "bys-whish-manual-20261107-bys-discount-label-20261109-storebenefits-v5";
-const STATIC_FILES = ["./", "./index.html", "./style.css?v=storebenefits4", "./script.js?v=productimages3", "./images/ui/all-categories.svg", "./catalog.js?v=productimages3", "./manifest.webmanifest",
+const CACHE_NAME = "bys-whish-manual-20261107-bys-discount-label-20261109-header-v6";
+const STATIC_FILES = ["./", "./index.html", "./style.css?v=header6", "./script.js?v=header6", "./images/ui/all-categories.svg", "./catalog.js?v=header6", "./manifest.webmanifest",
   "./opening.js?v=3",
   "./images/banners/bys-home.webp",
   "./images/bys-logo.jpeg",
