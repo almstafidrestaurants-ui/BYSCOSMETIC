@@ -76,7 +76,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
     padding: 8px;
     border: 0;
     border-radius: 18px;
-    background: #df77a5;
+    background: #000;
     overflow: hidden;
 }
 
@@ -224,6 +224,7 @@ main { padding: 17px 22px 35px; }
 .category-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 17px 12px; }
 .category-item { border: 0; background: transparent; text-align: center; color: #2b1d25; padding: 0; min-width: 0; }
 .category-item img { width: min(79.2%, 89.1px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 0 0 1px #f5d8e3; transition: transform .2s; }
+.category-item.all-categories-item img { border: 0; border-radius: 0; box-shadow: none; }
 .category-item:hover img { transform: scale(1.05); }
 .category-item span { display: block; font-size: 12px; font-weight: 700; margin-top: 7px; }
 .needs-banner { margin-top: 28px; padding: 22px 18px 19px; border-radius: 23px; background: linear-gradient(115deg, #f9c6db, #f9dfeb 70%, #f5b4d0); }
@@ -843,7 +844,7 @@ main { padding: 17px 22px 35px; }
     place-items: center;
     margin: 0 auto 16px;
     border-radius: 23px;
-    background: #e85d99;
+    background: #000;
     box-shadow: 0 8px 24px rgba(204, 49, 104, .14);
     overflow: hidden;
 }
@@ -1204,7 +1205,7 @@ main { padding: 17px 22px 35px; }
 .role-screen { min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px 18px; background: linear-gradient(160deg,#fff5f9,#fff 65%); }
 .role-screen.hidden { display: none !important; }
 .role-panel { width: min(100%, 440px); text-align: center; }
-.role-logo { display: block; width: 76px; height: 76px; object-fit: contain; margin: 0 auto 22px; border-radius: 20px; }
+.role-logo { background: #000; display: block; width: 76px; height: 76px; object-fit: contain; margin: 0 auto 22px; border-radius: 20px; }
 .role-panel h1 { color: #732b49; font-size: clamp(21px,5.5vw,26px); margin: 0 0 8px; }
 .role-panel > p { color: #98667d; font-size: 13px; margin: 0 0 26px; }
 .role-options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }

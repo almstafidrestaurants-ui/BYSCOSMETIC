@@ -534,7 +534,11 @@ function productCard(product, showcase = false) {
 
 function renderHome() {
     $("#homeCategories").innerHTML = CATEGORIES.map(categoryCard).join("");
-    $("#allCategories").innerHTML = CATEGORIES.map(categoryCard).join("");
+    $("#allCategories").innerHTML = `
+        <button type="button" class="category-item all-categories-item" data-category="All">
+            <img src="images/ui/all-categories.svg" alt="" width="80" height="80">
+            <span>All Categories</span>
+        </button>` + CATEGORIES.map(categoryCard).join("");
    
 $("#needsGrid").innerHTML = NEEDS.map((need) => `
     <button class="need" data-need="${need.word}">
@@ -856,7 +860,7 @@ function showCartFeedback() {
         activeFilter = button.dataset.category;
         searchTerm = "";
         $("#searchInput").value = "";
-        $("#productsTitle").textContent = activeFilter;
+        $("#productsTitle").textContent = activeFilter === "All" ? "Shop All" : activeFilter;
         return showView("products");
     }
     if (button.dataset.filter) {
