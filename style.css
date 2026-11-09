@@ -2073,3 +2073,15 @@ html:has(#openingScreen[open]) { overflow: hidden; }
     object-fit: contain;
     padding: 0;
 }
+
+/* Match the square image area across product listings and showcases. */
+.product-photo,
+#homeView .showcase-card .product-photo,
+.category-showcases .showcase-card .product-photo {
+    aspect-ratio: 1;
+    height: auto;
+}
+.product-image-link img {
+    width: 100%;
+    height: 100%;
+}
