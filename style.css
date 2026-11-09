@@ -1836,7 +1836,7 @@ body.bys-cart-open #cartFeedback { display: none !important; }
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 html:has(#openingScreen[open]) { overflow: hidden; }
@@ -1864,7 +1864,8 @@ html:has(#openingScreen[open]) { overflow: hidden; }
     border: 1px solid #fff;
     border-radius: 24px;
     color: #fff;
-    background: #411c31;
+    background: rgba(40, 14, 29, .25);
+    text-shadow: 0 1px 3px #28101e;
     font: 700 14px/1.2 system-ui, sans-serif;
     cursor: pointer;
 }
@@ -1875,8 +1876,8 @@ html:has(#openingScreen[open]) { overflow: hidden; }
     min-width: 28px;
     min-height: 28px;
     border-radius: 50%;
-    color: #411c31;
-    background: #fff;
+    color: #fff;
+    background: rgba(255, 255, 255, .16);
     font-variant-numeric: tabular-nums;
 }
 

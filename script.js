@@ -1,5 +1,5 @@
 // بيانات الدول - كل دولة سعرها مستقل من catalog.js
-const COUNTRIES = [
+const STORE_COUNTRIES = [
     { code: "LB", name: "Lebanon", flag: "🇱🇧", currency: "USD", dial: "+961" },
     { code: "SY", name: "Syria", flag: "🇸🇾", currency: "SYP", dial: "+963" },
     { code: "JO", name: "Jordan", flag: "🇯🇴", currency: "JOD", dial: "+962" },
@@ -7,16 +7,233 @@ const COUNTRIES = [
     { code: "EG", name: "Egypt", flag: "🇪🇬", currency: "EGP", dial: "+20" }
 ];
 
+const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
+const COUNTRY_DIAL_GROUPS = `1 US CA AG AI AS BB BM BS DM DO GD GU JM KN KY LC MP MS PR SX TC TT VC VG VI
+7 KZ RU
+20 EG
+27 ZA
+30 GR
+31 NL
+32 BE
+33 FR
+34 ES
+36 HU
+39 IT VA
+40 RO
+41 CH
+43 AT
+44 GB GG IM JE
+45 DK
+46 SE
+47 NO SJ
+48 PL
+49 DE
+51 PE
+52 MX
+53 CU
+54 AR
+55 BR
+56 CL
+57 CO
+58 VE
+60 MY
+61 AU CC CX
+62 ID
+63 PH
+64 NZ
+65 SG
+66 TH
+81 JP
+82 KR
+84 VN
+86 CN
+90 TR
+91 IN
+92 PK
+93 AF
+94 LK
+95 MM
+98 IR
+211 SS
+212 MA EH
+213 DZ
+216 TN
+218 LY
+220 GM
+221 SN
+222 MR
+223 ML
+224 GN
+225 CI
+226 BF
+227 NE
+228 TG
+229 BJ
+230 MU
+231 LR
+232 SL
+233 GH
+234 NG
+235 TD
+236 CF
+237 CM
+238 CV
+239 ST
+240 GQ
+241 GA
+242 CG
+243 CD
+244 AO
+245 GW
+246 IO
+247 AC
+248 SC
+249 SD
+250 RW
+251 ET
+252 SO
+253 DJ
+254 KE
+255 TZ
+256 UG
+257 BI
+258 MZ
+260 ZM
+261 MG
+262 RE YT
+263 ZW
+264 NA
+265 MW
+266 LS
+267 BW
+268 SZ
+269 KM
+290 SH TA
+291 ER
+297 AW
+298 FO
+299 GL
+350 GI
+351 PT
+352 LU
+353 IE
+354 IS
+355 AL
+356 MT
+357 CY
+358 FI AX
+359 BG
+370 LT
+371 LV
+372 EE
+373 MD
+374 AM
+375 BY
+376 AD
+377 MC
+378 SM
+380 UA
+381 RS
+382 ME
+383 XK
+385 HR
+386 SI
+387 BA
+389 MK
+420 CZ
+421 SK
+423 LI
+500 FK
+501 BZ
+502 GT
+503 SV
+504 HN
+505 NI
+506 CR
+507 PA
+508 PM
+509 HT
+590 GP BL MF
+591 BO
+592 GY
+593 EC
+594 GF
+595 PY
+596 MQ
+597 SR
+598 UY
+599 BQ CW
+670 TL
+672 NF
+673 BN
+674 NR
+675 PG
+676 TO
+677 SB
+678 VU
+679 FJ
+680 PW
+681 WF
+682 CK
+683 NU
+685 WS
+686 KI
+687 NC
+688 TV
+689 PF
+690 TK
+691 FM
+692 MH
+850 KP
+852 HK
+853 MO
+855 KH
+856 LA
+880 BD
+886 TW
+960 MV
+961 LB
+962 JO
+963 SY
+964 IQ
+965 KW
+966 SA
+967 YE
+968 OM
+970 PS
+971 AE
+972 IL
+973 BH
+974 QA
+975 BT
+976 MN
+977 NP
+992 TJ
+993 TM
+994 AZ
+995 GE
+996 KG
+998 UZ`;
+const COUNTRIES = COUNTRY_DIAL_GROUPS.split("\n").flatMap(group => {
+    const [dial, ...codes] = group.split(" ");
+    return codes.map(code => STORE_COUNTRIES.find(country => country.code === code) || {
+        code,
+        name: countryNames.of(code),
+        flag: String.fromCodePoint(...Array.from(code, letter => 127397 + letter.charCodeAt(0))),
+        dial: "+" + dial
+    });
+}).sort((first, second) => first.name.localeCompare(second.name));
+
 // التصنيفات - يمكنك تغيير صورة كل تصنيف من المجلد images/categories
 const CATEGORIES = [
-    { name: "Skincare", image: "images/categories/skincare.svg", words: ["face", "serum", "cream", "toner", "cleanser", "eye", "collagen", "niacinamide", "vitamin c", "skin"] },
-    { name: "Body Care", image: "images/categories/body-care.svg", words: ["body", "cellulite", "stretch", "butter", "hand", "foot", "firming"] },
-    { name: "Hair Care", image: "images/categories/hair-care.svg", words: ["hair", "shampoo", "conditioner", "scalp"] },
-    { name: "Perfumes", image: "images/categories/perfumes.svg", words: ["perfume", "fragrance", "splash", "eau de"] },
-    { name: "Feminine Care", image: "images/categories/feminine-care.svg", words: ["intimate", "feminine", "vaginal"] },
-    { name: "Bath & Body", image: "images/categories/bath-and-body.svg", words: ["bath", "soap", "loofah", "scrub", "moroccan"] },
-    { name: "Sun Care", image: "images/categories/sun-care.svg", words: ["sun", "spf", "sunscreen"] },
-    { name: "Accessories", image: "images/categories/accessories.svg", words: ["accessor", "brush", "loofah"] }
+    { name: "Skincare", image: "images/categories/glow-skin.png", words: ["face", "serum", "cream", "toner", "cleanser", "eye", "collagen", "niacinamide", "vitamin c", "skin"] },
+    { name: "Body Care", image: "images/categories/bbl-weight-gain.png", words: ["body", "cellulite", "stretch", "butter", "hand", "foot", "firming"] },
+    { name: "Hair Care", image: "images/categories/hair-nails.png", words: ["hair", "shampoo", "conditioner", "scalp"] },
+    { name: "Perfumes", image: "images/categories/mens-performance.png", words: ["perfume", "fragrance", "splash", "eau de"] },
+    { name: "Feminine Care", image: "images/categories/feminine-care-libido.png", words: ["intimate", "feminine", "vaginal"] },
+    { name: "Bath & Body", image: "images/categories/flat-tummy-weight-loss-detox.png", words: ["bath", "soap", "loofah", "scrub", "moroccan"] },
+    { name: "Sun Care", image: "images/categories/vitamins-wellness.png", words: ["sun", "spf", "sunscreen"] },
+    { name: "Accessories", image: "images/categories/gym-fitness.png", words: ["accessor", "brush", "loofah"] }
 ];
 
 // الحاجات الجمالية - يتم فلترة المنتجات بحسب كلمات أسمائها
@@ -108,7 +325,10 @@ function isValidPhone(phone, country) {
         KW: /^[569]\d{7}$/, // Kuwait mobile
         EG: /^0?1[0125]\d{8}$/ // Egypt mobile
     };
-    return !!patterns[country]?.test(number) && !/^(\d)\1+$/.test(number);
+    const dial = COUNTRIES.find(entry => entry.code === country)?.dial;
+    if (!dial || /^(\d)\1+$/.test(number)) return false;
+    const pattern = patterns[country] || new RegExp(`^\\d{4,${16 - dial.length}}$`);
+    return pattern.test(number);
 }
 
 function showToast(message) {
@@ -142,7 +362,7 @@ function renderWelcomeShowcase() {
 
 // تحديث علم البلد ورمز الاتصال فور تغيير القائمة
 function updateWelcomeCountry(code) {
-    const selected = COUNTRIES.find((country) => country.code === code) || COUNTRIES[0];
+    const selected = COUNTRIES.find((country) => country.code === code) || STORE_COUNTRIES[0];
     $("#welcomeFlag").textContent = selected.flag;
     $("#welcomeDial").textContent = selected.dial;
     $("#welcomeCountry").value = selected.code;
@@ -441,7 +661,9 @@ function renderCart() {
 function normalizeNationalPhone(value, code) {
     let digits = String(value || "").replace(/\D/g, "");
     const dial = (COUNTRIES.find(c => c.code === code)?.dial || "").replace(/\D/g, "");
-    if (dial && digits.startsWith(dial) && digits.length > 9) digits = digits.slice(dial.length);
+    const input = String(value || "").trim();
+    if (dial && input.startsWith("+") && digits.startsWith(dial)) digits = digits.slice(dial.length);
+    else if (dial && input.startsWith("00") && digits.startsWith("00" + dial)) digits = digits.slice(dial.length + 2);
     return digits;
 }
 const PHONE_HINTS = {LB:"03 123 456 or 71 123 456", SY:"9XXXXXXXX", JO:"7XXXXXXXX", KW:"5XXXXXXX", EG:"1XXXXXXXXX"};

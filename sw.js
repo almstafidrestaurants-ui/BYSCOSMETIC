@@ -1,5 +1,5 @@
 // Cache static files and images to make repeat visits faster.
-const CACHE_NAME = "bys-whish-manual-20261107-bys-discount-label-20261109-static-banner-v1";
+const CACHE_NAME = "bys-whish-manual-20261107-bys-discount-label-20261109-worldwide-v1";
 const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./catalog.js", "./manifest.webmanifest",
   "./opening.js?v=2",
   "./images/banners/bys-home.webp",
@@ -14,14 +14,14 @@ const STATIC_FILES = ["./", "./index.html", "./style.css", "./script.js", "./cat
   "./images/opening/opening-08.webp",
   "./images/opening/opening-09.webp",
   "./images/opening/opening-10.webp",
-  "./images/categories/skincare.svg",
-  "./images/categories/body-care.svg",
-  "./images/categories/hair-care.svg",
-  "./images/categories/perfumes.svg",
-  "./images/categories/feminine-care.svg",
-  "./images/categories/bath-and-body.svg",
-  "./images/categories/sun-care.svg",
-  "./images/categories/accessories.svg"
+  "./images/categories/glow-skin.png",
+  "./images/categories/bbl-weight-gain.png",
+  "./images/categories/hair-nails.png",
+  "./images/categories/mens-performance.png",
+  "./images/categories/feminine-care-libido.png",
+  "./images/categories/flat-tummy-weight-loss-detox.png",
+  "./images/categories/vitamins-wellness.png",
+  "./images/categories/gym-fitness.png"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_FILES)));
