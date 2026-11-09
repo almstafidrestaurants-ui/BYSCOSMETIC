@@ -349,21 +349,6 @@ const PRODUCTS = [
         }
     },
     {
-        "id": "ME-Niacinamide",
-        "brand": "Mega",
-        "name": "Mega Niacinamide Serum 250 ml",
-        "category": "Skincare",
-        "unit": "قطعة 250 ml",
-        "image": "images/products/placeholder.webp",
-        "prices": {
-            "LB": 65.0,
-            "SY": null,
-            "KW": null,
-            "JO": null,
-            "EG": null
-        }
-    },
-    {
         "id": "MA-Body Splash-Red",
         "brand": "Magic Aura",
         "name": "Magic Aura Body Splash Red  ",
@@ -537,36 +522,6 @@ const PRODUCTS = [
         "image": "images/products/Magic Aura Body Serum White.webp",
         "prices": {
             "LB": 25.0,
-            "SY": null,
-            "KW": null,
-            "JO": null,
-            "EG": null
-        }
-    },
-    {
-        "id": "MD-cleanser",
-        "brand": "Medicube",
-        "name": "Medicube zero foam cleanser 120 g",
-        "category": "Skincare",
-        "unit": " 120 g",
-        "image": "images/products/Magic Aura Body Serum White.webp",
-        "prices": {
-            "LB": 22.0,
-            "SY": null,
-            "KW": null,
-            "JO": null,
-            "EG": null
-        }
-    },
-    {
-        "id": "MD-toner",
-        "brand": "Medicube",
-        "name": "Medicube triple collagen toner 140 g",
-        "category": "Skincare",
-        "unit": "قطعة 140 g",
-        "image": "images/products/placeholder.webp",
-        "prices": {
-            "LB": 23.0,
             "SY": null,
             "KW": null,
             "JO": null,

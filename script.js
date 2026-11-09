@@ -345,7 +345,7 @@ function showToast(message) {
 
 // صور المنتجات تتحرك بأربعة صفوف بشكل مستمر بشاشة الترحيب
 function renderWelcomeShowcase() {
-    const source = PRODUCTS.filter((product) => product.image);
+    const source = PRODUCTS.filter((product) => product.image?.startsWith("images/products/") && product.image !== sampleOf(product));
     const chosen = source.length ? source : PRODUCTS;
     // تقسيم صور المنتجات على أربعة صفوف متحركة
     const tiles = chosen.slice(0, 20);
@@ -550,10 +550,11 @@ function productCard(product, showcase = false) {
     const unit = product.unit?.trim();
     const originalImage = imageOf(product);
     const cardImage = cardImageOf(originalImage);
+    const imageMissing = originalImage === sampleOf(product);
     return `<article class="product-card ${showcase ? "showcase-card" : ""}">
         <div class="product-photo">
             <button type="button" class="product-image-link" data-product="${escapeHtml(product.id)}" aria-label="View details for ${escapeHtml(product.name.trim())}">
-                <img src="${escapeHtml(cardImage)}" data-fallback="${escapeHtml(cardImage === originalImage ? sampleOf(product) : originalImage)}" alt="" loading="lazy" decoding="async" fetchpriority="low">
+                ${imageMissing ? '<span class="product-photo-missing">Photo unavailable</span>' : `<img src="${escapeHtml(cardImage)}" data-fallback="${escapeHtml(cardImage === originalImage ? sampleOf(product) : originalImage)}" alt="" loading="lazy" decoding="async" fetchpriority="low">`}
             </button>
             <button class="favorite ${liked ? "saved" : ""}" data-favorite="${escapeHtml(product.id)}" aria-label="Toggle favorite">${liked ? "♥" : "♡"}</button>
         </div>
@@ -570,17 +571,15 @@ function productCard(product, showcase = false) {
 }
 
 function renderHome() {
-    $("#homeCategories").innerHTML = CATEGORIES.map(category => category.name === "Skincare" ? `
-        <button type="button" class="category-item all-categories-item home-categories-link" data-view="categories">
+    const categories = CATEGORIES.map(categoryCard).join("");
+    const allCategoriesCard = (action) => `
+        <button type="button" class="category-item all-categories-item" ${action}>
             <img src="images/ui/all-categories.svg" alt="" width="80" height="80">
             <span>All Categories</span>
-        </button>` : categoryCard(category)).join("");
-    $("#allCategories").innerHTML = `
-        <button type="button" class="category-item all-categories-item" data-category="All">
-            <img src="images/ui/all-categories.svg" alt="" width="80" height="80">
-            <span>All Categories</span>
-        </button>` + CATEGORIES.map(categoryCard).join("");
-   
+        </button>`;
+    $("#homeCategories").innerHTML = allCategoriesCard('data-view="categories"') + categories;
+    $("#allCategories").innerHTML = allCategoriesCard('data-category="All"') + categories;
+
 $("#needsGrid").innerHTML = NEEDS.map((need) => `
     <button class="need" data-need="${need.word}">
         <i data-lucide="${need.icon}"></i>
