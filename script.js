@@ -712,16 +712,42 @@ function normalizeNationalPhone(value, code) {
 }
 const PHONE_HINTS = {LB:"03 123 456 or 71 123 456", SY:"9XXXXXXXX", JO:"7XXXXXXXX", KW:"5XXXXXXX", EG:"1XXXXXXXXX"};
 let firebaseAccount;
+let accountReady = false;
 let signedInProfile = {};
 const accountStatus = $("#accountStatus");
 const loginForm = $("#accountLogin");
 const logoutButton = $("#accountLogout");
 const profileForm = $("#customerProfileForm");
 
+const registrationChoices = $("#registrationChoices");
+const registrationRoles = { customer: "Customer", consultant: "Consultant", merchant: "Wholesale" };
+
+function selectRegistrationRole(role) {
+    profileForm.elements.role.value = role;
+    registrationChoices.hidden = Boolean(role);
+    profileForm.hidden = !role;
+    $("#registrationTitle").textContent = role ? registrationRoles[role] + " registration" : "";
+    $("#registrationNameLabel").textContent = role === "merchant" ? "Contact Person *" : "Full Name *";
+    $("#changeRegistrationRole").hidden = Boolean(signedInProfile.role);
+    for (const fields of profileForm.querySelectorAll("[data-profile-role]")) {
+        fields.disabled = fields.hidden = fields.dataset.profileRole !== role;
+    }
+}
+
+registrationChoices.addEventListener("click", event => {
+    const role = event.target.closest("[data-register-role]")?.dataset.registerRole;
+    if (role) {
+        selectRegistrationRole(role);
+        $("#registrationTitle").scrollIntoView({ block: "nearest" });
+    }
+});
+$("#changeRegistrationRole").addEventListener("click", () => {
+    if (!profileForm.querySelector("button[type=submit]").disabled) selectRegistrationRole("");
+});
+
 function updateAccountControls(user) {
     $("#accountLoginPanel").hidden = Boolean(user);
     logoutButton.hidden = !user;
-    profileForm.hidden = false;
     const password = profileForm.elements.namedItem("password");
     $("#registrationPassword").hidden = Boolean(user);
     password.disabled = Boolean(user);
@@ -733,17 +759,21 @@ async function connectAccount() {
     try {
         ({ account: firebaseAccount } = await import("./firebase-account.js?v=1"));
         firebaseAccount.observe(async user => {
+            accountReady = true;
             const emptyProfile = {};
             signedInProfile = emptyProfile;
             updateAccountControls(user);
-            if (!profileForm.querySelector("button[type=submit]").disabled) fillCustomerProfile();
+            if (!profileForm.querySelector("button[type=submit]").disabled) {
+                selectRegistrationRole("");
+                fillCustomerProfile();
+            }
             accountStatus.textContent = user ? "Signed in as " + user.email : "Sign in or register below.";
             if (!user) return;
             try {
                 const profile = await firebaseAccount.read(user);
                 if (firebaseAccount.user !== user || signedInProfile !== emptyProfile) return;
                 signedInProfile = profile;
-                if (currentView === "account" && !profileForm.querySelector("button[type=submit]").disabled) fillCustomerProfile();
+                if (!profileForm.querySelector("button[type=submit]").disabled) fillCustomerProfile();
             } catch {
                 if (firebaseAccount.user === user) accountStatus.textContent = "Signed in. Your profile could not be loaded.";
             }
@@ -779,11 +809,18 @@ let returnToCheckoutAfterProfile = false;
 function getCustomerProfile() { return signedInProfile; }
 function profileIsComplete(profile = getCustomerProfile()) {
     const phone = normalizeNationalPhone(profile.phone, countryCode);
-    return ["customer", "consultant", "merchant"].includes(profile.role) &&
-      String(profile.governorate || "").trim().length > 0 &&
+    const hasRoleDetails = {
+        customer: String(profile.address || "").trim().length >= 8 && Boolean(profile.occupation?.trim()),
+        consultant: Boolean(profile.specialization?.trim() && profile.previousCompany?.trim() && profile.responsiblePersonCode?.trim()) &&
+            /^(?:[0-9]{1,2}|100)$/.test(profile.experienceYears) &&
+            ["consultant", "team-leader", "zone-manager"].includes(profile.consultantType),
+        merchant: Boolean(profile.businessName?.trim() && profile.businessType?.trim()) &&
+            String(profile.businessAddress || "").trim().length >= 8
+    };
+    return Boolean(hasRoleDetails[profile.role]) &&
+      Boolean(profile.governorate?.trim()) &&
       String(profile.fullName || "").trim().length >= 3 &&
-      isValidPhone(phone, countryCode) && String(profile.address || "").trim().length >= 8 &&
-      String(profile.occupation || "").trim().length > 0 &&
+      isValidPhone(phone, countryCode) &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(profile.email || "").trim()) &&
       profile.country === countryCode;
 }
@@ -793,12 +830,9 @@ function fillCustomerProfile() {
     const country = COUNTRIES.find(c => c.code === countryCode);
     document.getElementById("profileDial").textContent = country?.dial || "+961";
     document.getElementById("profileCountryName").value = country?.name || countryCode;
-    for (const option of form.elements.namedItem("role")) {
-        option.checked = option.value === profile.role;
-    }
-    form.elements.namedItem("phone").placeholder = "Enter your phone number";
-    for (const field of ["fullName", "phone", "governorate", "address", "location", "occupation", "email"]) {
-        form.elements.namedItem(field).value = profile[field] || "";
+    if (accountReady) selectRegistrationRole(profile.role || form.elements.role.value);
+    for (const input of form.querySelectorAll("[name]:not([name=role]):not([name=password])")) {
+        input.value = profile[input.name] ?? "";
     }
     if (firebaseAccount?.user) form.elements.namedItem("email").value = firebaseAccount.user.email;
     form.elements.namedItem("password").value = "";
@@ -815,7 +849,7 @@ document.getElementById("customerProfileForm").addEventListener("submit", async 
     profile.country = countryCode;
     const error = document.getElementById("profileError");
     if (!profileIsComplete(profile)) {
-        error.textContent = "Select an account type and enter a valid full name, phone number, governorate, address, field of work, and email.";
+        error.textContent = "Please complete all required fields and enter a valid phone number and email.";
         error.hidden = false;
         return;
     }
@@ -834,9 +868,7 @@ document.getElementById("customerProfileForm").addEventListener("submit", async 
     } catch (failure) {
         for (const [field, value] of Object.entries(profile)) {
             const input = form.elements.namedItem(field);
-            if (field === "role") {
-                for (const option of input) option.checked = option.value === value;
-            } else if (input && !input.readOnly) {
+            if (input && !input.readOnly) {
                 input.value = value;
             }
         }

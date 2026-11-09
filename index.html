@@ -8,7 +8,7 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=accountoptions14">
+    <link rel="stylesheet" href="style.css?v=registration15">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
@@ -183,7 +183,14 @@
             <section class="view hidden" id="favoritesView"><div class="page-heading"><button data-view="home">‹</button><h1>My Favorites</h1></div><div class="product-grid" id="favoriteProducts"></div></section>
             <section class="view hidden" id="cartView"><div class="page-heading"><button data-view="home">‹</button><h1>Shopping Bag</h1></div><div id="cartItems"></div><div class="cart-summary" id="cartSummary"></div></section>
             <section class="view hidden" id="accountView"><div class="page-heading"><button data-view="home">‹</button><h1>My Account</h1></div>
-                <div class="profile-panel"><h2>Account registration</h2><p class="small-note">Create an account or sign in to access your profile.</p>
+                <div class="profile-panel">
+                <div class="registration-brand"><img src="images/bys-logo.jpeg" alt="BYS COSMETICS" width="64" height="64"><h2>Account registration</h2></div>
+                <div id="registrationChoices" hidden>
+                    <p>Choose your account type</p>
+                    <button type="button" data-register-role="customer">Customer</button>
+                    <button type="button" data-register-role="consultant">Consultant</button>
+                    <button type="button" data-register-role="merchant">Wholesale</button>
+                </div><p class="small-note">Create an account or sign in to access your profile.</p>
                 <p id="accountStatus" role="status">Connecting to Firebase…</p>
                 <details id="accountLoginPanel" hidden><summary>Already registered? Sign in</summary>
                 <form id="accountLogin" class="profile-form">
@@ -193,18 +200,35 @@
                 </form></details>
                 <button class="profile-country" id="accountLogout" type="button" hidden>Sign out</button>
                 <form id="customerProfileForm" class="profile-form" hidden>
-                <fieldset class="account-roles"><legend>Account type *</legend>
-                    <label><input type="radio" name="role" value="customer" required> Customer</label>
-                    <label><input type="radio" name="role" value="consultant" required> Consultant</label>
-                    <label><input type="radio" name="role" value="merchant" required> Wholesale</label>
-                </fieldset>
-                <label>Full name *<input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
+                <input type="hidden" name="role">
+                <h3 id="registrationTitle"></h3>
+                <button class="profile-country" id="changeRegistrationRole" type="button">Change account type</button>
+                <label><span id="registrationNameLabel">Full Name *</span><input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
                 <label>Phone number *<div class="profile-phone"><span id="profileDial">+961</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Enter your phone number" required maxlength="20" aria-label="National phone number"></div></label>
                 <label>Country<input id="profileCountryName" autocomplete="country-name" readonly></label>
                 <label>Governorate / State *<input name="governorate" autocomplete="address-level1" required maxlength="100"></label>
+                <fieldset class="registration-fields" data-profile-role="customer" hidden disabled>
                 <label>Address *<textarea name="address" autocomplete="street-address" required minlength="8" maxlength="300" rows="3"></textarea></label>
                 <label>Location (optional)<input name="location" id="profileLocation" placeholder="City, area, or map link" maxlength="250"></label><button id="useCurrentLocation" class="profile-location-btn" type="button"><span aria-hidden="true">⌖</span> Use my current location</button><p id="locationStatus" class="location-status" role="status" aria-live="polite"></p>
                 <label>Field of work *<input name="occupation" required maxlength="100"></label>
+                </fieldset>
+                <fieldset class="registration-fields" data-profile-role="consultant" hidden disabled>
+                    <label>Specialization *<input name="specialization" required maxlength="100"></label>
+                    <label>Years of Experience *<input name="experienceYears" type="number" min="0" max="100" step="1" required></label>
+                    <label>Previous Company *<input name="previousCompany" placeholder="Enter None if not applicable" required maxlength="100"></label>
+                    <label>Responsible Person Code *<input name="responsiblePersonCode" required maxlength="60"></label>
+                    <label>Type *<select name="consultantType" required>
+                        <option value="">Select your type</option>
+                        <option value="consultant">Consultant</option>
+                        <option value="team-leader">Team Leader</option>
+                        <option value="zone-manager">Zone Manager</option>
+                    </select></label>
+                </fieldset>
+                <fieldset class="registration-fields" data-profile-role="merchant" hidden disabled>
+                    <label>Business Name *<input name="businessName" autocomplete="organization" required maxlength="100"></label>
+                    <label>Business Address *<textarea name="businessAddress" required minlength="8" maxlength="300" rows="3"></textarea></label>
+                    <label>Business Type *<input name="businessType" required maxlength="100"></label>
+                </fieldset>
                 <label>Email *<input name="email" type="email" autocomplete="email" required maxlength="160"></label>
                 <label id="registrationPassword">Password *<input name="password" type="password" autocomplete="new-password" minlength="6" required></label>
                 <p id="profileError" class="profile-error" role="alert" hidden></p>
@@ -280,6 +304,6 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=accountoptions14"></script>
+    <script src="script.js?v=registration15"></script>
 </body>
 </html>
