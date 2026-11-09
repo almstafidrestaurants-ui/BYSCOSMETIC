@@ -1467,7 +1467,7 @@ main { padding: 17px 22px 35px; }
 .profile-panel{max-width:650px;margin:0 auto;background:white;border:1px solid #f4dce7;border-radius:22px;padding:20px;box-shadow:0 8px 25px #a63c6b12}
 .profile-panel h2{margin:0 0 8px}.profile-form{display:grid;gap:14px;margin-top:18px}
 .profile-form label{display:grid;gap:7px;font-size:13px;font-weight:700;color:#503141}
-.profile-form input,.profile-form textarea{width:100%;border:1px solid #e9cbd9;border-radius:12px;background:#fffafd;padding:12px;color:#281b23;font:inherit;outline-color:#dc4481}
+.profile-form input,.profile-form textarea,.profile-form select{width:100%;border:1px solid #e9cbd9;border-radius:12px;background:#fffafd;padding:12px;color:#281b23;font:inherit;outline-color:#dc4481}
 .profile-phone{display:flex;align-items:center;gap:10px}.profile-phone span{white-space:nowrap;color:#a42f62}
 .profile-error{color:#b32042;font-size:12px;margin:0}.profile-save,.profile-country{border:0;border-radius:14px;padding:13px;font-weight:700}.profile-save{background:#d63375;color:white}.profile-country{margin-top:12px;background:#fff0f6;color:#ac285d;width:100%}
 .settings-head{background:#f16b9c;display:flex;align-items:center;justify-content:center;min-height:95px;position:relative;margin:-17px -22px 0}.settings-head h1{font-size:24px;font-weight:500;color:#21141c}.settings-head>button{position:absolute;left:20px;top:24px;border:0;border-radius:10px;background:white;width:45px;height:45px;font-size:32px}
@@ -2130,3 +2130,5 @@ html:has(#openingScreen[open]) { overflow: hidden; }
 .header-brand-text { display: grid; justify-items: start; gap: 3px; line-height: 1.15; }
 .header-brand-text span { color: #8a365b; font-size: 0.75rem; }
 .header-brand-text strong { color: #301721; font-size: 0.9rem; }
+
+#accountView [hidden] { display: none; }

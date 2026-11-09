@@ -8,7 +8,7 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=header7">
+    <link rel="stylesheet" href="style.css?v=firebase12">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
@@ -105,7 +105,7 @@
 </button>
     <div class="header-brand-text">
         <span id="headerGreeting"></span>
-        <strong>BYS COSMETIC</strong>
+        <strong>BYS COSMETICS</strong>
     </div>
 </div>
 
@@ -183,16 +183,32 @@
             <section class="view hidden" id="favoritesView"><div class="page-heading"><button data-view="home">‹</button><h1>My Favorites</h1></div><div class="product-grid" id="favoriteProducts"></div></section>
             <section class="view hidden" id="cartView"><div class="page-heading"><button data-view="home">‹</button><h1>Shopping Bag</h1></div><div id="cartItems"></div><div class="cart-summary" id="cartSummary"></div></section>
             <section class="view hidden" id="accountView"><div class="page-heading"><button data-view="home">‹</button><h1>My Account</h1></div>
-                <div class="profile-panel"><h2>Customer information</h2><p class="small-note">Complete all required fields before checkout. Saved on this device only until secure accounts are connected.</p>
-                <form id="customerProfileForm" class="profile-form">
+                <div class="profile-panel"><h2>Account registration</h2><p class="small-note">Create an account or sign in to access your profile.</p>
+                <p id="accountStatus" role="status">Connecting to Firebase…</p>
+                <form id="accountLogin" class="profile-form" hidden>
+                    <label>Email<input name="email" type="email" autocomplete="email" required></label>
+                    <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+                    <button class="profile-save" type="submit">Sign in</button>
+                </form>
+                <button class="profile-country" id="accountLogout" type="button" hidden>Sign out</button>
+                <form id="customerProfileForm" class="profile-form" hidden>
+                <label>Account type *<select name="role" required>
+                    <option value="">Select your account type</option>
+                    <option value="customer">Customer</option>
+                    <option value="consultant">Consultant</option>
+                    <option value="merchant">Merchant</option>
+                </select></label>
                 <label>Full name *<input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
                 <label>Phone number *<div class="profile-phone"><span id="profileDial">+961</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Enter your phone number" required maxlength="20" aria-label="National phone number"></div></label>
+                <label>Country<input id="profileCountryName" autocomplete="country-name" readonly></label>
+                <label>Governorate / State *<input name="governorate" autocomplete="address-level1" required maxlength="100"></label>
                 <label>Address *<textarea name="address" autocomplete="street-address" required minlength="8" maxlength="300" rows="3"></textarea></label>
                 <label>Location (optional)<input name="location" id="profileLocation" placeholder="City, area, or map link" maxlength="250"></label><button id="useCurrentLocation" class="profile-location-btn" type="button"><span aria-hidden="true">⌖</span> Use my current location</button><p id="locationStatus" class="location-status" role="status" aria-live="polite"></p>
                 <label>Field of work *<input name="occupation" required maxlength="100"></label>
                 <label>Email *<input name="email" type="email" autocomplete="email" required maxlength="160"></label>
+                <label id="registrationPassword">Password *<input name="password" type="password" autocomplete="new-password" minlength="6" required></label>
                 <p id="profileError" class="profile-error" role="alert" hidden></p>
-                <button class="profile-save" type="submit">Save information</button></form>
+                <button class="profile-save" type="submit">Save profile</button></form>
                 <button class="profile-country" id="accountCountry" type="button">Change shopping country</button></div></section>
                 <section class="view hidden" id="settingsView"><div class="settings-head"><button data-view="home" aria-label="Back">‹</button><h1>Settings</h1></div><div class="settings-content"><button class="settings-login" data-view="account"><i data-lucide="user-round"></i><span>My account / Login</span><b>›</b></button><div class="settings-links">
                 <button data-settings="Report fraud"><i data-lucide="shield-alert"></i><span>Report fraud</span><b>›</b></button>
@@ -264,6 +280,6 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=header7"></script>
+    <script src="script.js?v=firebase12"></script>
 </body>
 </html>

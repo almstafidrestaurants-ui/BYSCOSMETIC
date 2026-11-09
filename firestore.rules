@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /profiles/{uid} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      function validProfile() {
+        let profile = request.resource.data;
+        let fields = ['role', 'fullName', 'email', 'phone', 'country',
+                      'governorate', 'address', 'occupation', 'location'];
+        return profile.keys().hasAll(fields) && profile.keys().hasOnly(fields)
+          && profile.role in ['customer', 'consultant', 'merchant']
+          && profile.email == request.auth.token.email
+          && profile.fullName is string && profile.fullName.size() >= 3 && profile.fullName.size() <= 100
+          && profile.phone is string && profile.phone.matches('^[0-9]{4,20}$')
+          && profile.country is string && profile.country.matches('^[A-Z]{2}$')
+          && profile.governorate is string && profile.governorate.size() > 0 && profile.governorate.size() <= 100
+          && profile.address is string && profile.address.size() >= 8 && profile.address.size() <= 300
+          && profile.occupation is string && profile.occupation.size() > 0 && profile.occupation.size() <= 100
+          && profile.location is string && profile.location.size() <= 250;
+      }
+
+      allow get: if isOwner();
+      allow create, update: if isOwner() && validProfile();
+    }
+  }
+}

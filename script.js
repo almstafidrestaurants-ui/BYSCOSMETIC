@@ -711,13 +711,77 @@ function normalizeNationalPhone(value, code) {
     return digits;
 }
 const PHONE_HINTS = {LB:"03 123 456 or 71 123 456", SY:"9XXXXXXXX", JO:"7XXXXXXXX", KW:"5XXXXXXX", EG:"1XXXXXXXXX"};
-const PROFILE_KEY = "bys-customer-profile";
+let firebaseAccount;
+let signedInProfile = {};
+const accountStatus = $("#accountStatus");
+const loginForm = $("#accountLogin");
+const logoutButton = $("#accountLogout");
+const profileForm = $("#customerProfileForm");
+
+function updateAccountControls(user) {
+    loginForm.hidden = Boolean(user);
+    logoutButton.hidden = !user;
+    profileForm.hidden = false;
+    const password = profileForm.elements.namedItem("password");
+    $("#registrationPassword").hidden = Boolean(user);
+    password.disabled = Boolean(user);
+    password.required = !user;
+    profileForm.elements.namedItem("email").readOnly = Boolean(user);
+}
+
+async function connectAccount() {
+    try {
+        ({ account: firebaseAccount } = await import("./firebase-account.js?v=1"));
+        firebaseAccount.observe(async user => {
+            const emptyProfile = {};
+            signedInProfile = emptyProfile;
+            updateAccountControls(user);
+            if (!profileForm.querySelector("button[type=submit]").disabled) fillCustomerProfile();
+            accountStatus.textContent = user ? "Signed in as " + user.email : "Sign in or register below.";
+            if (!user) return;
+            try {
+                const profile = await firebaseAccount.read(user);
+                if (firebaseAccount.user !== user || signedInProfile !== emptyProfile) return;
+                signedInProfile = profile;
+                if (currentView === "account" && !profileForm.querySelector("button[type=submit]").disabled) fillCustomerProfile();
+            } catch {
+                if (firebaseAccount.user === user) accountStatus.textContent = "Signed in. Your profile could not be loaded.";
+            }
+        });
+    } catch {
+        accountStatus.textContent = "Could not connect to Firebase. Check your connection and reload.";
+    }
+}
+
+loginForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const button = loginForm.querySelector("button");
+    button.disabled = true;
+    try {
+        await firebaseAccount.login(loginForm.elements.email.value.trim(), loginForm.elements.password.value);
+        loginForm.reset();
+    } catch {
+        accountStatus.textContent = "Sign-in failed. Check your email and password, then try again.";
+    } finally {
+        button.disabled = false;
+    }
+});
+
+logoutButton.addEventListener("click", async () => {
+    try {
+        await firebaseAccount.logout();
+    } catch {
+        accountStatus.textContent = "Could not sign out. Please try again.";
+    }
+});
 // Remember when the account form was opened from checkout.
 let returnToCheckoutAfterProfile = false;
-function getCustomerProfile() { return loadSaved(PROFILE_KEY, {}); }
+function getCustomerProfile() { return signedInProfile; }
 function profileIsComplete(profile = getCustomerProfile()) {
     const phone = normalizeNationalPhone(profile.phone, countryCode);
-    return String(profile.fullName || "").trim().length >= 3 &&
+    return ["customer", "consultant", "merchant"].includes(profile.role) &&
+      String(profile.governorate || "").trim().length > 0 &&
+      String(profile.fullName || "").trim().length >= 3 &&
       isValidPhone(phone, countryCode) && String(profile.address || "").trim().length >= 8 &&
       String(profile.occupation || "").trim().length > 0 &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(profile.email || "").trim()) &&
@@ -726,28 +790,60 @@ function profileIsComplete(profile = getCustomerProfile()) {
 function fillCustomerProfile() {
     const form = document.getElementById("customerProfileForm");
     const profile = getCustomerProfile();
-    const dial = COUNTRIES.find(c => c.code === countryCode)?.dial || "+961";
-    document.getElementById("profileDial").textContent = dial;
+    const country = COUNTRIES.find(c => c.code === countryCode);
+    document.getElementById("profileDial").textContent = country?.dial || "+961";
+    document.getElementById("profileCountryName").value = country?.name || countryCode;
+    form.elements.namedItem("role").value = profile.role || (profile.fullName ? "customer" : "");
     form.elements.namedItem("phone").placeholder = "Enter your phone number";
-    for (const field of ["fullName", "phone", "address", "location", "occupation", "email"]) {
+    for (const field of ["fullName", "phone", "governorate", "address", "location", "occupation", "email"]) {
         form.elements.namedItem(field).value = profile[field] || "";
     }
+    if (firebaseAccount?.user) form.elements.namedItem("email").value = firebaseAccount.user.email;
+    form.elements.namedItem("password").value = "";
     document.getElementById("profileError").hidden = true;
 }
-document.getElementById("customerProfileForm").addEventListener("submit", event => {
+document.getElementById("customerProfileForm").addEventListener("submit", async event => {
     event.preventDefault();
     const form = event.currentTarget;
     const profile = Object.fromEntries(new FormData(form).entries());
+    const password = profile.password;
+    delete profile.password;
+    for (const field of Object.keys(profile)) profile[field] = profile[field].trim();
     profile.phone = normalizeNationalPhone(profile.phone, countryCode);
     profile.country = countryCode;
     const error = document.getElementById("profileError");
     if (!profileIsComplete(profile)) {
-        error.textContent = "Please enter a valid full name, phone number for your selected country, address, occupation, and email.";
+        error.textContent = "Select an account type and enter a valid full name, phone number, governorate, address, field of work, and email.";
         error.hidden = false;
         return;
     }
     error.hidden = true;
-    save(PROFILE_KEY, profile);
+    const button = form.querySelector("button[type=submit]");
+    button.disabled = true;
+    let user = firebaseAccount.user;
+    try {
+        if (!user) user = (await firebaseAccount.register(profile.email, password)).user;
+        profile.email = user.email;
+        await firebaseAccount.write(user, profile);
+        if (firebaseAccount.user !== user) return;
+        signedInProfile = profile;
+        updateAccountControls(user);
+        fillCustomerProfile();
+    } catch (failure) {
+        for (const [field, value] of Object.entries(profile)) {
+            const input = form.elements.namedItem(field);
+            if (input && !input.readOnly) input.value = value;
+        }
+        error.textContent = user
+            ? "Your profile could not be saved. Please try again."
+            : failure.code === "auth/email-already-in-use"
+                ? "This email already has an account. Sign in above."
+                : "Could not create your account. Please check your details and try again.";
+        error.hidden = false;
+        return;
+    } finally {
+        button.disabled = false;
+    }
     showToast("Account details saved ✓");
     if (returnToCheckoutAfterProfile) {
         returnToCheckoutAfterProfile = false;
@@ -1032,6 +1128,7 @@ $("#changeCountry").textContent = `${initialCountry.flag} ${initialCountry.name}
 $("#app").classList.remove("hidden");
 renderAll();
 showView("home", false);
+connectAccount();
 
 // تسجيل Service Worker عند استخدام localhost أو HTTPS
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
