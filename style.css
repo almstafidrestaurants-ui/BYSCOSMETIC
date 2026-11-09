@@ -2138,8 +2138,37 @@ html:has(#openingScreen[open]) { overflow: hidden; }
 .registration-brand { display: flex; align-items: center; gap: 14px; }
 .registration-brand img { border-radius: 14px; }
 .registration-brand h2 { margin: 0; }
-#registrationChoices { display: grid; gap: 10px; margin: 16px 0; }
-#registrationChoices p { margin: 0; font-weight: 700; }
-#registrationChoices button { min-height: 46px; border: 1px solid #e9cbd9; border-radius: 12px; background: #fff4f8; color: #783450; font: inherit; font-weight: 700; }
+#registrationChoices { display: grid; gap: 12px; margin: 22px 0; }
+#registrationChoices p { margin: 0 0 2px; font-weight: 700; }
+#registrationChoices button {
+    --role-color: #a3215b;
+    --role-soft: #fce4ef;
+    --role-border: #efb4d0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    min-height: 78px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--role-border);
+    border-radius: 16px;
+    background: linear-gradient(115deg, var(--role-soft), #fff);
+    box-shadow: 0 4px 12px #3614260a;
+    color: var(--role-color);
+    text-align: left;
+    cursor: pointer;
+}
+#registrationChoices button[data-register-role="consultant"] { --role-color: #663c99; --role-soft: #f0e6fc; --role-border: #d9c2f1; }
+#registrationChoices button[data-register-role="merchant"] { --role-color: #875016; --role-soft: #fff0d8; --role-border: #efcf9d; }
+#registrationChoices button:focus-visible { outline: 2px solid var(--role-color); outline-offset: 3px; }
+#registrationChoices button:hover { border-color: var(--role-color); }
+.registration-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: var(--role-color); color: white; }
+.registration-icon svg { width: 25px; height: 25px; }
+.registration-copy { display: grid; gap: 4px; }
+.registration-copy strong { font-size: 1.06rem; }
+.registration-copy small { font-size: 0.77rem; color: #57424c; line-height: 1.25; }
+.registration-arrow { font-size: 24px; }
+body.bys-account-open #cartFeedback { display: none !important; }
 .registration-fields { display: grid; gap: 14px; border: 0; margin: 0; padding: 0; min-width: 0; }
 #registrationTitle { margin: 0; }

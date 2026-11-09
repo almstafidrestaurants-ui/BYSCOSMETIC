@@ -8,7 +8,7 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=registration15">
+    <link rel="stylesheet" href="style.css?v=accountdesign17">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
@@ -187,9 +187,21 @@
                 <div class="registration-brand"><img src="images/bys-logo.jpeg" alt="BYS COSMETICS" width="64" height="64"><h2>Account registration</h2></div>
                 <div id="registrationChoices" hidden>
                     <p>Choose your account type</p>
-                    <button type="button" data-register-role="customer">Customer</button>
-                    <button type="button" data-register-role="consultant">Consultant</button>
-                    <button type="button" data-register-role="merchant">Wholesale</button>
+                    <button type="button" data-register-role="customer">
+                        <span class="registration-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16l1 13H3L4 8Z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/></svg></span>
+                        <span class="registration-copy"><strong>Customer</strong><small>Shop for yourself</small></span>
+                        <span class="registration-arrow" aria-hidden="true">›</span>
+                    </button>
+                    <button type="button" data-register-role="consultant">
+                        <span class="registration-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"/></svg></span>
+                        <span class="registration-copy"><strong>Consultant</strong><small>Register as a beauty professional</small></span>
+                        <span class="registration-arrow" aria-hidden="true">›</span>
+                    </button>
+                    <button type="button" data-register-role="merchant">
+                        <span class="registration-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 7 9-4 9 4v10l-9 4-9-4V7Zm0 0 9 4 9-4m-9 4v10M7.5 5l9 4"/></svg></span>
+                        <span class="registration-copy"><strong>Wholesale</strong><small>Register your business</small></span>
+                        <span class="registration-arrow" aria-hidden="true">›</span>
+                    </button>
                 </div><p class="small-note">Create an account or sign in to access your profile.</p>
                 <p id="accountStatus" role="status">Connecting to Firebase…</p>
                 <details id="accountLoginPanel" hidden><summary>Already registered? Sign in</summary>
@@ -198,6 +210,11 @@
                     <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
                     <button class="profile-save" type="submit">Sign in</button>
                 </form></details>
+                <div id="emailVerification" hidden>
+                    <p>Verify your email to activate your account. Open the link sent to your inbox, then return here.</p>
+                    <button class="profile-country" id="resendVerification" type="button">Send verification email</button>
+                    <button class="profile-country" id="checkVerification" type="button">I've verified my email</button>
+                </div>
                 <button class="profile-country" id="accountLogout" type="button" hidden>Sign out</button>
                 <form id="customerProfileForm" class="profile-form" hidden>
                 <input type="hidden" name="role">
@@ -304,6 +321,6 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=registration15"></script>
+    <script src="script.js?v=accountdesign17"></script>
 </body>
 </html>

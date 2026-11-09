@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
-    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword
+    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, reload
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
@@ -21,6 +21,8 @@ export const account = {
     observe: callback => auth.onAuthStateChanged(callback),
     register: (email, password) => createUserWithEmailAndPassword(auth, email, password),
     login: (email, password) => signInWithEmailAndPassword(auth, email, password),
+    sendVerification: user => sendEmailVerification(user),
+    refresh: user => reload(user),
     logout: () => auth.signOut(),
     async read(user) {
         return (await getDoc(profileDoc(user))).data() || {};

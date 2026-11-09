@@ -745,9 +745,51 @@ $("#changeRegistrationRole").addEventListener("click", () => {
     if (!profileForm.querySelector("button[type=submit]").disabled) selectRegistrationRole("");
 });
 
+function updateVerificationPanel(user) {
+    $("#emailVerification").hidden = !user || user.emailVerified;
+}
+
+async function sendVerification(user) {
+    const button = $("#resendVerification");
+    button.disabled = true;
+    try {
+        await firebaseAccount.sendVerification(user);
+        if (firebaseAccount.user === user) {
+            accountStatus.textContent = "Verification email sent to " + user.email + ". Check your inbox or spam folder.";
+            button.textContent = "Resend verification email";
+        }
+    } catch {
+        if (firebaseAccount.user === user) accountStatus.textContent = "Could not send the verification email. Please wait and try again.";
+    } finally {
+        button.disabled = false;
+    }
+}
+
+$("#resendVerification").addEventListener("click", () => {
+    const user = firebaseAccount?.user;
+    if (user && !user.emailVerified) sendVerification(user);
+});
+$("#checkVerification").addEventListener("click", async event => {
+    const user = firebaseAccount?.user;
+    if (!user) return;
+    const button = event.currentTarget;
+    button.disabled = true;
+    try {
+        await firebaseAccount.refresh(user);
+        if (firebaseAccount.user !== user) return;
+        updateVerificationPanel(user);
+        accountStatus.textContent = user.emailVerified ? "Email verified." : "Email is still unverified. Open the link in your inbox first.";
+    } catch {
+        if (firebaseAccount.user === user) accountStatus.textContent = "Could not check verification. Please try again.";
+    } finally {
+        button.disabled = false;
+    }
+});
+
 function updateAccountControls(user) {
     $("#accountLoginPanel").hidden = Boolean(user);
     logoutButton.hidden = !user;
+    updateVerificationPanel(user);
     const password = profileForm.elements.namedItem("password");
     $("#registrationPassword").hidden = Boolean(user);
     password.disabled = Boolean(user);
@@ -757,7 +799,7 @@ function updateAccountControls(user) {
 
 async function connectAccount() {
     try {
-        ({ account: firebaseAccount } = await import("./firebase-account.js?v=1"));
+        ({ account: firebaseAccount } = await import("./firebase-account.js?v=2"));
         firebaseAccount.observe(async user => {
             accountReady = true;
             const emptyProfile = {};
@@ -857,6 +899,7 @@ document.getElementById("customerProfileForm").addEventListener("submit", async 
     const button = form.querySelector("button[type=submit]");
     button.disabled = true;
     let user = firebaseAccount.user;
+    const isNewAccount = !user;
     try {
         if (!user) user = (await firebaseAccount.register(profile.email, password)).user;
         profile.email = user.email;
@@ -883,6 +926,10 @@ document.getElementById("customerProfileForm").addEventListener("submit", async 
         button.disabled = false;
     }
     showToast("Account details saved ✓");
+    if (!user.emailVerified) {
+        if (isNewAccount) await sendVerification(user);
+        return;
+    }
     if (returnToCheckoutAfterProfile) {
         returnToCheckoutAfterProfile = false;
         showView("cart");
@@ -941,6 +988,7 @@ function showView(name, addHistory = true) {
     currentView = name;
     document.body.classList.toggle("bys-settings-open", name === "settings");
     document.body.classList.toggle("bys-cart-open", name === "cart");
+    document.body.classList.toggle("bys-account-open", name === "account");
     document.querySelectorAll(".view").forEach((view) => view.classList.add("hidden"));
     const target = $("#" + name + "View");
     if (!target) return;
@@ -1068,6 +1116,10 @@ function showCartFeedback() {
         if (!profileIsComplete()) {
             returnToCheckoutAfterProfile = true;
             showToast("Complete your account information first");
+            return showView("account");
+        }
+        if (!firebaseAccount?.user?.emailVerified) {
+            showToast("Verify your email before checkout");
             return showView("account");
         }
         document.getElementById("paymentOptions").hidden = false;
