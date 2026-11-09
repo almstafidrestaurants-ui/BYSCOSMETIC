@@ -1911,3 +1911,81 @@ html:has(#openingScreen[open]) { overflow: hidden; }
     height: auto;
 }
 #logoImage { object-fit: contain; }
+
+.category-item.home-categories-link img {
+    border-radius: 50%;
+    background: #ed3c7d;
+}
+.product-photo,
+#homeView .showcase-card .product-photo,
+.category-showcases .showcase-card .product-photo {
+    background: linear-gradient(145deg, #fff, #fff0f6);
+}
+.product-image-link {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.product-image-link:focus-visible {
+    outline: 2px solid var(--rose);
+    outline-offset: -3px;
+}
+.product-image-link img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.product-card .product-unit,
+#homeView .showcase-card .product-unit,
+.product-detail .product-unit {
+    display: table;
+    margin: 6px 0 9px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: #fce6f0;
+    color: #7c2850;
+    font-size: 11px;
+    font-weight: 700;
+}
+.product-detail {
+    gap: clamp(16px, 4vw, 32px);
+    padding: clamp(14px, 3vw, 26px);
+    border: 1px solid #f1d8e4;
+    border-radius: 22px;
+    background: #fff;
+}
+.product-detail > img {
+    display: block;
+    width: 100%;
+    height: clamp(180px, 46vw, 390px);
+    object-fit: contain;
+    padding: 14px;
+    background: #fff4f9;
+    border-radius: 18px;
+}
+.product-detail .detail-category { color: #7c2850; }
+.country-screen .welcome-product-tile {
+    background: linear-gradient(145deg, #fff, #fbe2ee);
+    border: 1px solid #f3d4e4;
+}
+.country-screen .welcome-product-tile img { padding: 0; }
+.country-screen .welcome-logo {
+    width: clamp(66px, 22vw, 112px);
+    height: auto;
+    aspect-ratio: 1;
+    margin-inline: auto;
+}
+
+.product-photo .favorite { z-index: 1; }
+@media (max-width: 600px) and (min-height: 671px) {
+    .country-screen .welcome-product-tile {
+        width: clamp(56px, min(17vw, 9dvh), 76px);
+        height: clamp(56px, min(17vw, 9dvh), 76px);
+    }
+}

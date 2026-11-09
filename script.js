@@ -515,15 +515,18 @@ function categoryCard(category) {
 function productCard(product, showcase = false) {
     const available = priceOf(product) !== null;
     const liked = favorites.includes(product.id);
+    const unit = product.unit?.trim();
     return `<article class="product-card ${showcase ? "showcase-card" : ""}">
         <div class="product-photo">
-            <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" fetchpriority="low">
+            <button type="button" class="product-image-link" data-product="${escapeHtml(product.id)}" aria-label="View details for ${escapeHtml(product.name.trim())}">
+                <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="" loading="lazy" decoding="async" fetchpriority="low">
+            </button>
             <button class="favorite ${liked ? "saved" : ""}" data-favorite="${escapeHtml(product.id)}" aria-label="Toggle favorite">${liked ? "♥" : "♡"}</button>
         </div>
         <div class="product-body">
             <span class="product-brand">${escapeHtml(product.brand)}</span>
             <div class="product-title">${escapeHtml(product.name)}</div>
-            <p class="product-unit">${escapeHtml(product.unit)}</p>
+            ${unit ? `<p class="product-unit">${escapeHtml(unit)}</p>` : ""}
             <div class="product-bottom">
                 <span class="${available ? "price" : "unavailable"}">${formatPrice(product)}</span>
                 <button class="add-cart" data-add="${escapeHtml(product.id)}" aria-label="Add to cart" ${available ? "" : "disabled"}>${showcase ? '<span class="cart-mini-icon" aria-hidden="true">🛒</span><span>Add to cart</span>' : '<span class="bys-plus-symbol" aria-hidden="true">+</span>'}</button>
@@ -533,7 +536,11 @@ function productCard(product, showcase = false) {
 }
 
 function renderHome() {
-    $("#homeCategories").innerHTML = CATEGORIES.map(categoryCard).join("");
+    $("#homeCategories").innerHTML = CATEGORIES.map(category => category.name === "Skincare" ? `
+        <button type="button" class="category-item all-categories-item home-categories-link" data-view="categories">
+            <img src="images/ui/all-categories.svg" alt="" width="80" height="80">
+            <span>All Categories</span>
+        </button>` : categoryCard(category)).join("");
     $("#allCategories").innerHTML = `
         <button type="button" class="category-item all-categories-item" data-category="All">
             <img src="images/ui/all-categories.svg" alt="" width="80" height="80">
@@ -783,13 +790,14 @@ function showView(name, addHistory = true) {
 }
 
 function showProduct(id) {
-    return; // Product detail navigation disabled by store owner request.
     const product = PRODUCTS.find((item) => item.id === id);
     if (!product) return;
     $("#productDetail").innerHTML = `<div class="product-detail">
         <img src="${imageOf(product)}" data-fallback="${sampleOf(product)}" alt="${escapeHtml(product.name)}" decoding="async" fetchpriority="high">
         <div><p>${escapeHtml(product.brand)}</p><h2>${escapeHtml(product.name)}</h2>
-        <p>${escapeHtml(product.unit)}</p><h2 class="price">${formatPrice(product)}</h2>
+        <p class="detail-category">${escapeHtml(categoryOf(product))}</p>
+        ${product.unit?.trim() ? `<p class="product-unit">${escapeHtml(product.unit.trim())}</p>` : ""}
+        <p class="price">${formatPrice(product)}</p>
         <button class="checkout" data-add="${escapeHtml(product.id)}" ${priceOf(product) === null ? "disabled" : ""}>Add to Bag</button></div>
     </div>`;
     showView("product");
@@ -834,13 +842,13 @@ function showCartFeedback() {
 // إدارة النقرات بمستمع واحد، حتى العناصر المضافة ديناميكياً تشتغل
  document.addEventListener("click", (event) => {
     const button = event.target.closest("button");
+    if (button?.dataset.product) return showProduct(button.dataset.product);
     if (!button) return;
     if (button.dataset.country) return selectCountry(button.dataset.country);
     if (button.dataset.view) {
         return showView(button.dataset.view);
     }
     if (button.dataset.add) return addToCart(button.dataset.add);
-    // Product pictures and titles are informational; only the + button adds to cart.
     if (button.dataset.favorite) {
         const id = button.dataset.favorite;
         favorites = favorites.includes(id) ? favorites.filter((item) => item !== id) : [...favorites, id];
