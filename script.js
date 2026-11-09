@@ -719,7 +719,7 @@ const logoutButton = $("#accountLogout");
 const profileForm = $("#customerProfileForm");
 
 function updateAccountControls(user) {
-    loginForm.hidden = Boolean(user);
+    $("#accountLoginPanel").hidden = Boolean(user);
     logoutButton.hidden = !user;
     profileForm.hidden = false;
     const password = profileForm.elements.namedItem("password");
@@ -793,7 +793,9 @@ function fillCustomerProfile() {
     const country = COUNTRIES.find(c => c.code === countryCode);
     document.getElementById("profileDial").textContent = country?.dial || "+961";
     document.getElementById("profileCountryName").value = country?.name || countryCode;
-    form.elements.namedItem("role").value = profile.role || (profile.fullName ? "customer" : "");
+    for (const option of form.elements.namedItem("role")) {
+        option.checked = option.value === profile.role;
+    }
     form.elements.namedItem("phone").placeholder = "Enter your phone number";
     for (const field of ["fullName", "phone", "governorate", "address", "location", "occupation", "email"]) {
         form.elements.namedItem(field).value = profile[field] || "";
@@ -832,7 +834,11 @@ document.getElementById("customerProfileForm").addEventListener("submit", async 
     } catch (failure) {
         for (const [field, value] of Object.entries(profile)) {
             const input = form.elements.namedItem(field);
-            if (input && !input.readOnly) input.value = value;
+            if (field === "role") {
+                for (const option of input) option.checked = option.value === value;
+            } else if (input && !input.readOnly) {
+                input.value = value;
+            }
         }
         error.textContent = user
             ? "Your profile could not be saved. Please try again."

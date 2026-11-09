@@ -2132,3 +2132,9 @@ html:has(#openingScreen[open]) { overflow: hidden; }
 .header-brand-text strong { color: #301721; font-size: 0.9rem; }
 
 #accountView [hidden] { display: none; }
+
+#accountLoginPanel summary { cursor: pointer; color: #8a365b; font-weight: 700; }
+.account-roles { display: grid; gap: 8px; min-width: 0; margin: 0; padding: 12px; border: 1px solid #e9cbd9; border-radius: 12px; }
+.account-roles legend { font-size: 14px; font-weight: 700; }
+.profile-form .account-roles label { display: flex; align-items: center; gap: 10px; min-height: 42px; padding: 0 10px; background: #fff4f8; border-radius: 8px; cursor: pointer; }
+.profile-form .account-roles input { width: auto; accent-color: #d72f72; }

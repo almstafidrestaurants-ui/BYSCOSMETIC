@@ -8,7 +8,7 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=firebase12">
+    <link rel="stylesheet" href="style.css?v=accountoptions14">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
@@ -185,19 +185,19 @@
             <section class="view hidden" id="accountView"><div class="page-heading"><button data-view="home">‹</button><h1>My Account</h1></div>
                 <div class="profile-panel"><h2>Account registration</h2><p class="small-note">Create an account or sign in to access your profile.</p>
                 <p id="accountStatus" role="status">Connecting to Firebase…</p>
-                <form id="accountLogin" class="profile-form" hidden>
+                <details id="accountLoginPanel" hidden><summary>Already registered? Sign in</summary>
+                <form id="accountLogin" class="profile-form">
                     <label>Email<input name="email" type="email" autocomplete="email" required></label>
                     <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
                     <button class="profile-save" type="submit">Sign in</button>
-                </form>
+                </form></details>
                 <button class="profile-country" id="accountLogout" type="button" hidden>Sign out</button>
                 <form id="customerProfileForm" class="profile-form" hidden>
-                <label>Account type *<select name="role" required>
-                    <option value="">Select your account type</option>
-                    <option value="customer">Customer</option>
-                    <option value="consultant">Consultant</option>
-                    <option value="merchant">Wholesale</option>
-                </select></label>
+                <fieldset class="account-roles"><legend>Account type *</legend>
+                    <label><input type="radio" name="role" value="customer" required> Customer</label>
+                    <label><input type="radio" name="role" value="consultant" required> Consultant</label>
+                    <label><input type="radio" name="role" value="merchant" required> Wholesale</label>
+                </fieldset>
                 <label>Full name *<input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
                 <label>Phone number *<div class="profile-phone"><span id="profileDial">+961</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Enter your phone number" required maxlength="20" aria-label="National phone number"></div></label>
                 <label>Country<input id="profileCountryName" autocomplete="country-name" readonly></label>
@@ -280,6 +280,6 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=firebase12"></script>
+    <script src="script.js?v=accountoptions14"></script>
 </body>
 </html>
