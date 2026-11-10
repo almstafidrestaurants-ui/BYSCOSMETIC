@@ -755,8 +755,8 @@ async function sendVerification(user) {
     try {
         await firebaseAccount.sendVerification(user);
         if (firebaseAccount.user === user) {
-            accountStatus.textContent = "Verification email sent to " + user.email + ". Check your inbox or spam folder.";
-            button.textContent = "Resend verification email";
+            accountStatus.textContent = "Verification code sent to " + user.email + ". Check your inbox or spam folder.";
+            button.textContent = "Resend verification code";
         }
     } catch {
         if (firebaseAccount.user === user) accountStatus.textContent = "Could not send the verification email. Please wait and try again.";
@@ -774,13 +774,21 @@ $("#checkVerification").addEventListener("click", async event => {
     if (!user) return;
     const button = event.currentTarget;
     button.disabled = true;
+    const input = $("#verificationCode");
+    const code = input.value.trim().replace(/[٠-٩۰-۹]/g, digit => String(digit.charCodeAt(0) & 15));
     try {
-        await firebaseAccount.refresh(user);
+        if (!/^\d{6}$/.test(code)) {
+            accountStatus.textContent = "Enter the six-digit verification code.";
+            input.focus();
+            return;
+        }
+        await firebaseAccount.verifyCode(user, code);
         if (firebaseAccount.user !== user) return;
+        if (user.emailVerified) input.value = "";
         updateVerificationPanel(user);
-        accountStatus.textContent = user.emailVerified ? "Email verified." : "Email is still unverified. Open the link in your inbox first.";
+        accountStatus.textContent = user.emailVerified ? "Email verified." : "Email is still unverified. Request a new code.";
     } catch {
-        if (firebaseAccount.user === user) accountStatus.textContent = "Could not check verification. Please try again.";
+        if (firebaseAccount.user === user) accountStatus.textContent = "Could not verify the code. Check it or request a new one.";
     } finally {
         button.disabled = false;
     }
@@ -799,7 +807,7 @@ function updateAccountControls(user) {
 
 async function connectAccount() {
     try {
-        ({ account: firebaseAccount } = await import("./firebase-account.js?v=2"));
+        ({ account: firebaseAccount } = await import("./firebase-account.js?v=3"));
         firebaseAccount.observe(async user => {
             accountReady = true;
             const emptyProfile = {};

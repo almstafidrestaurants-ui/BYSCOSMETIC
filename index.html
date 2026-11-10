@@ -211,9 +211,11 @@
                     <button class="profile-save" type="submit">Sign in</button>
                 </form></details>
                 <div id="emailVerification" hidden>
-                    <p>Verify your email to activate your account. Open the link sent to your inbox, then return here.</p>
-                    <button class="profile-country" id="resendVerification" type="button">Send verification email</button>
-                    <button class="profile-country" id="checkVerification" type="button">I've verified my email</button>
+                    <p>Verify your email to activate your account. Enter the six-digit code sent to your inbox.</p>
+                    <button class="profile-country" id="resendVerification" type="button">Send verification code</button>
+                    <label for="verificationCode">Verification code</label>
+                    <input class="profile-country" id="verificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr">
+                    <button class="profile-country" id="checkVerification" type="button">Verify code</button>
                 </div>
                 <button class="profile-country" id="accountLogout" type="button" hidden>Sign out</button>
                 <form id="customerProfileForm" class="profile-form" hidden>
@@ -321,6 +323,6 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=accountdesign17"></script>
+    <script src="script.js?v=emailotp1"></script>
 </body>
 </html>
