@@ -701,7 +701,7 @@ function renderCart() {
 }
 
 
-// Customer details are local-only until a secure backend is connected.
+// Registration details stay in the browser until the email code is confirmed.
 function normalizeNationalPhone(value, code) {
     let digits = String(value || "").replace(/\D/g, "");
     const dial = (COUNTRIES.find(c => c.code === code)?.dial || "").replace(/\D/g, "");
@@ -714,9 +714,8 @@ const PHONE_HINTS = {LB:"03 123 456 or 71 123 456", SY:"9XXXXXXXX", JO:"7XXXXXXX
 let firebaseAccount;
 let accountReady = false;
 let signedInProfile = {};
+let pendingRegistration = null;
 const accountStatus = $("#accountStatus");
-const loginForm = $("#accountLogin");
-const logoutButton = $("#accountLogout");
 const profileForm = $("#customerProfileForm");
 
 const registrationChoices = $("#registrationChoices");
@@ -746,84 +745,130 @@ $("#changeRegistrationRole").addEventListener("click", () => {
 });
 
 function updateVerificationPanel(user) {
-    $("#emailVerification").hidden = !user || user.emailVerified;
+    const isOpen = Boolean(pendingRegistration) || Boolean(user && !user.emailVerified);
+    $("#emailVerification").hidden = !isOpen;
+    document.body.classList.toggle("bys-email-verification-open", isOpen);
 }
 
-async function sendVerification(user) {
+async function sendVerification(email) {
     const button = $("#resendVerification");
     button.disabled = true;
+    $("#verificationEmail").textContent = email;
+    $("#verificationStatus").textContent = "Sending verification code…";
     try {
-        await firebaseAccount.sendVerification(user);
-        if (firebaseAccount.user === user) {
-            accountStatus.textContent = "Verification code sent to " + user.email + ". Check your inbox or spam folder.";
-            button.textContent = "Resend verification code";
-        }
+        await firebaseAccount.sendVerification(email);
+        accountStatus.textContent = "Verification code sent to " + email + ". Enter it below to create your account.";
+        $("#verificationStatus").textContent = "Code sent. Check your inbox or spam folder, then enter the six digits below.";
+        button.textContent = "Resend verification code";
+        $("#emailVerification").hidden = false;
+        document.body.classList.add("bys-email-verification-open");
+        $("#verificationCode").focus();
+        return true;
     } catch {
-        if (firebaseAccount.user === user) accountStatus.textContent = "Could not send the verification email. Please wait and try again.";
+        accountStatus.textContent = "Could not send the verification code. Please wait and try again.";
+        $("#verificationStatus").textContent = "Could not send the code. Check your email address or try again in one minute.";
+        return false;
     } finally {
         button.disabled = false;
     }
 }
 
 $("#resendVerification").addEventListener("click", () => {
-    const user = firebaseAccount?.user;
-    if (user && !user.emailVerified) sendVerification(user);
+    const email = pendingRegistration?.email || profileForm.elements.namedItem("email").value.trim();
+    if (email) sendVerification(email);
+});
+$("#closeVerification").addEventListener("click", () => {
+    $("#emailVerification").hidden = true;
+    document.body.classList.remove("bys-email-verification-open");
 });
 $("#checkVerification").addEventListener("click", async event => {
-    const user = firebaseAccount?.user;
-    if (!user) return;
     const button = event.currentTarget;
     button.disabled = true;
     const input = $("#verificationCode");
     const code = input.value.trim().replace(/[٠-٩۰-۹]/g, digit => String(digit.charCodeAt(0) & 15));
     try {
         if (!/^\d{6}$/.test(code)) {
-            accountStatus.textContent = "Enter the six-digit verification code.";
+            $("#verificationStatus").textContent = "Enter all six digits from the email.";
             input.focus();
             return;
         }
-        await firebaseAccount.verifyCode(user, code);
-        if (firebaseAccount.user !== user) return;
-        if (user.emailVerified) input.value = "";
-        updateVerificationPanel(user);
-        accountStatus.textContent = user.emailVerified ? "Email verified." : "Email is still unverified. Request a new code.";
-    } catch {
-        if (firebaseAccount.user === user) accountStatus.textContent = "Could not verify the code. Check it or request a new one.";
+        const email = pendingRegistration?.email || profileForm.elements.namedItem("email").value.trim();
+        if (!email) {
+            $("#verificationStatus").textContent = "Return to the registration form and enter your details first.";
+            return;
+        }
+        const result = await firebaseAccount.verifyCode(email, code);
+        const registrationToken = result.registrationToken;
+        if (!registrationToken) throw new Error("Missing verification ticket");
+
+        let user = firebaseAccount.user;
+        if (!user || user.email.toLowerCase() !== email.toLowerCase()) {
+            const pending = pendingRegistration;
+            if (!pending?.password) {
+                accountStatus.textContent = "The code is confirmed, but registration details are missing. Return to the form and request a new code.";
+                $("#verificationStatus").textContent = "Registration details are missing. Return to the form and request a new code.";
+                input.value = "";
+                return;
+            }
+            user = (await firebaseAccount.register(email, pending.password)).user;
+        }
+
+        await firebaseAccount.activate(user, registrationToken);
+        input.value = "";
+        const profile = pendingRegistration?.profile;
+        pendingRegistration = null;
+        updateAccountControls(user);
+        if (profile) {
+            try {
+                await saveVerifiedProfile(user, profile);
+            } catch {
+                accountStatus.textContent = "Email verified. Your profile was not saved; press Save profile to try again.";
+            }
+        } else {
+            accountStatus.textContent = "Email verified. Your profile can now be saved.";
+        }
+    } catch (failure) {
+        const message = failure.code === "auth/email-already-in-use"
+            ? "This email already has an account. Please use another email address."
+            : "The code could not be confirmed. Check it or request a new one.";
+        accountStatus.textContent = message;
+        $("#verificationStatus").textContent = message;
     } finally {
         button.disabled = false;
     }
 });
 
 function updateAccountControls(user) {
-    $("#accountLoginPanel").hidden = Boolean(user);
-    logoutButton.hidden = !user;
     updateVerificationPanel(user);
     const password = profileForm.elements.namedItem("password");
-    $("#registrationPassword").hidden = Boolean(user);
-    password.disabled = Boolean(user);
-    password.required = !user;
-    profileForm.elements.namedItem("email").readOnly = Boolean(user);
+    const verified = Boolean(user?.emailVerified);
+    const registrationPending = Boolean(pendingRegistration);
+    $("#registrationPassword").hidden = Boolean(user) || registrationPending;
+    password.disabled = Boolean(user) || registrationPending;
+    password.required = !user && !registrationPending;
+    profileForm.elements.namedItem("email").readOnly = Boolean(user) || Boolean(pendingRegistration);
+    profileForm.querySelector("button[type=submit]").textContent = verified ? "Save profile" : "Send verification code";
 }
 
 async function connectAccount() {
     try {
-        ({ account: firebaseAccount } = await import("./firebase-account.js?v=3"));
+        ({ account: firebaseAccount } = await import("./firebase-account.js?v=5"));
         firebaseAccount.observe(async user => {
             accountReady = true;
             const emptyProfile = {};
             signedInProfile = emptyProfile;
             updateAccountControls(user);
-            if (!profileForm.querySelector("button[type=submit]").disabled) {
+            if (!pendingRegistration && !profileForm.querySelector("button[type=submit]").disabled) {
                 selectRegistrationRole("");
                 fillCustomerProfile();
             }
-            accountStatus.textContent = user ? "Signed in as " + user.email : "Sign in or register below.";
+            accountStatus.textContent = user ? "Account email: " + user.email : "Choose an account type to register.";
             if (!user) return;
             try {
                 const profile = await firebaseAccount.read(user);
                 if (firebaseAccount.user !== user || signedInProfile !== emptyProfile) return;
                 signedInProfile = profile;
-                if (!profileForm.querySelector("button[type=submit]").disabled) fillCustomerProfile();
+                if (!pendingRegistration && !profileForm.querySelector("button[type=submit]").disabled) fillCustomerProfile();
             } catch {
                 if (firebaseAccount.user === user) accountStatus.textContent = "Signed in. Your profile could not be loaded.";
             }
@@ -833,27 +878,6 @@ async function connectAccount() {
     }
 }
 
-loginForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    const button = loginForm.querySelector("button");
-    button.disabled = true;
-    try {
-        await firebaseAccount.login(loginForm.elements.email.value.trim(), loginForm.elements.password.value);
-        loginForm.reset();
-    } catch {
-        accountStatus.textContent = "Sign-in failed. Check your email and password, then try again.";
-    } finally {
-        button.disabled = false;
-    }
-});
-
-logoutButton.addEventListener("click", async () => {
-    try {
-        await firebaseAccount.logout();
-    } catch {
-        accountStatus.textContent = "Could not sign out. Please try again.";
-    }
-});
 // Remember when the account form was opened from checkout.
 let returnToCheckoutAfterProfile = false;
 function getCustomerProfile() { return signedInProfile; }
@@ -888,6 +912,41 @@ function fillCustomerProfile() {
     form.elements.namedItem("password").value = "";
     document.getElementById("profileError").hidden = true;
 }
+
+async function saveVerifiedProfile(user, profile) {
+    const savedProfile = { ...profile, email: user.email };
+    await firebaseAccount.write(user, savedProfile);
+    if (firebaseAccount.user !== user) return;
+    signedInProfile = savedProfile;
+    pendingRegistration = null;
+    updateAccountControls(user);
+    fillCustomerProfile();
+
+    try {
+        await firebaseAccount.notifyRegistration(user, {
+            fullName: savedProfile.fullName,
+            role: registrationRoles[savedProfile.role] || savedProfile.role,
+            address: savedProfile.address || savedProfile.businessAddress || savedProfile.governorate
+        });
+        accountStatus.textContent = "Email verified. Your profile is saved, and a registration notice was sent to Almustafidbusiness@gmail.com.";
+    } catch {
+        accountStatus.textContent = "Email verified and profile saved, but the notice could not be sent. Press Save profile to retry.";
+    }
+    showToast("Email verified and profile saved ✓");
+
+    if (returnToCheckoutAfterProfile) {
+        returnToCheckoutAfterProfile = false;
+        showView("cart");
+        const paymentOptions = document.getElementById("paymentOptions");
+        if (paymentOptions) {
+            paymentOptions.hidden = false;
+            paymentOptions.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+    } else if (currentView === "cart") {
+        renderCart();
+    }
+}
+
 document.getElementById("customerProfileForm").addEventListener("submit", async event => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -906,16 +965,21 @@ document.getElementById("customerProfileForm").addEventListener("submit", async 
     error.hidden = true;
     const button = form.querySelector("button[type=submit]");
     button.disabled = true;
-    let user = firebaseAccount.user;
-    const isNewAccount = !user;
+    const user = firebaseAccount.user;
     try {
-        if (!user) user = (await firebaseAccount.register(profile.email, password)).user;
-        profile.email = user.email;
-        await firebaseAccount.write(user, profile);
-        if (firebaseAccount.user !== user) return;
-        signedInProfile = profile;
-        updateAccountControls(user);
-        fillCustomerProfile();
+        if (!user?.emailVerified) {
+            pendingRegistration = {
+                email: profile.email,
+                password: user ? null : (pendingRegistration?.password || password),
+                profile
+            };
+            updateAccountControls(user);
+            const sent = await sendVerification(profile.email);
+            if (sent) accountStatus.textContent = "Code sent. Your profile will be saved only after the code is confirmed.";
+            return;
+        }
+
+        await saveVerifiedProfile(user, profile);
     } catch (failure) {
         for (const [field, value] of Object.entries(profile)) {
             const input = form.elements.namedItem(field);
@@ -923,31 +987,11 @@ document.getElementById("customerProfileForm").addEventListener("submit", async 
                 input.value = value;
             }
         }
-        error.textContent = user
-            ? "Your profile could not be saved. Please try again."
-            : failure.code === "auth/email-already-in-use"
-                ? "This email already has an account. Sign in above."
-                : "Could not create your account. Please check your details and try again.";
+        error.textContent = "Your profile could not be saved. Please try again.";
         error.hidden = false;
         return;
     } finally {
         button.disabled = false;
-    }
-    showToast("Account details saved ✓");
-    if (!user.emailVerified) {
-        if (isNewAccount) await sendVerification(user);
-        return;
-    }
-    if (returnToCheckoutAfterProfile) {
-        returnToCheckoutAfterProfile = false;
-        showView("cart");
-        const paymentOptions = document.getElementById("paymentOptions");
-        if (paymentOptions) {
-            paymentOptions.hidden = false;
-            paymentOptions.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-    } else if (currentView === "cart") {
-        renderCart();
     }
 });
 
@@ -1113,7 +1157,7 @@ function showCartFeedback() {
         $("#productsTitle").textContent = "Beauty Goals";
         return showView("products");
     }
-    if (button.id === "changeCountry" || button.id === "accountCountry") return showCountryScreen();
+    if (button.id === "changeCountry") return showCountryScreen();
     if (button.id === "clearSearch") {
         $("#searchInput").value = "";
         searchTerm = "";

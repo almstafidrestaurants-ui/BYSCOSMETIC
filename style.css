@@ -1470,6 +1470,16 @@ main { padding: 17px 22px 35px; }
 .profile-form input,.profile-form textarea,.profile-form select{width:100%;border:1px solid #e9cbd9;border-radius:12px;background:#fffafd;padding:12px;color:#281b23;font:inherit;outline-color:#dc4481}
 .profile-phone{display:flex;align-items:center;gap:10px}.profile-phone span{white-space:nowrap;color:#a42f62}
 .profile-error{color:#b32042;font-size:12px;margin:0}.profile-save,.profile-country{border:0;border-radius:14px;padding:13px;font-weight:700}.profile-save{background:#d63375;color:white}.profile-country{margin-top:12px;background:#fff0f6;color:#ac285d;width:100%}
+.field-label{display:flex;align-items:center;gap:8px;min-height:20px}.field-label svg{width:17px;height:17px;flex:none;color:#b73570}
+.verification-overlay:not([hidden]){position:fixed;inset:0;z-index:20000;display:grid;place-items:center;overflow:auto;padding:max(22px,env(safe-area-inset-top)) 18px max(22px,env(safe-area-inset-bottom));background:linear-gradient(145deg,#fce7f0,#fff8fb 52%,#f9dce8)}
+.verification-card{position:relative;width:min(100%,520px);padding:34px 28px 26px;border:1px solid #f0cfdd;border-radius:26px;background:#fff;box-shadow:0 18px 70px #671a3b26;text-align:center}
+.verification-icon{display:grid;place-items:center;width:72px;height:72px;margin:0 auto 18px;border-radius:24px;background:#fce6ef;color:#c32f70}.verification-icon svg{width:34px;height:34px}
+.verification-card h2{margin:0 0 10px;color:#311b27;font-size:25px}.verification-card p{margin:0 0 14px;color:#705b66;line-height:1.55}.verification-recipient{font-weight:700;color:#a82c62!important;overflow-wrap:anywhere}
+.verification-card .verification-status{min-height:1.5em;margin:6px 0 12px;color:#8e325b;font-size:14px}
+.verification-card label{display:block;margin:20px 0 8px;text-align:left;font-weight:700;color:#503141}
+.verification-code-input{width:100%;height:64px;border:2px solid #e9bdd0;border-radius:15px;background:#fff8fb;padding:12px;text-align:center;font-size:28px;letter-spacing:.48em;font-weight:750;color:#311b27;outline-color:#d63375}
+.verification-card .profile-save{width:100%;margin-top:18px;padding:15px;font-size:16px}.verification-card .profile-country{margin-top:10px}.verification-cancel{margin-top:14px;border:0;background:transparent;color:#806c76;font-weight:650;padding:10px 14px}
+body.bys-email-verification-open{overflow:hidden}
 .settings-head{background:#f16b9c;display:flex;align-items:center;justify-content:center;min-height:95px;position:relative;margin:-17px -22px 0}.settings-head h1{font-size:24px;font-weight:500;color:#21141c}.settings-head>button{position:absolute;left:20px;top:24px;border:0;border-radius:10px;background:white;width:45px;height:45px;font-size:32px}
 .settings-content{background:#f5f5f5;min-height:65vh;padding:28px 14px 70px}.settings-login,.settings-links button{width:100%;display:flex;align-items:center;gap:19px;text-align:left;border:0;background:white;border-radius:16px;padding:20px 18px;box-shadow:0 12px 18px #bd3f7330;font-size:17px;color:#222}
 .settings-login{margin-bottom:30px}.settings-links{display:grid;gap:11px}.settings-content svg{width:25px;height:25px;flex-shrink:0}.settings-content button span{flex:1}.settings-content button b{font-size:31px;font-weight:400;color:#e95e95}
@@ -2132,8 +2142,6 @@ html:has(#openingScreen[open]) { overflow: hidden; }
 .header-brand-text strong { color: #301721; font-size: 0.9rem; }
 
 #accountView [hidden] { display: none; }
-
-#accountLoginPanel summary { cursor: pointer; color: #8a365b; font-weight: 700; }
 
 .registration-brand { display: flex; align-items: center; gap: 14px; }
 .registration-brand img { border-radius: 14px; }

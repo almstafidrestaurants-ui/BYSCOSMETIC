@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
-    getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, applyActionCode, reload
+    getAuth, createUserWithEmailAndPassword, reload
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
@@ -16,33 +16,31 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const profileDoc = user => doc(db, "profiles", user.uid);
 
-async function verificationRequest(user, path, body) {
+async function verificationRequest(path, body, user) {
     const response = await fetch("https://almstafid.com/bysauthapi/" + path, {
         method: "POST",
         headers: {
-            Authorization: "Bearer " + await user.getIdToken(),
-            ...(body ? { "Content-Type": "application/json" } : {})
+            ...(user ? { Authorization: "Bearer " + await user.getIdToken() } : {}),
+            "Content-Type": "application/json"
         },
-        body: body ? JSON.stringify(body) : undefined
+        body: JSON.stringify(body)
     });
     if (!response.ok) throw new Error(String(response.status));
-    return response;
+    return response.json().catch(() => ({}));
 }
 
 export const account = {
     get user() { return auth.currentUser; },
     observe: callback => auth.onAuthStateChanged(callback),
     register: (email, password) => createUserWithEmailAndPassword(auth, email, password),
-    login: (email, password) => signInWithEmailAndPassword(auth, email, password),
-    sendVerification: user => verificationRequest(user, "send"),
-    async verifyCode(user, code) {
-        const response = await verificationRequest(user, "verify", { code });
-        const { actionCode } = await response.json();
-        if (actionCode) await applyActionCode(auth, actionCode);
+    sendVerification: email => verificationRequest("send", { email }),
+    verifyCode: (email, code) => verificationRequest("verify", { email, code }),
+    async activate(user, registrationToken) {
+        await verificationRequest("activate", { registrationToken }, user);
         await reload(user);
         await user.getIdToken(true);
     },
-    logout: () => auth.signOut(),
+    notifyRegistration: (user, notice) => verificationRequest("notify-registration", notice, user),
     async read(user) {
         return (await getDoc(profileDoc(user))).data() || {};
     },

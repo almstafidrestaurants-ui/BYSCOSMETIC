@@ -8,7 +8,7 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=accountdesign17">
+    <link rel="stylesheet" href="style.css?v=accountdesign18">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
@@ -202,33 +202,33 @@
                         <span class="registration-copy"><strong>Wholesale</strong><small>Register your business</small></span>
                         <span class="registration-arrow" aria-hidden="true">›</span>
                     </button>
-                </div><p class="small-note">Create an account or sign in to access your profile.</p>
+                </div><p class="small-note">Create your profile. It is saved only after you confirm your email code.</p>
                 <p id="accountStatus" role="status">Connecting to Firebase…</p>
-                <details id="accountLoginPanel" hidden><summary>Already registered? Sign in</summary>
-                <form id="accountLogin" class="profile-form">
-                    <label>Email<input name="email" type="email" autocomplete="email" required></label>
-                    <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
-                    <button class="profile-save" type="submit">Sign in</button>
-                </form></details>
-                <div id="emailVerification" hidden>
-                    <p>Verify your email to activate your account. Enter the six-digit code sent to your inbox.</p>
-                    <button class="profile-country" id="resendVerification" type="button">Send verification code</button>
-                    <label for="verificationCode">Verification code</label>
-                    <input class="profile-country" id="verificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr">
-                    <button class="profile-country" id="checkVerification" type="button">Verify code</button>
+                <div id="emailVerification" class="verification-overlay" role="dialog" aria-modal="true" aria-labelledby="verificationTitle" hidden>
+                    <div class="verification-card">
+                        <div class="verification-icon"><i data-lucide="mail-check" aria-hidden="true"></i></div>
+                        <h2 id="verificationTitle">Confirm your email</h2>
+                        <p>Open your email, find the six-digit BYS Cosmetics code, and enter it here to save your profile.</p>
+                        <p class="verification-recipient" id="verificationEmail"></p>
+                        <p class="verification-status" id="verificationStatus" role="status" aria-live="polite"></p>
+                        <label for="verificationCode">Verification code</label>
+                        <input class="verification-code-input" id="verificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr" aria-label="Six-digit verification code">
+                        <button class="profile-save" id="checkVerification" type="button">Confirm code and save profile</button>
+                        <button class="profile-country" id="resendVerification" type="button">Resend code</button>
+                        <button class="verification-cancel" id="closeVerification" type="button">Return to registration</button>
+                    </div>
                 </div>
-                <button class="profile-country" id="accountLogout" type="button" hidden>Sign out</button>
                 <form id="customerProfileForm" class="profile-form" hidden>
                 <input type="hidden" name="role">
                 <h3 id="registrationTitle"></h3>
                 <button class="profile-country" id="changeRegistrationRole" type="button">Change account type</button>
-                <label><span id="registrationNameLabel">Full Name *</span><input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
-                <label>Phone number *<div class="profile-phone"><span id="profileDial">+961</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Enter your phone number" required maxlength="20" aria-label="National phone number"></div></label>
+                <label><span class="field-label"><i data-lucide="user-round" aria-hidden="true"></i><span id="registrationNameLabel">Full Name *</span></span><input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
+                <label><span class="field-label"><i data-lucide="phone" aria-hidden="true"></i>Phone number *</span><div class="profile-phone"><span id="profileDial">+961</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Enter your phone number" required maxlength="20" aria-label="National phone number"></div></label>
                 <label>Country<input id="profileCountryName" autocomplete="country-name" readonly></label>
-                <label>Governorate / State *<input name="governorate" autocomplete="address-level1" required maxlength="100"></label>
+                <label><span class="field-label"><i data-lucide="map" aria-hidden="true"></i>Governorate / State *</span><input name="governorate" autocomplete="address-level1" required maxlength="100"></label>
                 <fieldset class="registration-fields" data-profile-role="customer" hidden disabled>
-                <label>Address *<textarea name="address" autocomplete="street-address" required minlength="8" maxlength="300" rows="3"></textarea></label>
-                <label>Location (optional)<input name="location" id="profileLocation" placeholder="City, area, or map link" maxlength="250"></label><button id="useCurrentLocation" class="profile-location-btn" type="button"><span aria-hidden="true">⌖</span> Use my current location</button><p id="locationStatus" class="location-status" role="status" aria-live="polite"></p>
+                <label><span class="field-label"><i data-lucide="map-pin" aria-hidden="true"></i>Address *</span><textarea name="address" autocomplete="street-address" required minlength="8" maxlength="300" rows="3"></textarea></label>
+                <label><span class="field-label"><i data-lucide="map-pin" aria-hidden="true"></i>Location (optional)</span><input name="location" id="profileLocation" placeholder="City, area, or map link" maxlength="250"></label><button id="useCurrentLocation" class="profile-location-btn" type="button"><span aria-hidden="true">⌖</span> Use my current location</button><p id="locationStatus" class="location-status" role="status" aria-live="polite"></p>
                 <label>Field of work *<input name="occupation" required maxlength="100"></label>
                 </fieldset>
                 <fieldset class="registration-fields" data-profile-role="consultant" hidden disabled>
@@ -245,15 +245,15 @@
                 </fieldset>
                 <fieldset class="registration-fields" data-profile-role="merchant" hidden disabled>
                     <label>Business Name *<input name="businessName" autocomplete="organization" required maxlength="100"></label>
-                    <label>Business Address *<textarea name="businessAddress" required minlength="8" maxlength="300" rows="3"></textarea></label>
+                    <label><span class="field-label"><i data-lucide="map-pin" aria-hidden="true"></i>Business Address *</span><textarea name="businessAddress" required minlength="8" maxlength="300" rows="3"></textarea></label>
                     <label>Business Type *<input name="businessType" required maxlength="100"></label>
                 </fieldset>
-                <label>Email *<input name="email" type="email" autocomplete="email" required maxlength="160"></label>
-                <label id="registrationPassword">Password *<input name="password" type="password" autocomplete="new-password" minlength="6" required></label>
+                <label><span class="field-label"><i data-lucide="mail" aria-hidden="true"></i>Email *</span><input name="email" type="email" autocomplete="email" required maxlength="160"></label>
+                <label id="registrationPassword"><span class="field-label"><i data-lucide="lock-keyhole" aria-hidden="true"></i>Password *</span><input name="password" type="password" autocomplete="new-password" minlength="6" required></label>
                 <p id="profileError" class="profile-error" role="alert" hidden></p>
                 <button class="profile-save" type="submit">Save profile</button></form>
-                <button class="profile-country" id="accountCountry" type="button">Change shopping country</button></div></section>
-                <section class="view hidden" id="settingsView"><div class="settings-head"><button data-view="home" aria-label="Back">‹</button><h1>Settings</h1></div><div class="settings-content"><button class="settings-login" data-view="account"><i data-lucide="user-round"></i><span>My account / Login</span><b>›</b></button><div class="settings-links">
+                </div></section>
+                <section class="view hidden" id="settingsView"><div class="settings-head"><button data-view="home" aria-label="Back">‹</button><h1>Settings</h1></div><div class="settings-content"><button class="settings-login" data-view="account"><i data-lucide="user-round"></i><span>Create account</span><b>›</b></button><div class="settings-links">
                 <button data-settings="Report fraud"><i data-lucide="shield-alert"></i><span>Report fraud</span><b>›</b></button>
                 <button data-settings="Feedbacks"><i data-lucide="message-square-warning"></i><span>Feedbacks</span><b>›</b></button>
                 <button data-settings="Distributors"><i data-lucide="network"></i><span>Distributors</span><b>›</b></button>
@@ -323,6 +323,6 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=emailotp1"></script>
+    <script src="script.js?v=emailotp3"></script>
 </body>
 </html>

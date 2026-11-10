@@ -37,7 +37,8 @@ service cloud.firestore {
       function validProfile() {
         let profile = request.resource.data;
         let common = ['role', 'fullName', 'email', 'phone', 'country', 'governorate'];
-        return profile.keys().hasAll(common)
+        return request.auth.token.email_verified == true
+          && profile.keys().hasAll(common)
           && profile.email == request.auth.token.email
           && bounded(profile.fullName, 3, 100)
           && profile.phone is string && profile.phone.matches('^[0-9]{4,20}$')
