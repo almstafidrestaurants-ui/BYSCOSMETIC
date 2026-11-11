@@ -8,13 +8,13 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=accountdesign18">
+    <link rel="stylesheet" href="style.css?v=accountdesign19">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
         <img id="openingImage" alt="">
         <button id="openingSkip" type="button" aria-label="Skip opening screen">
-            <span lang="ar">تخطّي</span>
+            <span lang="en">Skip</span>
             <span id="openingCountdown" aria-hidden="true">5</span>
         </button>
     </dialog>
@@ -125,6 +125,11 @@
                         <span class="count" id="cartBadge">0</span>
                     </button>
 
+                    <div class="interface-languages" role="group" aria-label="Language">
+                        <button type="button" data-interface-language="ar" lang="ar" aria-label="العربية">ع</button>
+                        <button type="button" data-interface-language="en" lang="en" aria-label="English">EN</button>
+                        <button type="button" data-interface-language="de" lang="de" aria-label="Deutsch">DE</button>
+                    </div>
                     <button class="icon-button" data-action="menu" aria-label="Settings">
                         <i data-lucide="settings" aria-hidden="true"></i>
                     </button>
@@ -202,6 +207,11 @@
                         <span class="registration-copy"><strong>Wholesale</strong><small>Register your business</small></span>
                         <span class="registration-arrow" aria-hidden="true">›</span>
                     </button>
+                    <button type="button" data-register-role="manager">
+                        <span class="registration-icon" aria-hidden="true"><i data-lucide="briefcase-business"></i></span>
+                        <span class="registration-copy"><strong>Manager</strong><small>Register as a zone manager</small></span>
+                        <span class="registration-arrow" aria-hidden="true">›</span>
+                    </button>
                 </div><p class="small-note">Create your profile. It is saved only after you confirm your email code.</p>
                 <p id="accountStatus" role="status">Connecting to Firebase…</p>
                 <div id="emailVerification" class="verification-overlay" role="dialog" aria-modal="true" aria-labelledby="verificationTitle" hidden>
@@ -210,6 +220,7 @@
                         <h2 id="verificationTitle">Confirm your email</h2>
                         <p>Open your email, find the six-digit BYS Cosmetics code, and enter it here to save your profile.</p>
                         <p class="verification-recipient" id="verificationEmail"></p>
+                        <p class="verification-expiry"><span>Time remaining</span> <output id="verificationTime" dir="ltr" aria-live="off"></output></p>
                         <p class="verification-status" id="verificationStatus" role="status" aria-live="polite"></p>
                         <label for="verificationCode">Verification code</label>
                         <input class="verification-code-input" id="verificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr" aria-label="Six-digit verification code">
@@ -323,6 +334,7 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=emailotp3"></script>
+    <script src="script.js?v=emailotp4"></script>
+    <script src="interface-language.js?v=1"></script>
 </body>
 </html>

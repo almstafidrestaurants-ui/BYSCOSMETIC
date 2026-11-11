@@ -19,6 +19,7 @@ const profileDoc = user => doc(db, "profiles", user.uid);
 async function verificationRequest(path, body, user) {
     const response = await fetch("https://almstafid.com/bysauthapi/" + path, {
         method: "POST",
+        signal: AbortSignal.timeout(25000),
         headers: {
             ...(user ? { Authorization: "Bearer " + await user.getIdToken() } : {}),
             "Content-Type": "application/json"
@@ -33,8 +34,8 @@ export const account = {
     get user() { return auth.currentUser; },
     observe: callback => auth.onAuthStateChanged(callback),
     register: (email, password) => createUserWithEmailAndPassword(auth, email, password),
-    sendVerification: email => verificationRequest("send", { email }),
-    verifyCode: (email, code) => verificationRequest("verify", { email, code }),
+    sendVerification: (email, challengeId) => verificationRequest("send", { email, challengeId }),
+    verifyCode: (email, code, challengeId) => verificationRequest("verify", { email, code, challengeId }),
     async activate(user, registrationToken) {
         await verificationRequest("activate", { registrationToken }, user);
         await reload(user);

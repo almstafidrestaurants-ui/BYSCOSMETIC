@@ -2180,3 +2180,14 @@ html:has(#openingScreen[open]) { overflow: hidden; }
 body.bys-account-open #cartFeedback { display: none !important; }
 .registration-fields { display: grid; gap: 14px; border: 0; margin: 0; padding: 0; min-width: 0; }
 #registrationTitle { margin: 0; }
+
+.interface-languages { display: inline-flex; align-items: center; gap: 3px; flex: none; }
+.interface-languages button { min-width: 27px; min-height: 30px; padding: 0 4px; border: 1px solid #a3b5b9; border-radius: 6px; background: #f8fcfc; color: #243d42; font: 700 11px/1 system-ui, sans-serif; }
+.interface-languages button[aria-pressed="true"] { background: #26464c; border-color: #26464c; color: #fff; }
+.verification-expiry { display: flex; justify-content: center; align-items: center; gap: .55rem; }
+#verificationTime { font-variant-numeric: tabular-nums; font-weight: 750; }
+@media (max-width: 480px) {
+    .header-actions { gap: 4px; }
+    .interface-languages { gap: 2px; }
+    .interface-languages button { min-width: 23px; padding: 0 2px; }
+}

@@ -715,6 +715,10 @@ let firebaseAccount;
 let accountReady = false;
 let signedInProfile = {};
 let pendingRegistration = null;
+let verificationTimer;
+let registrationRoleOverride = "";
+let registrationNoticePending = false;
+const VERIFICATION_WINDOW_MS = 5 * 60 * 1000;
 const accountStatus = $("#accountStatus");
 const profileForm = $("#customerProfileForm");
 
@@ -725,7 +729,7 @@ function selectRegistrationRole(role) {
     profileForm.elements.role.value = role;
     registrationChoices.hidden = Boolean(role);
     profileForm.hidden = !role;
-    $("#registrationTitle").textContent = role ? registrationRoles[role] + " registration" : "";
+    $("#registrationTitle").textContent = role ? (registrationRoleOverride ? "Manager" : registrationRoles[role]) + " registration" : "";
     $("#registrationNameLabel").textContent = role === "merchant" ? "Contact Person *" : "Full Name *";
     $("#changeRegistrationRole").hidden = Boolean(signedInProfile.role);
     for (const fields of profileForm.querySelectorAll("[data-profile-role]")) {
@@ -736,52 +740,90 @@ function selectRegistrationRole(role) {
 registrationChoices.addEventListener("click", event => {
     const role = event.target.closest("[data-register-role]")?.dataset.registerRole;
     if (role) {
-        selectRegistrationRole(role);
+        registrationRoleOverride = role === "manager" ? "zone-manager" : "";
+        selectRegistrationRole(role === "manager" ? "consultant" : role);
+        const type = profileForm.elements.namedItem("consultantType");
+        type.value = registrationRoleOverride;
+        type.closest("label").hidden = Boolean(registrationRoleOverride);
         $("#registrationTitle").scrollIntoView({ block: "nearest" });
     }
 });
 $("#changeRegistrationRole").addEventListener("click", () => {
-    if (!profileForm.querySelector("button[type=submit]").disabled) selectRegistrationRole("");
+    if (!profileForm.querySelector("button[type=submit]").disabled) resetRegistration();
 });
 
-function updateVerificationPanel(user) {
-    const isOpen = Boolean(pendingRegistration) || Boolean(user && !user.emailVerified);
+function updateVerificationPanel() {
+    const isOpen = Boolean(pendingRegistration);
     $("#emailVerification").hidden = !isOpen;
     document.body.classList.toggle("bys-email-verification-open", isOpen);
 }
 
-async function sendVerification(email) {
+function resetRegistration(expired = false) {
+    clearInterval(verificationTimer);
+    pendingRegistration = null;
+    registrationRoleOverride = "";
+    profileForm.reset();
+    profileForm.elements.namedItem("consultantType").closest("label").hidden = false;
+    $("#verificationCode").value = "";
+    $("#verificationEmail").textContent = "";
+    $("#verificationStatus").textContent = "";
+    $("#verificationTime").textContent = "";
+    $("#locationStatus").textContent = "";
+    selectRegistrationRole("");
+    updateAccountControls(firebaseAccount?.user);
+    fillCustomerProfile();
+    accountStatus.textContent = expired
+        ? "The code expired. Choose an account type to start again."
+        : "Choose an account type to register.";
+    if (expired && currentView === "account") registrationChoices.querySelector("button").focus();
+}
+
+function updateVerificationTime() {
+    if (!pendingRegistration || pendingRegistration.confirmed) return;
+    const seconds = Math.max(0, Math.ceil((pendingRegistration.deadline - Date.now()) / 1000));
+    $("#verificationTime").textContent = Math.floor(seconds / 60) + ":" + String(seconds % 60).padStart(2, "0");
+    if (!seconds) resetRegistration(true);
+}
+document.addEventListener("visibilitychange", updateVerificationTime);
+
+async function sendVerification(attempt) {
     const button = $("#resendVerification");
     button.disabled = true;
-    $("#verificationEmail").textContent = email;
+    $("#verificationEmail").textContent = attempt.email;
     $("#verificationStatus").textContent = "Sending verification code…";
     try {
-        await firebaseAccount.sendVerification(email);
-        accountStatus.textContent = "Verification code sent to " + email + ". Enter it below to create your account.";
+        const result = await firebaseAccount.sendVerification(attempt.email, attempt.challengeId);
+        if (pendingRegistration !== attempt) return;
+        if (typeof result.challengeId === "string") attempt.challengeId = result.challengeId;
+        const serverDeadline = Date.parse(result.expiresAt);
+        if (Number.isFinite(serverDeadline)) attempt.deadline = Math.min(attempt.deadline, serverDeadline);
+        updateVerificationTime();
+        if (pendingRegistration !== attempt) return;
+        accountStatus.textContent = "Code sent. Your profile will be saved only after the code is confirmed.";
         $("#verificationStatus").textContent = "Code sent. Check your inbox or spam folder, then enter the six digits below.";
-        button.textContent = "Resend verification code";
-        $("#emailVerification").hidden = false;
-        document.body.classList.add("bys-email-verification-open");
         $("#verificationCode").focus();
-        return true;
     } catch {
-        accountStatus.textContent = "Could not send the verification code. Please wait and try again.";
-        $("#verificationStatus").textContent = "Could not send the code. Check your email address or try again in one minute.";
-        return false;
+        if (pendingRegistration === attempt) {
+            $("#verificationStatus").textContent = "Could not send the code. Check your email address or try again in one minute.";
+        }
     } finally {
         button.disabled = false;
     }
 }
 
 $("#resendVerification").addEventListener("click", () => {
-    const email = pendingRegistration?.email || profileForm.elements.namedItem("email").value.trim();
-    if (email) sendVerification(email);
+    updateVerificationTime();
+    if (pendingRegistration && !pendingRegistration.confirmed && !$("#checkVerification").disabled) {
+        sendVerification(pendingRegistration);
+    }
 });
 $("#closeVerification").addEventListener("click", () => {
-    $("#emailVerification").hidden = true;
-    document.body.classList.remove("bys-email-verification-open");
+    if (!pendingRegistration?.confirmed) resetRegistration();
 });
 $("#checkVerification").addEventListener("click", async event => {
+    updateVerificationTime();
+    const attempt = pendingRegistration;
+    if (!attempt || $("#resendVerification").disabled) return;
     const button = event.currentTarget;
     button.disabled = true;
     const input = $("#verificationCode");
@@ -792,31 +834,24 @@ $("#checkVerification").addEventListener("click", async event => {
             input.focus();
             return;
         }
-        const email = pendingRegistration?.email || profileForm.elements.namedItem("email").value.trim();
-        if (!email) {
-            $("#verificationStatus").textContent = "Return to the registration form and enter your details first.";
-            return;
-        }
-        const result = await firebaseAccount.verifyCode(email, code);
+        const {email} = attempt;
+        const result = await firebaseAccount.verifyCode(email, code, attempt.challengeId);
+        updateVerificationTime();
+        if (pendingRegistration !== attempt) return;
         const registrationToken = result.registrationToken;
         if (!registrationToken) throw new Error("Missing verification ticket");
-
+        attempt.confirmed = true;
+        clearInterval(verificationTimer);
         let user = firebaseAccount.user;
         if (!user || user.email.toLowerCase() !== email.toLowerCase()) {
-            const pending = pendingRegistration;
-            if (!pending?.password) {
-                accountStatus.textContent = "The code is confirmed, but registration details are missing. Return to the form and request a new code.";
-                $("#verificationStatus").textContent = "Registration details are missing. Return to the form and request a new code.";
-                input.value = "";
-                return;
-            }
-            user = (await firebaseAccount.register(email, pending.password)).user;
+            user = (await firebaseAccount.register(email, attempt.password)).user;
         }
 
         await firebaseAccount.activate(user, registrationToken);
         input.value = "";
-        const profile = pendingRegistration?.profile;
+        const profile = attempt.profile;
         pendingRegistration = null;
+        registrationNoticePending = true;
         updateAccountControls(user);
         if (profile) {
             try {
@@ -828,6 +863,12 @@ $("#checkVerification").addEventListener("click", async event => {
             accountStatus.textContent = "Email verified. Your profile can now be saved.";
         }
     } catch (failure) {
+        if (pendingRegistration !== attempt) return;
+        attempt.confirmed = false;
+        clearInterval(verificationTimer);
+        verificationTimer = setInterval(updateVerificationTime, 250);
+        updateVerificationTime();
+        if (pendingRegistration !== attempt) return;
         const message = failure.code === "auth/email-already-in-use"
             ? "This email already has an account. Please use another email address."
             : "The code could not be confirmed. Check it or request a new one.";
@@ -839,7 +880,7 @@ $("#checkVerification").addEventListener("click", async event => {
 });
 
 function updateAccountControls(user) {
-    updateVerificationPanel(user);
+    updateVerificationPanel();
     const password = profileForm.elements.namedItem("password");
     const verified = Boolean(user?.emailVerified);
     const registrationPending = Boolean(pendingRegistration);
@@ -852,7 +893,7 @@ function updateAccountControls(user) {
 
 async function connectAccount() {
     try {
-        ({ account: firebaseAccount } = await import("./firebase-account.js?v=5"));
+        ({ account: firebaseAccount } = await import("./firebase-account.js?v=6"));
         firebaseAccount.observe(async user => {
             accountReady = true;
             const emptyProfile = {};
@@ -904,6 +945,10 @@ function fillCustomerProfile() {
     const country = COUNTRIES.find(c => c.code === countryCode);
     document.getElementById("profileDial").textContent = country?.dial || "+961";
     document.getElementById("profileCountryName").value = country?.name || countryCode;
+    if (profile.role) {
+        registrationRoleOverride = "";
+        form.elements.namedItem("consultantType").closest("label").hidden = false;
+    }
     if (accountReady) selectRegistrationRole(profile.role || form.elements.role.value);
     for (const input of form.querySelectorAll("[name]:not([name=role]):not([name=password])")) {
         input.value = profile[input.name] ?? "";
@@ -922,15 +967,18 @@ async function saveVerifiedProfile(user, profile) {
     updateAccountControls(user);
     fillCustomerProfile();
 
-    try {
+    if (registrationNoticePending) try {
         await firebaseAccount.notifyRegistration(user, {
             fullName: savedProfile.fullName,
-            role: registrationRoles[savedProfile.role] || savedProfile.role,
+            role: savedProfile.consultantType === "zone-manager" ? "Manager" : registrationRoles[savedProfile.role],
             address: savedProfile.address || savedProfile.businessAddress || savedProfile.governorate
         });
-        accountStatus.textContent = "Email verified. Your profile is saved, and a registration notice was sent to Almustafidbusiness@gmail.com.";
+        registrationNoticePending = false;
+        accountStatus.textContent = "Email verified. Your profile is saved, and a registration notice was sent.";
     } catch {
         accountStatus.textContent = "Email verified and profile saved, but the notice could not be sent. Press Save profile to retry.";
+    } else {
+        accountStatus.textContent = "Profile saved.";
     }
     showToast("Email verified and profile saved ✓");
 
@@ -965,17 +1013,23 @@ document.getElementById("customerProfileForm").addEventListener("submit", async 
     error.hidden = true;
     const button = form.querySelector("button[type=submit]");
     button.disabled = true;
-    const user = firebaseAccount.user;
+    const user = firebaseAccount?.user;
     try {
+        if (!firebaseAccount || !accountReady) throw new Error("Firebase is not ready");
         if (!user?.emailVerified) {
             pendingRegistration = {
                 email: profile.email,
-                password: user ? null : (pendingRegistration?.password || password),
-                profile
+                password: user ? null : password,
+                profile,
+                deadline: Date.now() + VERIFICATION_WINDOW_MS,
+                challengeId: crypto.randomUUID()
             };
+            form.elements.namedItem("password").value = "";
             updateAccountControls(user);
-            const sent = await sendVerification(profile.email);
-            if (sent) accountStatus.textContent = "Code sent. Your profile will be saved only after the code is confirmed.";
+            clearInterval(verificationTimer);
+            verificationTimer = setInterval(updateVerificationTime, 250);
+            updateVerificationTime();
+            await sendVerification(pendingRegistration);
             return;
         }
 
