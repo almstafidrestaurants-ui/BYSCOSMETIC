@@ -8,7 +8,7 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=accountdesign19">
+    <link rel="stylesheet" href="style.css?v=accountdesign20">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
@@ -125,11 +125,14 @@
                         <span class="count" id="cartBadge">0</span>
                     </button>
 
-                    <div class="interface-languages" role="group" aria-label="Language">
-                        <button type="button" data-interface-language="ar" lang="ar" aria-label="العربية">ع</button>
-                        <button type="button" data-interface-language="en" lang="en" aria-label="English">EN</button>
-                        <button type="button" data-interface-language="de" lang="de" aria-label="Deutsch">DE</button>
-                    </div>
+                    <details class="interface-language-picker">
+                        <summary class="icon-button" aria-label="Language" title="Language"><i data-lucide="languages" aria-hidden="true"></i></summary>
+                        <div class="interface-languages" role="group" aria-label="Language">
+                        <button type="button" data-interface-language="ar" lang="ar" aria-label="العربية">العربية</button>
+                        <button type="button" data-interface-language="en" lang="en" aria-label="English">English</button>
+                        <button type="button" data-interface-language="de" lang="de" aria-label="Deutsch">Deutsch</button>
+                        </div>
+                    </details>
                     <button class="icon-button" data-action="menu" aria-label="Settings">
                         <i data-lucide="settings" aria-hidden="true"></i>
                     </button>
@@ -189,6 +192,11 @@
             <section class="view hidden" id="cartView"><div class="page-heading"><button data-view="home">‹</button><h1>Shopping Bag</h1></div><div id="cartItems"></div><div class="cart-summary" id="cartSummary"></div></section>
             <section class="view hidden" id="accountView"><div class="page-heading"><button data-view="home">‹</button><h1>My Account</h1></div>
                 <div class="profile-panel">
+                <details id="activeProfile" class="active-profile" hidden>
+                    <summary><strong>Registered profile</strong><span><b aria-hidden="true">✓✓</b> Account activated</span></summary>
+                    <button id="signOutAccount" type="button">Sign out</button>
+                </details>
+                <div id="accountEntry">
                 <div class="registration-brand"><img src="images/bys-logo.jpeg" alt="BYS COSMETICS" width="64" height="64"><h2>Account registration</h2></div>
                 <div id="registrationChoices" hidden>
                     <p>Choose your account type</p>
@@ -207,18 +215,20 @@
                         <span class="registration-copy"><strong>Wholesale</strong><small>Register your business</small></span>
                         <span class="registration-arrow" aria-hidden="true">›</span>
                     </button>
-                    <button type="button" data-register-role="manager">
-                        <span class="registration-icon" aria-hidden="true"><i data-lucide="briefcase-business"></i></span>
-                        <span class="registration-copy"><strong>Manager</strong><small>Register as a zone manager</small></span>
-                        <span class="registration-arrow" aria-hidden="true">›</span>
-                    </button>
+
                 </div><p class="small-note">Create your profile. It is saved only after you confirm your email code.</p>
+                <form id="emailSignIn" class="profile-form" hidden>
+                    <label>Email *<input name="email" type="email" autocomplete="email" required maxlength="160"></label>
+                    <button class="profile-save" type="submit">Send sign-in code</button>
+                </form>
+                <button id="toggleEmailSignIn" class="profile-country" type="button" hidden>Sign in with email</button>
+                </div>
                 <p id="accountStatus" role="status">Connecting to Firebase…</p>
                 <div id="emailVerification" class="verification-overlay" role="dialog" aria-modal="true" aria-labelledby="verificationTitle" hidden>
                     <div class="verification-card">
                         <div class="verification-icon"><i data-lucide="mail-check" aria-hidden="true"></i></div>
                         <h2 id="verificationTitle">Confirm your email</h2>
-                        <p>Open your email, find the six-digit BYS Cosmetics code, and enter it here to save your profile.</p>
+                        <p id="verificationInstructions">Open your email, find the six-digit BYS Cosmetics code, and enter it here to save your profile.</p>
                         <p class="verification-recipient" id="verificationEmail"></p>
                         <p class="verification-expiry"><span>Time remaining</span> <output id="verificationTime" dir="ltr" aria-live="off"></output></p>
                         <p class="verification-status" id="verificationStatus" role="status" aria-live="polite"></p>
@@ -226,13 +236,13 @@
                         <input class="verification-code-input" id="verificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr" aria-label="Six-digit verification code">
                         <button class="profile-save" id="checkVerification" type="button">Confirm code and save profile</button>
                         <button class="profile-country" id="resendVerification" type="button">Resend code</button>
-                        <button class="verification-cancel" id="closeVerification" type="button">Return to registration</button>
+                        <button class="verification-cancel" id="closeVerification" type="button">Cancel</button>
                     </div>
                 </div>
                 <form id="customerProfileForm" class="profile-form" hidden>
                 <input type="hidden" name="role">
                 <h3 id="registrationTitle"></h3>
-                <button class="profile-country" id="changeRegistrationRole" type="button">Change account type</button>
+                <button class="profile-country" id="changeRegistrationRole" type="button">Cancel registration</button>
                 <label><span class="field-label"><i data-lucide="user-round" aria-hidden="true"></i><span id="registrationNameLabel">Full Name *</span></span><input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
                 <label><span class="field-label"><i data-lucide="phone" aria-hidden="true"></i>Phone number *</span><div class="profile-phone"><span id="profileDial">+961</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Enter your phone number" required maxlength="20" aria-label="National phone number"></div></label>
                 <label>Country<input id="profileCountryName" autocomplete="country-name" readonly></label>
@@ -334,7 +344,7 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=emailotp4"></script>
-    <script src="interface-language.js?v=1"></script>
+    <script src="script.js?v=emailotp5"></script>
+    <script src="interface-language.js?v=2"></script>
 </body>
 </html>

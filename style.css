@@ -2191,3 +2191,15 @@ body.bys-account-open #cartFeedback { display: none !important; }
     .interface-languages { gap: 2px; }
     .interface-languages button { min-width: 23px; padding: 0 2px; }
 }
+
+.interface-language-picker { position: relative; flex: none; }
+.interface-language-picker summary, .active-profile summary { list-style: none; cursor: pointer; }
+.interface-language-picker summary::-webkit-details-marker, .active-profile summary::-webkit-details-marker { display: none; }
+.interface-language-picker .interface-languages { position: absolute; inset-inline-end: 0; top: calc(100% + 8px); z-index: 30; flex-direction: column; align-items: stretch; min-width: 122px; padding: 6px; border: 1px solid #ead2dd; border-radius: 12px; background: #fff; box-shadow: 0 8px 26px #54203b29; }
+.interface-language-picker .interface-languages button { min-height: 40px; padding-inline: 12px; font-size: 14px; }
+.active-profile { border-radius: 18px; background: #4b2037; color: #fff; }
+.active-profile summary { display: grid; gap: 6px; padding: 22px; }
+.active-profile summary strong { font-size: 1.22rem; }
+.active-profile summary span { color: #ffe1ee; }
+.active-profile summary b { color: #9af5bd; margin-inline-end: 5px; }
+#signOutAccount { margin: 0 22px 20px; padding: 9px 16px; border: 1px solid #f6d9e6; border-radius: 9px; background: transparent; color: #fff; cursor: pointer; }

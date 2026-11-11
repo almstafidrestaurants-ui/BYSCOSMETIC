@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
-    getAuth, createUserWithEmailAndPassword, reload
+    getAuth, createUserWithEmailAndPassword, reload, signInWithCustomToken, signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
@@ -34,8 +34,10 @@ export const account = {
     get user() { return auth.currentUser; },
     observe: callback => auth.onAuthStateChanged(callback),
     register: (email, password) => createUserWithEmailAndPassword(auth, email, password),
-    sendVerification: (email, challengeId) => verificationRequest("send", { email, challengeId }),
-    verifyCode: (email, code, challengeId) => verificationRequest("verify", { email, code, challengeId }),
+    sendVerification: (email, challengeId, login) => verificationRequest("send", { email, challengeId, login }),
+    verifyCode: (email, code, challengeId, login) => verificationRequest("verify", { email, code, challengeId, login }),
+    signIn: token => signInWithCustomToken(auth, token),
+    signOut: () => signOut(auth),
     async activate(user, registrationToken) {
         await verificationRequest("activate", { registrationToken }, user);
         await reload(user);

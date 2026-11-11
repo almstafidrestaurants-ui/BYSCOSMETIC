@@ -84,6 +84,23 @@ Save profile|حفظ الملف|Profil speichern
 Send verification code|إرسال رمز التحقق|Bestätigungscode senden
 Settings|الإعدادات|Einstellungen
 Language|اللغة|Sprache
+Cancel|إلغاء|Abbrechen
+Cancel registration|إلغاء التسجيل|Registrierung abbrechen
+Registered profile|الملف مسجّل|Profil registriert
+Account activated|الحساب مفعّل|Konto aktiviert
+Sign out|تسجيل الخروج|Abmelden
+Sign in with email|تسجيل الدخول بالبريد|Mit E-Mail anmelden
+Back to registration|العودة إلى التسجيل|Zurück zur Registrierung
+Send sign-in code|إرسال رمز الدخول|Anmeldecode senden
+Confirm code and sign in|تأكيد الرمز وتسجيل الدخول|Code bestätigen und anmelden
+Enter the six-digit code sent to your email to sign in.|أدخل رمز الدخول من ستة أرقام الوارد إلى بريدك.|Gib den sechsstelligen Anmeldecode aus deiner E-Mail ein.
+Check your email for a sign-in code.|افحص بريدك للعثور على رمز الدخول.|Prüfe deine E-Mail auf einen Anmeldecode.
+If this email has an active account, a sign-in code was sent.|إذا كان البريد مرتبطًا بحساب مفعّل، فسيصلك رمز الدخول.|Wenn zu dieser Adresse ein aktives Konto besteht, wurde ein Anmeldecode gesendet.
+Signed in.|تم تسجيل الدخول.|Angemeldet.
+Signed out.|تم تسجيل الخروج.|Abgemeldet.
+Could not sign out. Please try again.|تعذّر تسجيل الخروج. حاول مجددًا.|Abmelden fehlgeschlagen. Versuche es erneut.
+This email already has an account. Sign in with email instead.|هذا البريد مرتبط بحساب. سجّل الدخول بالبريد.|Für diese E-Mail-Adresse besteht bereits ein Konto. Melde dich per E-Mail an.
+Profile saved, but the registration notice could not be sent.|حُفظ الملف، وتعذّر إرسال إشعار التسجيل.|Das Profil wurde gespeichert. Die Registrierungsmitteilung konnte nicht gesendet werden.
 Create account|إنشاء حساب|Konto erstellen
 Report fraud|الإبلاغ عن احتيال|Betrug melden
 Feedbacks|الملاحظات|Feedback
@@ -250,7 +267,20 @@ Verify your email before checkout|أكّد بريدك الإلكتروني قب�
         walk(document.body);
     }
 
-    buttons.forEach(button => button.addEventListener("click", () => select(button.dataset.interfaceLanguage)));
+    const picker = document.querySelector(".interface-language-picker");
+    buttons.forEach(button => button.addEventListener("click", () => {
+        select(button.dataset.interfaceLanguage);
+        picker.open = false;
+        picker.querySelector("summary").focus();
+    }));
+    document.addEventListener("click", event => {
+        if (picker.open && !picker.contains(event.target)) picker.open = false;
+    });
+    picker.addEventListener("keydown", event => {
+        if (event.key !== "Escape" || !picker.open) return;
+        picker.open = false;
+        picker.querySelector("summary").focus();
+    });
     select(language);
     new MutationObserver(records => {
         for (const record of records) {
