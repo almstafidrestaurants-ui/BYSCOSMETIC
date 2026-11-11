@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f9d5e5">
+    <meta name="description" content="BYS Cosmetics - Discover your beauty essentials.">
+    <title>BYS Cosmetics | Beauty, Elevated</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
+    <link rel="stylesheet" href="style.css?v=accountdesign20">
+</head>
+<body>
+    <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
+        <img id="openingImage" alt="">
+        <button id="openingSkip" type="button" aria-label="Skip opening screen">
+            <span lang="en">Skip</span>
+            <span id="openingCountdown" aria-hidden="true">5</span>
+        </button>
+    </dialog>
+    <script src="opening.js?v=3"></script>
+    <!-- شاشة الترحيب: أربعة صفوف متحركة من صور المنتجات -->
+    <section class="country-screen hidden" id="countryScreen">
+        <div class="welcome-showcase" aria-label="Beauty products showcase">
+            <div class="welcome-track welcome-track-first" id="welcomeTrackOne"></div>
+            <div class="welcome-track welcome-track-second" id="welcomeTrackTwo"></div>
+            <div class="welcome-track welcome-track-third" id="welcomeTrackThree"></div>
+            <div class="welcome-track welcome-track-fourth" id="welcomeTrackFour"></div>
+        </div>
+        <div class="welcome-form-area">
+            <div class="welcome-logo">
+                <img src="images/bys-logo.jpeg" alt="BYS Cosmetics" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+                <span hidden>BYS</span>
+            </div>
+            <h1>Welcome to BYS Cosmetics</h1>
+            <p class="welcome-subtitle">Your beauty destination, wherever you are.</p>
+            <form id="welcomeForm" class="welcome-form">
+                <label for="openCountryPicker">Select your country</label>
+                <button type="button" class="welcome-select-wrap" id="openCountryPicker" aria-haspopup="dialog">
+                    <span id="welcomeFlag" aria-hidden="true">🇱🇧</span>
+                    <span id="welcomeCountryName">Lebanon</span>
+                    <span class="welcome-chevron" aria-hidden="true">⌄</span>
+                </button>
+                <input type="hidden" id="welcomeCountry" value="LB">
+                <label for="welcomePhone">Phone number</label>
+                <div class="welcome-phone-wrap">
+                    <span id="welcomeDial">+961</span>
+                    <input id="welcomePhone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="Phone number" required maxlength="20">
+                </div>
+                <button class="welcome-continue" type="submit">Continue <span aria-hidden="true">›</span></button>
+                <p class="welcome-disclaimer">Your details are saved on this device only. Phone verification is not enabled yet.</p>
+            </form>
+        </div>
+    </section>
+    <dialog id="countryPicker" aria-labelledby="countryPickerTitle">
+        <div class="country-picker-heading">
+            <h2 id="countryPickerTitle">Select your country</h2>
+            <button type="button" id="closeCountryPicker" aria-label="Close">×</button>
+        </div>
+        <input id="countrySearch" type="search" aria-label="Search countries" placeholder="Name, country code or +961" autocomplete="off" autofocus>
+        <div id="countryResults"></div>
+    </dialog>
+
+    <!-- شاشة اختيار نوع المستخدم: تظهر مرة واحدة -->
+    <section class="role-screen hidden" id="roleScreen" aria-labelledby="roleTitle">
+        <div class="role-panel">
+            <img class="role-logo" src="images/bys-logo.jpeg" alt="BYS Cosmetics">
+            <h1 id="roleTitle">How will you shop with us?</h1>
+            <p>Choose your account type to continue</p>
+            <div class="role-options">
+                <button type="button" class="role-option" data-select-role="customer">
+                    <span class="role-icon"><i data-lucide="shopping-bag"></i></span>
+                    <strong>Customer</strong>
+                    <small>Shop your favorite beauty products</small>
+                </button>
+                <button type="button" class="role-option" data-select-role="consultant">
+                    <span class="role-icon"><i data-lucide="badge-check"></i></span>
+                    <strong>Consultant</strong>
+                    <small>Explore products as a beauty consultant</small>
+                </button>
+            </div>
+            <button type="button" class="role-continue" id="roleContinue" disabled>Continue ›</button>
+            <p class="role-note">You only need to choose once.</p>
+        </div>
+    </section>
+
+    <!-- واجهة المتجر الأساسية -->
+    <div class="app hidden" id="app">
+        <!-- رأس المتجر: شعار على اليسار وأزرار على اليمين مثل التطبيق المرجعي -->
+        <header class="header">
+            <div class="header-top">
+                <!-- شعار BYS Cosmetics على اليسار -->
+<div class="header-brand-group">
+<button
+    class="brand"
+    data-view="home"
+    aria-label="BYS Home"
+>
+    <!-- صورة الشعار الأصلية -->
+    <img
+        id="logoImage"
+        src="images/bys-logo.jpeg"
+        alt="BYS Cosmetics"
+    >
+</button>
+    <div class="header-brand-text">
+        <span id="headerGreeting"></span>
+        <strong>BYS COSMETICS</strong>
+    </div>
+</div>
+
+                <div class="header-actions">
+                    <button class="icon-button" type="button" data-view="categories" aria-label="Categories" title="Categories">
+                        <i data-lucide="layout-grid" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- كل أيقونة عبارة عن صورة مستقلة في مجلد images/ui -->
+                    <button class="icon-button" data-view="favorites" aria-label="Favorites">
+                        <img class="header-icon" src="images/ui/heart.svg" alt="">
+                        <span class="count favorites-count" id="favoritesBadge" hidden>0</span>
+                    </button>
+
+                    <button class="icon-button cart-head" data-view="cart" aria-label="Shopping cart">
+                        <img class="header-icon" src="images/ui/cart.svg" alt="">
+                        <span class="count" id="cartBadge">0</span>
+                    </button>
+
+                    <details class="interface-language-picker">
+                        <summary class="icon-button" aria-label="Language" title="Language"><i data-lucide="languages" aria-hidden="true"></i></summary>
+                        <div class="interface-languages" role="group" aria-label="Language">
+                        <button type="button" data-interface-language="ar" lang="ar" aria-label="العربية">العربية</button>
+                        <button type="button" data-interface-language="en" lang="en" aria-label="English">English</button>
+                        <button type="button" data-interface-language="de" lang="de" aria-label="Deutsch">Deutsch</button>
+                        </div>
+                    </details>
+                    <button class="icon-button" data-action="menu" aria-label="Settings">
+                        <i data-lucide="settings" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- مربع البحث تحت الشعار والأزرار -->
+            <div class="search-wrap">
+                <img class="search-icon" src="images/ui/search.svg" alt="">
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search products, brands, or beauty goals..."
+                    autocomplete="off"
+                    aria-label="Search products"
+                >
+                <button id="clearSearch" aria-label="Clear search" hidden>×</button>
+            </div>
+
+            <div class="location-line">
+                <span>  Curated beauty for you</span>
+                <button id="changeCountry">🇱🇧 Lebanon ▾</button>
+            </div>
+        </header>
+        <main>
+            <section class="view" id="homeView">
+                <!-- سلايدر الواجهة: الصور والعناوين يتم التحكم فيها من script.js -->
+                <section class="home-banner" aria-label="Featured beauty collection">
+                    <img src="images/banners/bys-home.webp" width="1364" height="768" alt="Your Beauty Ritual — Discover BYS" fetchpriority="high">
+                    <button class="hero-artwork-link" type="button" data-category="Skincare" aria-label="Discover BYS skincare"></button>
+                </section>
+                <div class="section-heading"><h2>Categories</h2><button data-view="categories">View All <span>›</span></button></div>
+                <div class="category-grid" id="homeCategories"></div>
+                <ul class="store-benefits" aria-label="Shopping benefits">
+                    <li><span class="store-benefit-icon" aria-hidden="true"><i data-lucide="truck"></i></span><span>Fast Delivery</span></li>
+                    <li><span class="store-benefit-icon" aria-hidden="true"><i data-lucide="shield-check"></i></span><span>100% Authentic Products</span></li>
+                    <li><span class="store-benefit-icon" aria-hidden="true"><i data-lucide="headset"></i></span><span>Dedicated Customer Support</span></li>
+                    <li><span class="store-benefit-icon" aria-hidden="true"><i data-lucide="gift"></i></span><span>Exclusive Offers &amp; Discounts</span></li>
+                </ul>
+                <section class="needs-banner">
+                    <div class="needs-title"><h2>Shop by Your Needs</h2><p>Find the perfect care for your beauty goals</p></div>
+                    <div class="needs-grid" id="needsGrid"></div>
+                </section>
+                <div id="categoryShowcases" class="category-showcases"></div>
+                <div class="section-heading"><h2>Bestsellers</h2><button data-view="products">View All <span>›</span></button></div>
+                <div class="product-grid home-products" id="bestProducts"></div>
+                <div class="section-heading"><h2>Shop by Brands</h2><button data-view="brands">View All <span>›</span></button></div>
+                <div class="brand-row" id="homeBrands"></div>
+                <div class="section-heading"><h2>New Arrivals</h2><button data-view="products">View All <span>›</span></button></div>
+                <div class="product-grid home-products" id="newProducts"></div>
+            </section>
+
+            <section class="view hidden" id="categoriesView"><div class="page-heading"><button data-view="home">‹</button><h1>Categories</h1></div><div class="category-grid category-page" id="allCategories"></div></section>
+            <section class="view hidden" id="productsView"><div class="page-heading"><button data-view="home">‹</button><h1 id="productsTitle">Shop All</h1></div><div class="filter-bar" id="filterBar" role="group" aria-label="Product categories"></div><div class="results-line"><span id="resultCount"></span><select id="sortSelect" aria-label="Sort products"><option value="featured">Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="az">Name: A to Z</option></select></div><div class="product-grid" id="allProducts"></div></section>
+            <section class="view hidden" id="brandsView"><div class="page-heading"><button data-view="home">‹</button><h1>Our Brands</h1></div><div class="brands-page" id="allBrands"></div></section>
+            <section class="view hidden" id="favoritesView"><div class="page-heading"><button data-view="home">‹</button><h1>My Favorites</h1></div><div class="product-grid" id="favoriteProducts"></div></section>
+            <section class="view hidden" id="cartView"><div class="page-heading"><button data-view="home">‹</button><h1>Shopping Bag</h1></div><div id="cartItems"></div><div class="cart-summary" id="cartSummary"></div></section>
+            <section class="view hidden" id="accountView"><div class="page-heading"><button data-view="home">‹</button><h1>My Account</h1></div>
+                <div class="profile-panel">
+                <details id="activeProfile" class="active-profile" hidden>
+                    <summary><strong>Registered profile</strong><span><b aria-hidden="true">✓✓</b> Account activated</span></summary>
+                    <button id="signOutAccount" type="button">Sign out</button>
+                </details>
+                <div id="accountEntry">
+                <div class="registration-brand"><img src="images/bys-logo.jpeg" alt="BYS COSMETICS" width="64" height="64"><h2>Account registration</h2></div>
+                <div id="registrationChoices" hidden>
+                    <p>Choose your account type</p>
+                    <button type="button" data-register-role="customer">
+                        <span class="registration-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16l1 13H3L4 8Z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/></svg></span>
+                        <span class="registration-copy"><strong>Customer</strong><small>Shop for yourself</small></span>
+                        <span class="registration-arrow" aria-hidden="true">›</span>
+                    </button>
+                    <button type="button" data-register-role="consultant">
+                        <span class="registration-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"/></svg></span>
+                        <span class="registration-copy"><strong>Consultant</strong><small>Register as a beauty professional</small></span>
+                        <span class="registration-arrow" aria-hidden="true">›</span>
+                    </button>
+                    <button type="button" data-register-role="merchant">
+                        <span class="registration-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 7 9-4 9 4v10l-9 4-9-4V7Zm0 0 9 4 9-4m-9 4v10M7.5 5l9 4"/></svg></span>
+                        <span class="registration-copy"><strong>Wholesale</strong><small>Register your business</small></span>
+                        <span class="registration-arrow" aria-hidden="true">›</span>
+                    </button>
+
+                </div><p class="small-note">Create your profile. It is saved only after you confirm your email code.</p>
+                <form id="emailSignIn" class="profile-form" hidden>
+                    <label>Email *<input name="email" type="email" autocomplete="email" required maxlength="160"></label>
+                    <button class="profile-save" type="submit">Send sign-in code</button>
+                </form>
+                <button id="toggleEmailSignIn" class="profile-country" type="button" hidden>Sign in with email</button>
+                </div>
+                <p id="accountStatus" role="status">Connecting to Firebase…</p>
+                <div id="emailVerification" class="verification-overlay" role="dialog" aria-modal="true" aria-labelledby="verificationTitle" hidden>
+                    <div class="verification-card">
+                        <div class="verification-icon"><i data-lucide="mail-check" aria-hidden="true"></i></div>
+                        <h2 id="verificationTitle">Confirm your email</h2>
+                        <p id="verificationInstructions">Open your email, find the six-digit BYS Cosmetics code, and enter it here to save your profile.</p>
+                        <p class="verification-recipient" id="verificationEmail"></p>
+                        <p class="verification-expiry"><span>Time remaining</span> <output id="verificationTime" dir="ltr" aria-live="off"></output></p>
+                        <p class="verification-status" id="verificationStatus" role="status" aria-live="polite"></p>
+                        <label for="verificationCode">Verification code</label>
+                        <input class="verification-code-input" id="verificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr" aria-label="Six-digit verification code">
+                        <button class="profile-save" id="checkVerification" type="button">Confirm code and save profile</button>
+                        <button class="profile-country" id="resendVerification" type="button">Resend code</button>
+                        <button class="verification-cancel" id="closeVerification" type="button">Cancel</button>
+                    </div>
+                </div>
+                <form id="customerProfileForm" class="profile-form" hidden>
+                <input type="hidden" name="role">
+                <h3 id="registrationTitle"></h3>
+                <button class="profile-country" id="changeRegistrationRole" type="button">Cancel registration</button>
+                <label><span class="field-label"><i data-lucide="user-round" aria-hidden="true"></i><span id="registrationNameLabel">Full Name *</span></span><input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
+                <label><span class="field-label"><i data-lucide="phone" aria-hidden="true"></i>Phone number *</span><div class="profile-phone"><span id="profileDial">+961</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Enter your phone number" required maxlength="20" aria-label="National phone number"></div></label>
+                <label>Country<input id="profileCountryName" autocomplete="country-name" readonly></label>
+                <label><span class="field-label"><i data-lucide="map" aria-hidden="true"></i>Governorate / State *</span><input name="governorate" autocomplete="address-level1" required maxlength="100"></label>
+                <fieldset class="registration-fields" data-profile-role="customer" hidden disabled>
+                <label><span class="field-label"><i data-lucide="map-pin" aria-hidden="true"></i>Address *</span><textarea name="address" autocomplete="street-address" required minlength="8" maxlength="300" rows="3"></textarea></label>
+                <label><span class="field-label"><i data-lucide="map-pin" aria-hidden="true"></i>Location (optional)</span><input name="location" id="profileLocation" placeholder="City, area, or map link" maxlength="250"></label><button id="useCurrentLocation" class="profile-location-btn" type="button"><span aria-hidden="true">⌖</span> Use my current location</button><p id="locationStatus" class="location-status" role="status" aria-live="polite"></p>
+                <label>Field of work *<input name="occupation" required maxlength="100"></label>
+                </fieldset>
+                <fieldset class="registration-fields" data-profile-role="consultant" hidden disabled>
+                    <label>Specialization *<input name="specialization" required maxlength="100"></label>
+                    <label>Years of Experience *<input name="experienceYears" type="number" min="0" max="100" step="1" required></label>
+                    <label>Previous Company *<input name="previousCompany" placeholder="Enter None if not applicable" required maxlength="100"></label>
+                    <label>Responsible Person Code *<input name="responsiblePersonCode" required maxlength="60"></label>
+                    <label>Type *<select name="consultantType" required>
+                        <option value="">Select your type</option>
+                        <option value="consultant">Consultant</option>
+                        <option value="team-leader">Team Leader</option>
+                        <option value="zone-manager">Zone Manager</option>
+                    </select></label>
+                </fieldset>
+                <fieldset class="registration-fields" data-profile-role="merchant" hidden disabled>
+                    <label>Business Name *<input name="businessName" autocomplete="organization" required maxlength="100"></label>
+                    <label><span class="field-label"><i data-lucide="map-pin" aria-hidden="true"></i>Business Address *</span><textarea name="businessAddress" required minlength="8" maxlength="300" rows="3"></textarea></label>
+                    <label>Business Type *<input name="businessType" required maxlength="100"></label>
+                </fieldset>
+                <label><span class="field-label"><i data-lucide="mail" aria-hidden="true"></i>Email *</span><input name="email" type="email" autocomplete="email" required maxlength="160"></label>
+                <label id="registrationPassword"><span class="field-label"><i data-lucide="lock-keyhole" aria-hidden="true"></i>Password *</span><input name="password" type="password" autocomplete="new-password" minlength="6" required></label>
+                <p id="profileError" class="profile-error" role="alert" hidden></p>
+                <button class="profile-save" type="submit">Save profile</button></form>
+                </div></section>
+                <section class="view hidden" id="settingsView"><div class="settings-head"><button data-view="home" aria-label="Back">‹</button><h1>Settings</h1></div><div class="settings-content"><button class="settings-login" data-view="account"><i data-lucide="user-round"></i><span>Create account</span><b>›</b></button><div class="settings-links">
+                <button data-settings="Report fraud"><i data-lucide="shield-alert"></i><span>Report fraud</span><b>›</b></button>
+                <button data-settings="Feedbacks"><i data-lucide="message-square-warning"></i><span>Feedbacks</span><b>›</b></button>
+                <button data-settings="Distributors"><i data-lucide="network"></i><span>Distributors</span><b>›</b></button>
+                <button data-settings="About BYS Cosmetics"><i data-lucide="badge-info"></i><span>About BYS Cosmetics</span><b>›</b></button>
+                <button data-settings="Privacy policy"><i data-lucide="shield-check"></i><span>Privacy policy</span><b>›</b></button>
+                <button data-settings="Terms & Conditions"><i data-lucide="scale"></i><span>Terms &amp; Conditions</span><b>›</b></button>
+                <button data-settings="Rate us"><i data-lucide="star"></i><span>Rate us</span><b>›</b></button>
+                </div></div></section>
+            <section class="view hidden" id="productView"><div class="page-heading"><button data-view="products">‹</button><h1>Product Details</h1></div><div id="productDetail"></div></section>
+        </main>
+
+       
+<!-- شريط التنقل السفلي بأيقونات مشابهة للصورة الأولى -->
+<nav class="bottom-nav" aria-label="Main navigation">
+
+    <button class="active" data-view="home">
+        <span class="nav-icon">
+            <!-- بيت مع مدخنة، أقرب لشكل الصورة المرجعية -->
+            <svg class="home-house" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.5 10.2 12 3l8.5 7.2v9.1c0 1-.8 1.7-1.7 1.7H5.2c-.9 0-1.7-.7-1.7-1.7z" fill="currentColor"/>
+                <path d="M9.5 21v-7.2h5V21" fill="#fce3ec"/>
+                <path d="M17.1 5.7V3.5h2.2v4.1" fill="currentColor"/>
+            </svg>
+        </span>
+        <small>Home</small>
+    </button>
+
+    <button data-view="categories">
+        <span class="nav-icon">
+            <i data-lucide="layout-grid"></i>
+        </span>
+        <small>Categories</small>
+    </button>
+
+    <button data-view="brands">
+        <span class="nav-icon">
+            <i data-lucide="tag"></i>
+        </span>
+        <small>Brands</small>
+    </button>
+
+    <button data-view="favorites">
+        <span class="nav-icon favorites-nav-icon">
+            <i data-lucide="heart"></i>
+            <span class="favorites-nav-count" id="favoritesNavBadge" hidden>0</span>
+        </span>
+        <small>Favorites</small>
+    </button>
+
+    <button data-view="account">
+        <span class="nav-icon">
+            <i data-lucide="user-round"></i>
+        </span>
+        <small>Account</small>
+    </button>
+
+</nav>
+
+        <div id="cartFeedback" class="cart-feedback" aria-live="polite" aria-atomic="true">
+            <button type="button" class="cart-feedback-bar" data-view="cart" aria-label="View shopping cart">
+                <span class="cart-feedback-images" id="cartFeedbackImages"></span>
+                <span class="cart-feedback-copy"><strong>View cart</strong><small id="cartFeedbackCount">1 item</small></span>
+                <span class="cart-feedback-arrow" aria-hidden="true">›</span>
+            </button>
+            <div class="cart-feedback-success" role="status"><span aria-hidden="true">✓</span> Cart updated</div>
+        </div>
+        <div id="toast" role="status" aria-live="polite"></div>
+    </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="catalog.js?v=prices9"></script>
+    <script src="script.js?v=emailotp5"></script>
+    <script src="interface-language.js?v=2"></script>
+</body>
+</html>
