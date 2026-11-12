@@ -186,6 +186,10 @@ Code sent. Check your inbox or spam folder, then enter the six digits below.|ت�
 Could not send the code. Check your email address or try again in one minute.|تعذّر إرسال الرمز. تحقق من بريدك أو حاول مجددًا بعد دقيقة.|Der Code konnte nicht gesendet werden. Prüfe deine E-Mail-Adresse oder versuche es in einer Minute erneut.
 Enter all six digits from the email.|أدخل الأرقام الستة الواردة في البريد.|Gib alle sechs Ziffern aus der E-Mail ein.
 This email already has an account. Please use another email address.|هذا البريد مرتبط بحساب. استخدم بريدًا آخر.|Für diese E-Mail-Adresse gibt es bereits ein Konto. Verwende eine andere Adresse.
+Checking the code…|جارٍ التحقق من الرمز…|Code wird geprüft…
+The server responded, but sign-in could not be completed.|استجابت الخدمة، وتعذّر إكمال تسجيل الدخول.|Der Server hat geantwortet. Die Anmeldung konnte nicht abgeschlossen werden.
+The sign-in service could not complete verification.|تعذّر على خدمة تسجيل الدخول إكمال التحقق.|Der Anmeldedienst konnte die Prüfung nicht abschließen.
+Could not reach the verification service. Check your connection and try again.|تعذّر الاتصال بخدمة التحقق. تحقّق من الاتصال وحاول مجددًا.|Der Prüfdienst ist nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.
 The code could not be confirmed. Check it or request a new one.|تعذّر تأكيد الرمز. تحقّق منه أو اطلب رمزًا جديدًا.|Der Code konnte nicht bestätigt werden. Prüfe ihn oder fordere einen neuen an.
 Email verified. Your profile is saved, and a registration notice was sent.|تم تأكيد البريد وحفظ الملف وإرسال إشعار التسجيل.|E-Mail bestätigt, Profil gespeichert und Registrierungsmitteilung gesendet.
 Email verified and profile saved, but the notice could not be sent. Press Save profile to retry.|تم تأكيد البريد وحفظ الملف. اضغط حفظ الملف لإعادة محاولة إرسال الإشعار.|E-Mail bestätigt und Profil gespeichert. Wähle Profil speichern, um den Versand erneut zu versuchen.
