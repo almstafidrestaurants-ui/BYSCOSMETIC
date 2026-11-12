@@ -26,7 +26,7 @@ service cloud.firestore {
             && bounded(profile.responsiblePersonCode, 1, 60)
             && profile.experienceYears is string
             && profile.experienceYears.matches('^([0-9]{1,2}|100)$')
-            && profile.consultantType in ['consultant', 'team-leader', 'zone-manager'])
+            && profile.consultantType in ['consultant', 'team-leader', 'zone-manager', 'sales-coordinator', 'sales-manager'])
           || (profile.role == 'merchant'
             && profile.keys().hasOnly(common.concat(wholesale))
             && bounded(profile.businessName, 1, 100)

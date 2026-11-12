@@ -1,6 +1,6 @@
 // Cache static files and images to make repeat visits faster.
-const CACHE_NAME = "bys-registration-fullscreen-otp-icons-v5";
-const STATIC_FILES = ["./", "./index.html", "./style.css?v=accountdesign20", "./script.js?v=emailotp5", "./interface-language.js?v=2", "./firebase-account.js?v=7", "./images/ui/all-categories.svg", "./catalog.js?v=prices9", "./manifest.webmanifest",
+const CACHE_NAME = "bys-account-access-v7";
+const STATIC_FILES = ["./", "./index.html", "./style.css?v=accountdesign20", "./script.js?v=accountaccess7", "./interface-language.js?v=4", "./firebase-account.js?v=8", "./images/ui/all-categories.svg", "./catalog.js?v=prices9", "./manifest.webmanifest",
   "./opening.js?v=3",
   "./images/banners/bys-home.webp",
   "./images/bys-logo.jpeg",

@@ -197,7 +197,7 @@
                     <button id="signOutAccount" type="button">Sign out</button>
                 </details>
                 <div id="accountEntry">
-                <div class="registration-brand"><img src="images/bys-logo.jpeg" alt="BYS COSMETICS" width="64" height="64"><h2>Account registration</h2></div>
+                <div class="registration-brand"><img src="images/bys-logo.jpeg" alt="BYS COSMETICS" width="64" height="64"><h2 id="accountEntryTitle">Sign in with email</h2></div>
                 <div id="registrationChoices" hidden>
                     <p>Choose your account type</p>
                     <button type="button" data-register-role="customer">
@@ -216,10 +216,12 @@
                         <span class="registration-arrow" aria-hidden="true">›</span>
                     </button>
 
-                </div><p class="small-note">Create your profile. It is saved only after you confirm your email code.</p>
+                </div><p id="registrationNote" class="small-note" hidden>Create your profile. It is saved only after you confirm your email code.</p>
                 <form id="emailSignIn" class="profile-form" hidden>
-                    <label>Email *<input name="email" type="email" autocomplete="email" required maxlength="160"></label>
-                    <button class="profile-save" type="submit">Send sign-in code</button>
+                    <label>Email *<input name="email" type="email" autocomplete="username" required maxlength="160"></label>
+                    <label>Password *<input name="password" type="password" autocomplete="current-password" required></label>
+                    <button class="profile-save" type="submit">Sign in</button>
+                    <button id="sendSignInCode" class="profile-country" type="button">Forgot password? Send a code</button>
                 </form>
                 <button id="toggleEmailSignIn" class="profile-country" type="button" hidden>Sign in with email</button>
                 </div>
@@ -262,6 +264,8 @@
                         <option value="consultant">Consultant</option>
                         <option value="team-leader">Team Leader</option>
                         <option value="zone-manager">Zone Manager</option>
+                        <option value="sales-coordinator">Sales Coordinator</option>
+                        <option value="sales-manager">Sales Manager</option>
                     </select></label>
                 </fieldset>
                 <fieldset class="registration-fields" data-profile-role="merchant" hidden disabled>
@@ -344,7 +348,7 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=emailotp5"></script>
-    <script src="interface-language.js?v=2"></script>
+    <script src="script.js?v=accountaccess7"></script>
+    <script src="interface-language.js?v=4"></script>
 </body>
 </html>

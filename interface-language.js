@@ -75,6 +75,8 @@ Type *|النوع *|Typ *
 Select your type|اختر النوع|Typ auswählen
 Team Leader|قائد فريق|Teamleiter
 Zone Manager|مدير منطقة|Gebietsleiter
+Sales Coordinator|منسقة المبيعات|Vertriebskoordination
+Sales Manager|مدير المبيعات|Vertriebsleitung
 Business Name *|اسم النشاط التجاري *|Unternehmensname *
 Business Address *|عنوان النشاط التجاري *|Geschäftsadresse *
 Business Type *|نوع النشاط التجاري *|Unternehmensart *
@@ -89,6 +91,12 @@ Cancel registration|إلغاء التسجيل|Registrierung abbrechen
 Registered profile|الملف مسجّل|Profil registriert
 Account activated|الحساب مفعّل|Konto aktiviert
 Sign out|تسجيل الخروج|Abmelden
+Sign in|تسجيل الدخول|Anmelden
+Create an account|إنشاء حساب|Konto erstellen
+Forgot password? Send a code|نسيت كلمة السر؟ أرسل رمزًا|Passwort vergessen? Code senden
+Could not sign in. Check your email and password or request a code.|تعذّر تسجيل الدخول. تحقّق من البريد وكلمة السر أو اطلب رمزًا.|Anmeldung fehlgeschlagen. Prüfe E-Mail und Passwort oder fordere einen Code an.
+The code expired. Request a new sign-in code.|انتهت صلاحية الرمز. اطلب رمز دخول جديدًا.|Der Code ist abgelaufen. Fordere einen neuen Anmeldecode an.
+This email is already registered. We sent a code to sign in to your existing account.|هذا البريد مسجّل بالفعل. أرسلنا رمزًا للدخول إلى حسابك الحالي.|Diese E-Mail-Adresse ist bereits registriert. Wir haben einen Code für dein bestehendes Konto gesendet.
 Sign in with email|تسجيل الدخول بالبريد|Mit E-Mail anmelden
 Back to registration|العودة إلى التسجيل|Zurück zur Registrierung
 Send sign-in code|إرسال رمز الدخول|Anmeldecode senden
