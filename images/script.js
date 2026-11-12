@@ -799,6 +799,7 @@ async function sendVerification(attempt) {
     const button = $("#resendVerification");
     button.disabled = true;
     $("#verificationEmail").textContent = attempt.email;
+    $("#verificationDiagnostic").hidden = true;
     $("#verificationStatus").textContent = "Sending verification code…";
     try {
         const result = await firebaseAccount.sendVerification(attempt.email, attempt.challengeId, attempt.login === true);
@@ -852,6 +853,9 @@ $("#checkVerification").addEventListener("click", async event => {
     const button = event.currentTarget;
     button.disabled = true;
     const input = $("#verificationCode");
+    const diagnostic = $("#verificationDiagnostic");
+    diagnostic.hidden = true;
+    let verifySucceeded = false;
     const code = input.value.trim().replace(/[٠-٩۰-۹]/g, digit => String(digit.charCodeAt(0) & 15));
     try {
         if (!/^\d{6}$/.test(code)) {
@@ -860,11 +864,17 @@ $("#checkVerification").addEventListener("click", async event => {
             return;
         }
         const {email} = attempt;
+        $("#verificationStatus").textContent = "Checking the code…";
         const result = await firebaseAccount.verifyCode(email, code, attempt.challengeId, attempt.login === true);
+        verifySucceeded = true;
         updateVerificationTime();
         if (pendingRegistration !== attempt) return;
         if (attempt.login) {
-            if (!result.customToken) throw new Error("Missing sign-in token");
+            if (!result.customToken) {
+                const error = new Error("Missing sign-in token");
+                error.code = "missing-sign-in-token";
+                throw error;
+            }
             attempt.confirmed = true;
             clearInterval(verificationTimer);
             await firebaseAccount.signIn(result.customToken);
@@ -909,6 +919,25 @@ $("#checkVerification").addEventListener("click", async event => {
         verificationTimer = setInterval(updateVerificationTime, 250);
         updateVerificationTime();
         if (pendingRegistration !== attempt) return;
+        if (attempt.login) {
+            let message = "The code could not be confirmed. Check it or request a new one.";
+            if (verifySucceeded) {
+                message = "The server responded, but sign-in could not be completed.";
+                diagnostic.textContent = /^auth\/[a-z0-9-]+$/.test(failure.code || "")
+                    ? failure.code
+                    : (failure.code === "missing-sign-in-token" ? "VERIFY 200 · NO SIGN-IN TOKEN" : "FIREBASE SIGN-IN");
+            } else if (Number.isInteger(failure.status)) {
+                diagnostic.textContent = "VERIFY " + failure.status;
+                if (failure.status >= 500) message = "The sign-in service could not complete verification.";
+            } else {
+                message = "Could not reach the verification service. Check your connection and try again.";
+                diagnostic.textContent = "VERIFY CONNECTION";
+            }
+            accountStatus.textContent = message;
+            $("#verificationStatus").textContent = message;
+            diagnostic.hidden = false;
+            return;
+        }
         const message = failure.code === "auth/email-already-in-use"
             ? "This email already has an account. Sign in with email instead."
             : "The code could not be confirmed. Check it or request a new one.";
@@ -1027,7 +1056,7 @@ $("#signOutAccount").addEventListener("click", async event => {
 
 async function connectAccount() {
     try {
-        ({ account: firebaseAccount } = await import("./firebase-account.js?v=8"));
+        ({ account: firebaseAccount } = await import("./firebase-account.js?v=9"));
         firebaseAccount.observe(async user => {
             accountReady = true;
             if (user) emailSignInOpen = false;

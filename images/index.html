@@ -233,7 +233,7 @@
                         <p id="verificationInstructions">Open your email, find the six-digit BYS Cosmetics code, and enter it here to save your profile.</p>
                         <p class="verification-recipient" id="verificationEmail"></p>
                         <p class="verification-expiry"><span>Time remaining</span> <output id="verificationTime" dir="ltr" aria-live="off"></output></p>
-                        <p class="verification-status" id="verificationStatus" role="status" aria-live="polite"></p>
+                        <p class="verification-status" role="status" aria-live="polite"><span id="verificationStatus"></span> <code id="verificationDiagnostic" dir="ltr" hidden></code></p>
                         <label for="verificationCode">Verification code</label>
                         <input class="verification-code-input" id="verificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr" aria-label="Six-digit verification code">
                         <button class="profile-save" id="checkVerification" type="button">Confirm code and save profile</button>
@@ -348,7 +348,7 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=accountaccess7"></script>
-    <script src="interface-language.js?v=4"></script>
+    <script src="script.js?v=accountaccess8"></script>
+    <script src="interface-language.js?v=5"></script>
 </body>
 </html>
