@@ -26,7 +26,11 @@ async function verificationRequest(path, body, user) {
         },
         body: JSON.stringify(body)
     });
-    if (!response.ok) throw new Error(String(response.status));
+    if (!response.ok) {
+        const error = new Error(String(response.status));
+        error.status = response.status;
+        throw error;
+    }
     return response.json().catch(() => ({}));
 }
 
