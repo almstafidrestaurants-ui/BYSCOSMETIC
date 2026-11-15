@@ -1058,6 +1058,8 @@ $("#signOutAccount").addEventListener("click", async event => {
 const deleteAccountDialog = $("#deleteAccountDialog");
 const deleteAccountForm = $("#deleteAccountForm");
 const deleteAccountStatus = $("#deleteAccountStatus");
+const deleteAccountConfirmation = deleteAccountForm.elements.confirmation;
+let deletingAccount = false;
 const deleteAccountSubmit = deleteAccountForm.querySelector("[type=submit]");
 const cancelDeleteAccount = $("#cancelDeleteAccount");
 
@@ -1067,30 +1069,38 @@ $("#openDeleteAccount").addEventListener("click", () => {
 });
 cancelDeleteAccount.addEventListener("click", () => deleteAccountDialog.close());
 deleteAccountDialog.addEventListener("cancel", event => {
-    if (deleteAccountSubmit.disabled) event.preventDefault();
+    if (deletingAccount) event.preventDefault();
 });
 deleteAccountDialog.addEventListener("close", () => {
     deleteAccountForm.reset();
+    deleteAccountSubmit.disabled = true;
     deleteAccountStatus.hidden = true;
+});
+deleteAccountConfirmation.addEventListener("input", event => {
+    if (deletingAccount || event.isComposing) return;
+    const confirmed = deleteAccountConfirmation.value === "BYS";
+    deleteAccountSubmit.disabled = !confirmed;
+    if (confirmed) deleteAccountForm.requestSubmit();
 });
 deleteAccountForm.addEventListener("submit", async event => {
     event.preventDefault();
     const user = firebaseAccount?.user;
-    if (!user || deleteAccountSubmit.disabled) return;
+    const confirmation = deleteAccountConfirmation.value;
+    if (!user || deletingAccount || confirmation !== "BYS") return;
 
-    const password = deleteAccountForm.elements.password.value;
-    deleteAccountForm.reset();
+    deletingAccount = true;
+    deleteAccountConfirmation.readOnly = true;
     deleteAccountSubmit.disabled = cancelDeleteAccount.disabled = true;
     deleteAccountStatus.hidden = false;
     deleteAccountStatus.textContent = "Deleting your account…";
     try {
-        await firebaseAccount.deleteAccount(user, password);
-    } catch (error) {
-        deleteAccountStatus.textContent = ["auth/wrong-password", "auth/invalid-credential"].includes(error.code)
-            ? "Check your account password and try again."
-            : "Account deletion could not be completed. Please try again.";
+        await firebaseAccount.deleteAccount(user, confirmation);
+    } catch {
+        deleteAccountStatus.textContent = "Account deletion could not be completed. Please try again.";
         return;
     } finally {
+        deletingAccount = false;
+        deleteAccountConfirmation.readOnly = false;
         deleteAccountSubmit.disabled = cancelDeleteAccount.disabled = false;
     }
     deleteAccountDialog.close();
@@ -1112,7 +1122,7 @@ deleteAccountForm.addEventListener("submit", async event => {
 
 async function connectAccount() {
     try {
-        ({ account: firebaseAccount } = await import("./firebase-account.js?v=10"));
+        ({ account: firebaseAccount } = await import("./firebase-account.js?v=11"));
         firebaseAccount.observe(async user => {
             accountReady = true;
             if (user) emailSignInOpen = false;

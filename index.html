@@ -353,12 +353,12 @@
         <dialog id="deleteAccountDialog" class="bys-action-dialog" aria-labelledby="deleteAccountTitle">
             <form id="deleteAccountForm">
                 <h2 id="deleteAccountTitle">Delete account</h2>
-                <p>Your sign-in and BYS profile will be permanently deleted. Enter your account password to confirm.</p>
-                <label><span>Account password</span><input type="password" name="password" autocomplete="current-password" required></label>
+                <p>Typing BYS immediately deletes your sign-in and BYS profile permanently.</p>
+                <label><span>Type BYS to confirm</span><input type="text" name="confirmation" dir="ltr" autocomplete="off" autocapitalize="characters" spellcheck="false" required></label>
                 <p id="deleteAccountStatus" role="status" hidden></p>
                 <div class="bys-dialog-actions">
                     <button type="button" id="cancelDeleteAccount">Cancel</button>
-                    <button type="submit" class="bys-dialog-primary">Delete permanently</button>
+                    <button type="submit" class="bys-dialog-primary" disabled>Delete permanently</button>
                 </div>
             </form>
         </dialog>
@@ -373,7 +373,7 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=accountaccess9"></script>
-    <script src="interface-language.js?v=6"></script>
+    <script src="script.js?v=accountaccess10"></script>
+    <script src="interface-language.js?v=7"></script>
 </body>
 </html>

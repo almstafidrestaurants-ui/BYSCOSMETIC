@@ -204,11 +204,10 @@ Technical support|الدعم الفني|Technischer Support
 Have a question? Email the BYS Cosmetics support team.|لديك استفسار؟ راسل فريق دعم BYS Cosmetics عبر البريد الإلكتروني.|Hast du eine Frage? Schreib dem Support von BYS Cosmetics.
 Close|إغلاق|Schließen
 Delete account|حذف الحساب|Konto löschen
-Your sign-in and BYS profile will be permanently deleted. Enter your account password to confirm.|سيتم حذف حساب تسجيل الدخول وملفك الشخصي في BYS نهائيًا. أدخل كلمة مرور حسابك للتأكيد.|Dein Zugang und dein BYS-Profil werden dauerhaft gelöscht. Bestätige mit deinem Passwort.
-Account password|كلمة مرور الحساب|Kontopasswort
+Typing BYS immediately deletes your sign-in and BYS profile permanently.|عند كتابة BYS، يُحذف حساب تسجيل الدخول وملفك الشخصي فورًا وبشكل نهائي.|Sobald du BYS eingibst, werden dein Zugang und dein BYS-Profil sofort dauerhaft gelöscht.
+Type BYS to confirm|اكتب BYS للتأكيد|BYS zur Bestätigung eingeben
 Delete permanently|حذف نهائيًا|Dauerhaft löschen
 Deleting your account…|جارٍ حذف حسابك…|Dein Konto wird gelöscht…
-Check your account password and try again.|تحقّق من كلمة مرور حسابك وحاول مجددًا.|Prüfe dein Kontopasswort und versuche es erneut.
 Account deletion could not be completed. Please try again.|تعذّر إكمال حذف الحساب. حاول مجددًا.|Das Konto konnte nicht vollständig gelöscht werden. Versuche es erneut.
 Account deleted.|تم حذف الحساب.|Konto gelöscht.
 The app store rating link is not available yet.|رابط التقييم متاح من هاتف iPhone أو Android.|Öffne die Bewertung auf einem iPhone oder Android-Gerät.

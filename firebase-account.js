@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
-    getAuth, createUserWithEmailAndPassword, reload, signInWithEmailAndPassword, signInWithCustomToken, signOut, EmailAuthProvider, reauthenticateWithCredential, deleteUser
+    getAuth, createUserWithEmailAndPassword, reload, signInWithEmailAndPassword, signInWithCustomToken, signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const app = initializeApp({
     apiKey: "AIzaSyD3yckhrfXDbJGzzimy7ri0iZCsGYAEdWU",
@@ -49,10 +49,10 @@ export const account = {
         await user.getIdToken(true);
     },
     notifyRegistration: (user, notice) => verificationRequest("notify-registration", notice, user),
-    async deleteAccount(user, password) {
-        await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, password));
-        await deleteDoc(profileDoc(user));
-        await deleteUser(user);
+    async deleteAccount(user, confirmation) {
+        const result = await verificationRequest("delete-account", { confirmation }, user);
+        if (result.deleted !== true) throw new Error("Account deletion was not confirmed.");
+        await signOut(auth);
     },
     async read(user) {
         return (await getDoc(profileDoc(user))).data() || {};
