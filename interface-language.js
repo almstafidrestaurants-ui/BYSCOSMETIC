@@ -49,6 +49,7 @@ Consultant registration|تسجيل مستشار|Beraterregistrierung
 Wholesale registration|تسجيل تاجر|Großhandelsregistrierung
 Manager registration|تسجيل مدير|Registrierung als Gebietsleiter
 Create your profile. It is saved only after you confirm your email code.|أنشئ ملفك الشخصي. سيُحفظ بعد تأكيد رمز البريد فقط.|Erstelle dein Profil. Es wird erst nach Bestätigung des E-Mail-Codes gespeichert.
+Retry connection|إعادة محاولة الاتصال|Verbindung erneut versuchen
 Connecting to Firebase…|جارٍ الاتصال بخدمة الحسابات…|Verbindung zum Kontodienst wird hergestellt…
 Confirm your email|أكّد بريدك الإلكتروني|E-Mail-Adresse bestätigen
 Open your email, find the six-digit BYS Cosmetics code, and enter it here to save your profile.|افتح بريدك وأدخل رمز BYS Cosmetics المكوّن من ستة أرقام لحفظ ملفك.|Öffne deine E-Mail und gib den sechsstelligen BYS Cosmetics-Code ein, um dein Profil zu speichern.

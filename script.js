@@ -950,7 +950,8 @@ $("#checkVerification").addEventListener("click", async event => {
 function refreshAccountPresentation(user) {
     const active = Boolean(user?.emailVerified && signedInProfile.role);
     $("#activeProfile").hidden = !active;
-    $("#openDeleteAccount").hidden = !user;
+    const deleteButton = $("#openDeleteAccount");
+    if (deleteButton) deleteButton.hidden = !user || !$("#deleteAccountForm [name=confirmation]");
     $(".settings-login span").textContent = user ? "My Account" : "Create account";
     $("#accountEntry").hidden = active;
     $("#emailSignIn").hidden = active || !emailSignInOpen;
@@ -1055,76 +1056,79 @@ $("#signOutAccount").addEventListener("click", async event => {
     }
 });
 
-const deleteAccountDialog = $("#deleteAccountDialog");
-const deleteAccountForm = $("#deleteAccountForm");
-const deleteAccountStatus = $("#deleteAccountStatus");
-const deleteAccountConfirmation = deleteAccountForm.elements.confirmation;
-let deletingAccount = false;
-const deleteAccountSubmit = deleteAccountForm.querySelector("[type=submit]");
-const cancelDeleteAccount = $("#cancelDeleteAccount");
+$("#openSupport")?.addEventListener("click", () => $("#supportDialog").showModal());
 
-$("#openSupport").addEventListener("click", () => $("#supportDialog").showModal());
-$("#openDeleteAccount").addEventListener("click", () => {
-    if (firebaseAccount?.user) deleteAccountDialog.showModal();
-});
-cancelDeleteAccount.addEventListener("click", () => deleteAccountDialog.close());
-deleteAccountDialog.addEventListener("cancel", event => {
-    if (deletingAccount) event.preventDefault();
-});
-deleteAccountDialog.addEventListener("close", () => {
-    deleteAccountForm.reset();
-    deleteAccountSubmit.disabled = true;
-    deleteAccountStatus.hidden = true;
-});
-deleteAccountConfirmation.addEventListener("input", event => {
-    if (deletingAccount || event.isComposing) return;
-    const confirmed = deleteAccountConfirmation.value === "BYS";
-    deleteAccountSubmit.disabled = !confirmed;
-    if (confirmed) deleteAccountForm.requestSubmit();
-});
-deleteAccountForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    const user = firebaseAccount?.user;
-    const confirmation = deleteAccountConfirmation.value;
-    if (!user || deletingAccount || confirmation !== "BYS") return;
+function setupAccountDeletion() {
+    const deleteAccountDialog = $("#deleteAccountDialog");
+    const deleteAccountForm = $("#deleteAccountForm");
+    const deleteAccountStatus = $("#deleteAccountStatus");
+    const deleteAccountConfirmation = deleteAccountForm?.elements.namedItem("confirmation");
+    if (!deleteAccountDialog || !deleteAccountConfirmation) return;
+    let deletingAccount = false;
+    const deleteAccountSubmit = deleteAccountForm.querySelector("[type=submit]");
+    const cancelDeleteAccount = $("#cancelDeleteAccount");
 
-    deletingAccount = true;
-    deleteAccountConfirmation.readOnly = true;
-    deleteAccountSubmit.disabled = cancelDeleteAccount.disabled = true;
-    deleteAccountStatus.hidden = false;
-    deleteAccountStatus.textContent = "Deleting your account…";
-    try {
-        await firebaseAccount.deleteAccount(user, confirmation);
-    } catch {
-        deleteAccountStatus.textContent = "Account deletion could not be completed. Please try again.";
-        return;
-    } finally {
-        deletingAccount = false;
-        deleteAccountConfirmation.readOnly = false;
-        deleteAccountSubmit.disabled = cancelDeleteAccount.disabled = false;
-    }
-    deleteAccountDialog.close();
-    signedInProfile = {};
-    registrationNoticePending = false;
-    $("#activeProfile").open = false;
-    resetRegistration(false, true);
-    cart = {};
-    favorites = [];
-    try {
-        localStorage.removeItem("bys-cart");
-        localStorage.removeItem("bys-favorites");
-    } catch {
-        // Account deletion succeeded even if browser storage is unavailable.
-    }
-    renderAll();
-    showToast("Account deleted.");
-});
+    $("#openDeleteAccount").addEventListener("click", () => {
+        if (firebaseAccount?.user) deleteAccountDialog.showModal();
+    });
+    cancelDeleteAccount.addEventListener("click", () => deleteAccountDialog.close());
+    deleteAccountDialog.addEventListener("cancel", event => {
+        if (deletingAccount) event.preventDefault();
+    });
+    deleteAccountDialog.addEventListener("close", () => {
+        deleteAccountForm.reset();
+        deleteAccountSubmit.disabled = true;
+        deleteAccountStatus.hidden = true;
+    });
+    deleteAccountConfirmation.addEventListener("input", event => {
+        if (deletingAccount || event.isComposing) return;
+        const confirmed = deleteAccountConfirmation.value === "BYS";
+        deleteAccountSubmit.disabled = !confirmed;
+        if (confirmed) deleteAccountSubmit.click();
+    });
+    deleteAccountForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        const user = firebaseAccount?.user;
+        const confirmation = deleteAccountConfirmation.value;
+        if (!user || deletingAccount || confirmation !== "BYS") return;
+
+        deletingAccount = true;
+        deleteAccountConfirmation.readOnly = true;
+        deleteAccountSubmit.disabled = cancelDeleteAccount.disabled = true;
+        deleteAccountStatus.hidden = false;
+        deleteAccountStatus.textContent = "Deleting your account…";
+        try {
+            await firebaseAccount.deleteAccount(user, confirmation);
+        } catch {
+            deleteAccountStatus.textContent = "Account deletion could not be completed. Please try again.";
+            return;
+        } finally {
+            deletingAccount = false;
+            deleteAccountConfirmation.readOnly = false;
+            deleteAccountSubmit.disabled = cancelDeleteAccount.disabled = false;
+        }
+        deleteAccountDialog.close();
+        signedInProfile = {};
+        registrationNoticePending = false;
+        $("#activeProfile").open = false;
+        resetRegistration(false, true);
+        cart = {};
+        favorites = [];
+        try {
+            localStorage.removeItem("bys-cart");
+            localStorage.removeItem("bys-favorites");
+        } catch {
+            // Account deletion succeeded even if browser storage is unavailable.
+        }
+        renderAll();
+        showToast("Account deleted.");
+    });
+}
 
 async function connectAccount() {
     try {
         ({ account: firebaseAccount } = await import("./firebase-account.js?v=11"));
         firebaseAccount.observe(async user => {
-            accountReady = true;
             if (user) emailSignInOpen = false;
             const emptyProfile = {};
             signedInProfile = emptyProfile;
@@ -1134,6 +1138,10 @@ async function connectAccount() {
                 fillCustomerProfile();
             }
             accountStatus.textContent = user ? "Account email: " + user.email : (emailSignInOpen ? "" : "Choose an account type to register.");
+            document.dispatchEvent(new Event("bys-account-ready"));
+            const retry = $("#retryAccountConnection");
+            if (retry) retry.hidden = true;
+            accountReady = true;
             if (!user) return;
             try {
                 const profile = await firebaseAccount.read(user);
@@ -1145,8 +1153,12 @@ async function connectAccount() {
                 if (firebaseAccount.user === user) accountStatus.textContent = "Signed in. Your profile could not be loaded.";
             }
         });
-    } catch {
+    } catch (error) {
+        console.error("Firebase account initialization failed:", error);
+        document.dispatchEvent(new Event("bys-account-ready"));
         accountStatus.textContent = "Could not connect to Firebase. Check your connection and reload.";
+        const retry = $("#retryAccountConnection");
+        if (retry) retry.hidden = false;
     }
 }
 
@@ -1572,6 +1584,7 @@ $("#app").classList.remove("hidden");
 renderAll();
 showView("home", false);
 connectAccount();
+setupAccountDeletion();
 
 // تسجيل Service Worker عند استخدام localhost أو HTTPS
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {

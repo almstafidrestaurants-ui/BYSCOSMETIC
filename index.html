@@ -227,6 +227,7 @@
                 <button id="toggleEmailSignIn" class="profile-country" type="button" hidden>Sign in with email</button>
                 </div>
                 <p id="accountStatus" role="status">Connecting to Firebase…</p>
+                <button id="retryAccountConnection" class="profile-country" type="button" hidden>Retry connection</button>
                 <div id="emailVerification" class="verification-overlay" role="dialog" aria-modal="true" aria-labelledby="verificationTitle" hidden>
                     <div class="verification-card">
                         <div class="verification-icon"><i data-lucide="mail-check" aria-hidden="true"></i></div>
@@ -371,9 +372,22 @@
             <div class="cart-feedback-success" role="status"><span aria-hidden="true">✓</span> Cart updated</div>
         </div>
         <div id="toast" role="status" aria-live="polite"></div>
-    </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    </div>
+    <script>
+        (() => {
+            const status = document.getElementById("accountStatus");
+            const retry = document.getElementById("retryAccountConnection");
+            const timeout = setTimeout(() => {
+                status.textContent = "Could not connect to Firebase. Check your connection and reload.";
+                retry.hidden = false;
+            }, 15000);
+            document.addEventListener("bys-account-ready", () => clearTimeout(timeout), { once: true });
+            retry.addEventListener("click", () => location.reload());
+        })();
+    </script>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=accountaccess10"></script>
-    <script src="interface-language.js?v=7"></script>
+    <script src="script.js?v=accountaccess11"></script>
+    <script src="interface-language.js?v=8"></script>
 </body>
 </html>
