@@ -691,12 +691,11 @@ function renderCart() {
           <h3>Choose payment method</h3>
           <p class="payment-intro">Select how you would like to pay.</p>
           <div class="payment-method-list" role="group" aria-label="Payment methods">
-            <button class="payment-method" data-payment="Visa" type="button"><span class="payment-mark">VISA</span><span class="payment-label">Visa / Card<small>Secure card checkout</small></span><span class="payment-chevron">›</span></button>
-            <button class="payment-method" data-payment="Whish" type="button"><span class="payment-mark">W</span><span class="payment-label">Whish<small>Manual transfer</small></span><span class="payment-chevron">›</span></button>
-            <button class="payment-method" data-payment="PayPal" type="button"><span class="payment-mark">P</span><span class="payment-label">PayPal<small>Pay using PayPal</small></span><span class="payment-chevron">›</span></button>
+            <button class="payment-method" type="button" disabled><span class="payment-mark">VISA</span><span class="payment-label">Visa / Card<small>Temporarily unavailable</small></span><span class="payment-chevron" aria-hidden="true">🔒</span></button>
+            <button class="payment-method" data-payment="Whish" type="button" aria-pressed="false"><span class="payment-mark">W</span><span class="payment-label">Whish<small>Manual transfer</small></span><span class="payment-chevron">›</span></button>
+            <button class="payment-method" type="button" disabled><span class="payment-mark">P</span><span class="payment-label">PayPal<small>Temporarily unavailable</small></span><span class="payment-chevron" aria-hidden="true">🔒</span></button>
           </div>
           <div id="paymentSelection" class="payment-selection" role="status" aria-live="polite" hidden></div>
-          <p class="payment-security-note">Whish is a manual transfer. Orders are not marked paid automatically. Visa and PayPal are not connected.</p>
         </div>` : "";
 }
 
@@ -951,6 +950,8 @@ $("#checkVerification").addEventListener("click", async event => {
 function refreshAccountPresentation(user) {
     const active = Boolean(user?.emailVerified && signedInProfile.role);
     $("#activeProfile").hidden = !active;
+    $("#openDeleteAccount").hidden = !user;
+    $(".settings-login span").textContent = user ? "My Account" : "Create account";
     $("#accountEntry").hidden = active;
     $("#emailSignIn").hidden = active || !emailSignInOpen;
     $("#toggleEmailSignIn").hidden = Boolean(user) || Boolean(profileForm.elements.role.value);
@@ -1054,9 +1055,64 @@ $("#signOutAccount").addEventListener("click", async event => {
     }
 });
 
+const deleteAccountDialog = $("#deleteAccountDialog");
+const deleteAccountForm = $("#deleteAccountForm");
+const deleteAccountStatus = $("#deleteAccountStatus");
+const deleteAccountSubmit = deleteAccountForm.querySelector("[type=submit]");
+const cancelDeleteAccount = $("#cancelDeleteAccount");
+
+$("#openSupport").addEventListener("click", () => $("#supportDialog").showModal());
+$("#openDeleteAccount").addEventListener("click", () => {
+    if (firebaseAccount?.user) deleteAccountDialog.showModal();
+});
+cancelDeleteAccount.addEventListener("click", () => deleteAccountDialog.close());
+deleteAccountDialog.addEventListener("cancel", event => {
+    if (deleteAccountSubmit.disabled) event.preventDefault();
+});
+deleteAccountDialog.addEventListener("close", () => {
+    deleteAccountForm.reset();
+    deleteAccountStatus.hidden = true;
+});
+deleteAccountForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const user = firebaseAccount?.user;
+    if (!user || deleteAccountSubmit.disabled) return;
+
+    const password = deleteAccountForm.elements.password.value;
+    deleteAccountForm.reset();
+    deleteAccountSubmit.disabled = cancelDeleteAccount.disabled = true;
+    deleteAccountStatus.hidden = false;
+    deleteAccountStatus.textContent = "Deleting your account…";
+    try {
+        await firebaseAccount.deleteAccount(user, password);
+    } catch (error) {
+        deleteAccountStatus.textContent = ["auth/wrong-password", "auth/invalid-credential"].includes(error.code)
+            ? "Check your account password and try again."
+            : "Account deletion could not be completed. Please try again.";
+        return;
+    } finally {
+        deleteAccountSubmit.disabled = cancelDeleteAccount.disabled = false;
+    }
+    deleteAccountDialog.close();
+    signedInProfile = {};
+    registrationNoticePending = false;
+    $("#activeProfile").open = false;
+    resetRegistration(false, true);
+    cart = {};
+    favorites = [];
+    try {
+        localStorage.removeItem("bys-cart");
+        localStorage.removeItem("bys-favorites");
+    } catch {
+        // Account deletion succeeded even if browser storage is unavailable.
+    }
+    renderAll();
+    showToast("Account deleted.");
+});
+
 async function connectAccount() {
     try {
-        ({ account: firebaseAccount } = await import("./firebase-account.js?v=9"));
+        ({ account: firebaseAccount } = await import("./firebase-account.js?v=10"));
         firebaseAccount.observe(async user => {
             accountReady = true;
             if (user) emailSignInOpen = false;
@@ -1316,6 +1372,36 @@ function showCartFeedback() {
     cartFeedbackTimeout = setTimeout(() => feedback.classList.remove("show-success"), 2300);
 }
 
+const settingsContacts = {
+    "Report fraud": "mailto:cosmetic@bysgroups.com?subject=BYS%20Cosmetics%20-%20Report%20fraud",
+    "Feedbacks": "mailto:cosmetic@bysgroups.com?subject=BYS%20Cosmetics%20-%20Feedback",
+    "Distributors": "https://wa.me/4915510695917",
+    "About BYS Cosmetics": "https://wa.me/4915510695917"
+};
+
+// Replace these store searches with the published listing URLs when available.
+const appStoreLinks = {
+    apple: "itms-apps://search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?media=software&term=BYS%20Cosmetics",
+    android: "https://play.google.com/store/search?q=BYS%20Cosmetics&c=apps"
+};
+
+function openSettingsOption(option) {
+    if (Object.hasOwn(settingsContacts, option)) {
+        window.location.href = settingsContacts[option];
+        return;
+    }
+    if (option === "Rate us") {
+        const isAppleMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+            || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const storeUrl = isAppleMobile ? appStoreLinks.apple : isAndroid ? appStoreLinks.android : "";
+        if (storeUrl) window.location.href = storeUrl;
+        else showToast("The app store rating link is not available yet.");
+        return;
+    }
+    showToast(option + " page is coming soon");
+}
+
 // إدارة النقرات بمستمع واحد، حتى العناصر المضافة ديناميكياً تشتغل
  document.addEventListener("click", (event) => {
     const button = event.target.closest("button");
@@ -1398,7 +1484,6 @@ function showCartFeedback() {
         return;
     }
     if (button.dataset.payment) {
-        const method = button.dataset.payment;
         document.querySelectorAll(".payment-method").forEach(item => {
             const selected = item === button;
             item.classList.toggle("is-selected", selected);
@@ -1408,28 +1493,24 @@ function showCartFeedback() {
         // Show transfer details directly beneath the selected Whish method.
         button.insertAdjacentElement("afterend", panel);
         panel.hidden = false;
-        if (method === "Whish") {
-            const items = PRODUCTS.filter(product => cart[product.id] > 0);
-            const pricing = consultantCartPricing(items);
-            const currency = COUNTRIES.find(c => c.code === countryCode)?.currency || "USD";
-            const amount = new Intl.NumberFormat("en-US", {style:"currency", currency}).format(pricing.total);
-            panel.innerHTML = `<div class="whish-manual-box">
-                <div class="whish-transfer-heading">Whish transfer details</div>
-                <span class="whish-transfer-caption">Amount to transfer</span>
-                <div class="whish-transfer-amount">${escapeHtml(amount)}</div>
-                <span class="whish-transfer-caption">Send to</span>
-                <div class="whish-account">Bys Wish Account</div>
-                <div class="whish-number" dir="ltr">+961 81 394 916</div>
-                <button type="button" class="whish-copy" data-copy-whish="+96181394916">Copy Whish number</button>
-                <p class="whish-transfer-help">Open Whish, transfer the exact amount to this number, and keep the receipt.</p>
-                <p class="whish-transfer-warning">Manual payment only. The store owner must verify your transfer before confirming your order.</p>
-            </div>`;
-        } else {
-            panel.textContent = method + " is not connected yet. No payment can be made using this option.";
-        }
+        const items = PRODUCTS.filter(product => cart[product.id] > 0);
+        const pricing = consultantCartPricing(items);
+        const currency = COUNTRIES.find(c => c.code === countryCode)?.currency || "USD";
+        const amount = new Intl.NumberFormat("en-US", {style:"currency", currency}).format(pricing.total);
+        panel.innerHTML = `<div class="whish-manual-box">
+            <div class="whish-transfer-heading">Whish transfer details</div>
+            <span class="whish-transfer-caption">Amount to transfer</span>
+            <div class="whish-transfer-amount">${escapeHtml(amount)}</div>
+            <span class="whish-transfer-caption">Send to</span>
+            <div class="whish-account">BYS Cosmetics</div>
+            <div class="whish-number" dir="ltr">+961 81 394 916</div>
+            <button type="button" class="whish-copy" data-copy-whish="+96181394916">Copy Whish number</button>
+            <p class="whish-transfer-help">Open Whish, transfer the exact amount to this number, and keep the receipt.</p>
+            <p class="whish-transfer-warning">Manual payment only. The store owner must verify your transfer before confirming your order.</p>
+        </div>`;
         return;
     }
-    if (button.dataset.settings) return showToast(button.dataset.settings + " page is coming soon");
+    if (button.dataset.settings) return openSettingsOption(button.dataset.settings);
     if (button.dataset.action === "menu") return showView("settings");
 });
 

@@ -47,7 +47,7 @@ service cloud.firestore {
           && validRoleFields(profile, common);
       }
 
-      allow get: if isOwner();
+      allow get, delete: if isOwner();
       allow create: if isOwner() && validProfile();
       allow update: if isOwner() && validProfile()
         && request.resource.data.role == resource.data.role;

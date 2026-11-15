@@ -200,6 +200,26 @@ Please complete all required fields and enter a valid phone number and email.|أ
 Your profile could not be saved. Please try again.|تعذّر حفظ الملف. حاول مجددًا.|Das Profil konnte nicht gespeichert werden. Versuche es erneut.
 Please enter a valid phone number.|أدخل رقم هاتف صالحًا.|Gib eine gültige Telefonnummer ein.
 Complete your account information first|أكمل بيانات حسابك أولًا|Vervollständige zuerst deine Kontodaten
+Technical support|الدعم الفني|Technischer Support
+Have a question? Email the BYS Cosmetics support team.|لديك استفسار؟ راسل فريق دعم BYS Cosmetics عبر البريد الإلكتروني.|Hast du eine Frage? Schreib dem Support von BYS Cosmetics.
+Close|إغلاق|Schließen
+Delete account|حذف الحساب|Konto löschen
+Your sign-in and BYS profile will be permanently deleted. Enter your account password to confirm.|سيتم حذف حساب تسجيل الدخول وملفك الشخصي في BYS نهائيًا. أدخل كلمة مرور حسابك للتأكيد.|Dein Zugang und dein BYS-Profil werden dauerhaft gelöscht. Bestätige mit deinem Passwort.
+Account password|كلمة مرور الحساب|Kontopasswort
+Delete permanently|حذف نهائيًا|Dauerhaft löschen
+Deleting your account…|جارٍ حذف حسابك…|Dein Konto wird gelöscht…
+Check your account password and try again.|تحقّق من كلمة مرور حسابك وحاول مجددًا.|Prüfe dein Kontopasswort und versuche es erneut.
+Account deletion could not be completed. Please try again.|تعذّر إكمال حذف الحساب. حاول مجددًا.|Das Konto konnte nicht vollständig gelöscht werden. Versuche es erneut.
+Account deleted.|تم حذف الحساب.|Konto gelöscht.
+The app store rating link is not available yet.|رابط التقييم متاح من هاتف iPhone أو Android.|Öffne die Bewertung auf einem iPhone oder Android-Gerät.
+Temporarily unavailable|غير متاح مؤقتًا|Vorübergehend nicht verfügbar
+Whish transfer details|تفاصيل التحويل عبر Whish|Whish-Überweisungsdetails
+Amount to transfer|المبلغ المطلوب تحويله|Überweisungsbetrag
+Send to|التحويل إلى|Empfänger
+Copy Whish number|نسخ رقم Whish|Whish-Nummer kopieren
+Whish number copied|تم نسخ رقم Whish|Whish-Nummer kopiert
+Open Whish, transfer the exact amount to this number, and keep the receipt.|افتح Whish وحوّل المبلغ المحدد إلى هذا الرقم واحتفظ بالإيصال.|Öffne Whish, überweise den genauen Betrag an diese Nummer und bewahre den Beleg auf.
+Manual payment only. The store owner must verify your transfer before confirming your order.|الدفع عبر تحويل يدوي. يؤكّد المتجر طلبك بعد التحقق من التحويل.|Manuelle Zahlung. Der Shop bestätigt deine Bestellung nach Prüfung der Überweisung.
 Verify your email before checkout|أكّد بريدك الإلكتروني قبل إتمام الطلب|Bestätige deine E-Mail-Adresse vor dem Kauf
 `.trim().split("\n").map(line => {
         const [english, arabic, german] = line.split("|");

@@ -8,7 +8,7 @@
     <title>BYS Cosmetics | Beauty, Elevated</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="image" href="images/banners/bys-home.webp" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=accountdesign20">
+    <link rel="stylesheet" href="style.css?v=accountdesign21">
 </head>
 <body>
     <dialog id="openingScreen" aria-label="BYS Cosmetics opening image">
@@ -196,6 +196,7 @@
                     <summary><strong>Registered profile</strong><span><b aria-hidden="true">✓✓</b> Account activated</span></summary>
                     <button id="signOutAccount" type="button">Sign out</button>
                 </details>
+                <button id="openDeleteAccount" type="button" hidden>Delete account</button>
                 <div id="accountEntry">
                 <div class="registration-brand"><img src="images/bys-logo.jpeg" alt="BYS COSMETICS" width="64" height="64"><h2 id="accountEntryTitle">Sign in with email</h2></div>
                 <div id="registrationChoices" hidden>
@@ -337,6 +338,30 @@
 
 </nav>
 
+        <button id="openSupport" type="button" aria-label="Technical support" title="Technical support">
+            <svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M8 19l-5 2v-5a8 8 0 0 1-1-4C2 7 6.5 3 12 3s10 4 10 9-4.5 9-10 9a11 11 0 0 1-4-.7"/>
+                <path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .7-1.5 1.1-1.5 2.5m0 3h.01"/>
+            </svg>
+        </button>
+        <dialog id="supportDialog" class="bys-action-dialog" aria-labelledby="supportTitle">
+            <h2 id="supportTitle">Technical support</h2>
+            <p>Have a question? Email the BYS Cosmetics support team.</p>
+            <a class="bys-dialog-primary" href="mailto:cosmetic@bysgroups.com?subject=BYS%20Cosmetics%20-%20Technical%20support">cosmetic@bysgroups.com</a>
+            <form method="dialog"><button type="submit">Close</button></form>
+        </dialog>
+        <dialog id="deleteAccountDialog" class="bys-action-dialog" aria-labelledby="deleteAccountTitle">
+            <form id="deleteAccountForm">
+                <h2 id="deleteAccountTitle">Delete account</h2>
+                <p>Your sign-in and BYS profile will be permanently deleted. Enter your account password to confirm.</p>
+                <label><span>Account password</span><input type="password" name="password" autocomplete="current-password" required></label>
+                <p id="deleteAccountStatus" role="status" hidden></p>
+                <div class="bys-dialog-actions">
+                    <button type="button" id="cancelDeleteAccount">Cancel</button>
+                    <button type="submit" class="bys-dialog-primary">Delete permanently</button>
+                </div>
+            </form>
+        </dialog>
         <div id="cartFeedback" class="cart-feedback" aria-live="polite" aria-atomic="true">
             <button type="button" class="cart-feedback-bar" data-view="cart" aria-label="View shopping cart">
                 <span class="cart-feedback-images" id="cartFeedbackImages"></span>
@@ -348,7 +373,7 @@
         <div id="toast" role="status" aria-live="polite"></div>
     </div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script src="catalog.js?v=prices9"></script>
-    <script src="script.js?v=accountaccess8"></script>
-    <script src="interface-language.js?v=5"></script>
+    <script src="script.js?v=accountaccess9"></script>
+    <script src="interface-language.js?v=6"></script>
 </body>
 </html>

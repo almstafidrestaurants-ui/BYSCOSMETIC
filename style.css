@@ -2203,3 +2203,73 @@ body.bys-account-open #cartFeedback { display: none !important; }
 .active-profile summary span { color: #ffe1ee; }
 .active-profile summary b { color: #9af5bd; margin-inline-end: 5px; }
 #signOutAccount { margin: 0 22px 20px; padding: 9px 16px; border: 1px solid #f6d9e6; border-radius: 9px; background: transparent; color: #fff; cursor: pointer; }
+
+#openSupport {
+    position: fixed;
+    inset-inline-end: max(16px, calc((100vw - 1200px) / 2 + 16px));
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    z-index: 28;
+    display: grid;
+    place-items: center;
+    width: 49px;
+    height: 49px;
+    border: 1px solid #f5d1e0;
+    border-radius: 50%;
+    background: #fff;
+    color: #b72966;
+    box-shadow: 0 5px 18px #92255230;
+    cursor: pointer;
+}
+body:has(#cartFeedback.visible) #openSupport {
+    bottom: calc(158px + env(safe-area-inset-bottom, 0px));
+}
+#openDeleteAccount {
+    margin-block: 14px;
+    padding: 10px 15px;
+    border: 1px solid #f0c4cd;
+    border-radius: 10px;
+    background: #fff4f6;
+    color: #a3193b;
+    font-weight: 700;
+    cursor: pointer;
+}
+.bys-action-dialog {
+    width: min(420px, calc(100% - 36px));
+    max-height: calc(100% - 36px);
+    margin: auto;
+    padding: 22px;
+    border: 1px solid #f0dce5;
+    border-radius: 20px;
+    background: #fff;
+    color: #39212e;
+    box-shadow: 0 14px 44px #46172f38;
+}
+.bys-action-dialog::backdrop { background: #24121cb3; }
+.bys-action-dialog h2 { margin: 0; font-size: 20px; }
+.bys-action-dialog p { margin: 12px 0; line-height: 1.5; }
+.bys-action-dialog label { display: grid; gap: 6px; }
+.bys-action-dialog input {
+    width: 100%;
+    border: 1px solid #e6c4d3;
+    border-radius: 9px;
+    padding: 10px;
+    font-size: 16px;
+}
+.bys-action-dialog button, .bys-action-dialog .bys-dialog-primary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 13px;
+    border: 1px solid #f0dce5;
+    border-radius: 10px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+.bys-action-dialog .bys-dialog-primary { background: #b72966; color: #fff; }
+#deleteAccountDialog .bys-dialog-primary { background: #a3193b; }
+.bys-dialog-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+#supportDialog form { margin-top: 16px; }
+#paymentOptions .payment-method:disabled { opacity: .67; cursor: default; }
